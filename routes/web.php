@@ -1,4 +1,5 @@
 <?php
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,3 +15,6 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/login', 'AuthController@LoginForm')->name('login.form');
+Route::post('login', 'AuthController@LoginAttempt')->name('login');
