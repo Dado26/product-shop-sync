@@ -1,11 +1,14 @@
 @if(count($errors) >0 )
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li> {{ $error }} </li>
-            @endforeach
+    <div class="card bg-danger text-white shadow validation-errors">
+        <div class="card-body">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li> {{ $error }} </li>
+                @endforeach
 
-        </ul>
-
+            </ul>
+        </div>
     </div>
 @endif
+
+
