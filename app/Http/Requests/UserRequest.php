@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class LoginRequest extends FormRequest
+class UserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -15,6 +15,7 @@ class LoginRequest extends FormRequest
     {
         return true;
     }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -22,9 +23,17 @@ class LoginRequest extends FormRequest
      */
     public function rules()
     {
-          return [
-            'email' => 'required|email',
-            'password' => 'required|min:6',
+        $rules = [
+            'first_name'=> 'min:2',
+            'last_name'=> 'min:3',
+            'email'=>'required|email',
+            'password' => 'confirmed|required|min:8',
         ];
+
+        if (request()->isMethod('PUT') && empty(request()->get('password'))) {
+            unset($rules['password']);
+        }
+
+        return $rules;
     }
 }
