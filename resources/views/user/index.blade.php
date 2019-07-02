@@ -20,29 +20,27 @@
         <th class="text-center">Actions</th>
     </tr>
 
-    @foreach($users as $user)
+@foreach($users as $user)
 
     <tr>
-        <td>
+        <td class="text-center">
             <p> {{ $user->id }} </p>
-
         </td>
-        <td>
-            <p> {{ $user->Email}} </p>
+        <td class="text-center">
+            <p> {{ $user->email}} </p>
         </td>
-
-        <td>
+        <td class="text-center">
             <p> {{ $user->first_name}} </p>
         </td>
-        <td>
+        <td class="text-center">
             <p> {{ $user->last_name}} </p>
         </td>
-        <td>
+        <td class="text-center">
             <p> {{ $user->created_at}} </p>
         </td>
-        <td>
+        <td class="text-center">
             <p> {{ $user->updated_at}} </p>
-        </td>
+        </td class="text-center">
         <td>
             <div class="users-list-actions">
                 <div class="delete-user">
@@ -55,7 +53,6 @@
                 </div>
             </div>
         </td>
-
     </tr>
-    @endforeach
-    @endsection
+@endforeach
+@endsection
