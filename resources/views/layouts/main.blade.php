@@ -1,48 +1,161 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
+
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
 
+    <title>Prodact Sync</title>
 
-    <title>@yield('title', 'product-sync')</title>
+    <!-- Custom fonts for this template-->
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
 
-    <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <!-- Custom styles for this template-->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
-  </head>
+</head>
 
-  <body>
-    <div class="container">
+<body id="page-top">
 
-      @yield('header')
+    <!-- Page Wrapper -->
+    <div id="wrapper">
 
-      <div class="row">
+        <!-- Sidebar -->
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
-          <!-- LEFT SIDE -->
-        <div class="col-sm-8 blog-main">
+            <!-- Sidebar - Brand -->
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+                <div class="sidebar-brand-icon rotate-n-15">
+                </div>
+                <div class="sidebar-brand-text mx-3">Product-sync</div>
+            </a>
 
-          @yield('content')
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
 
-        </div><!-- /.blog-main -->
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item active">
+                <a class="nav-link" href="index.html">
+                    <i class="fas fa-boxes"></i>
+                    <span>Products</span></a>
+            </li>
 
-        <!-- RIGHT SIDE -->
-        <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+            <li class="nav-item active">
+                <a class="nav-link" href="index.html">
+                    <i class="fas fa-sitemap"></i>
+                    <span>Sites</span></a>
+            </li>
+
+            <li class="nav-item active">
+                <a class="nav-link" href="index.html">
+                    <i class="fas fa-briefcase"></i>
+                    <span>Sync jobs</span></a>
+            </li>
+
+            <li class="nav-item active">
+                <a class="nav-link" href="index.html">
+                    <i class="fas fa-users"></i>
+                    <span>Users</span></a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Sidebar Toggler (Sidebar) -->
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+
+        </ul>
+        <!-- End of Sidebar -->
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+                    <!-- Sidebar Toggle (Topbar) -->
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+
+                    <ul class="navbar-nav ml-auto">
+
+                        <!-- Nav Item - User Information -->
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Valerie Luna</span>
+                            </a>
+                            <!-- Dropdown - User Information -->
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Logout
+                                </a>
+                            </div>
+                        </li>
+
+                    </ul>
+
+                </nav>
+                <!-- End of Topbar -->
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                    @yield('content')
+                </div>
+
+
+                <!-- /.container-fluid -->
+            </div>
+            <!-- End of Main Content -->
 
         </div>
-        </div><!-- /.blog-sidebar -->
+        <!-- End of Content Wrapper -->
 
-      </div><!-- /.row -->
+    </div>
+    <!-- End of Page Wrapper -->
 
-    </div><!-- /.container -->
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary" href="login.html">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="{{ asset('js/app.js') }}"></script>
     @yield('script')
-  </body>
+
+</body>
+
 </html>
