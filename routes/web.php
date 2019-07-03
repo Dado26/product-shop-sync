@@ -13,13 +13,19 @@ use App\Http\Controllers\AuthController;
 */
 
 
+
+
 Route::get('/login', 'AuthController@LoginForm')->name('login.form');
 
 Route::post('login', 'AuthController@LoginAttempt')->name('login');
 
 
 
+
+
 Route::group(['middleware'=>'auth'], function(){
+
+Route::post('logout', 'AuthController@LogOut')->name('logOut');   
 
 Route::get('/users', 'UserController@index')->name('index.users');
 

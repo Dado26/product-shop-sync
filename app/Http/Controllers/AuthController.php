@@ -25,4 +25,10 @@ return view('auth.login', compact('user'));
         }
         return redirect()->back()->withErrors(['Wrong email or password']);
     }
+
+    public function LogOut(){
+        Auth::logout();
+        
+        return redirect()->route('login.form');
+    }
 }
