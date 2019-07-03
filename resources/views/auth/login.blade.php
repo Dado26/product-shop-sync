@@ -59,12 +59,6 @@
                                         <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
                                             <input type="password" class="form-control form-control-user"
                                                 name="password" placeholder="Password" required>
-
-                                            @if ($errors->has('password'))
-                                            <span class="help-block">
-                                                <strong>{{ $errors->first('password') }}</strong>
-                                            </span>
-                                            @endif
                                         </div>
 
                                         <div class="form-group">

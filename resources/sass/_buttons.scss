@@ -58,20 +58,9 @@
         display: inline-block;
 
         button, a {
-            width: 70px;
+            width: 100px;
         }
     }
 }
 
-.create-user {
-    text-align: center;
-    margin-bottom: 1.5rem;
-    .back {
-        display: inline-block;
-    }
 
-    .save-user {
-        display: inline-block;
-        margin-left: 1rem;
-    }
-}
