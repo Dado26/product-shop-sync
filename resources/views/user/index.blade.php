@@ -23,7 +23,7 @@
                                                           
                         </td>
                         <td>
-                                <p> {{ $user->Email}}  </p>    
+                                <p> {{ $user->email}}  </p>    
                         </td>
 
                         <td>

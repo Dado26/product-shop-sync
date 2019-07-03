@@ -21,7 +21,7 @@ return view('auth.login', compact('user'));
         $remember = $request->get('remember_me');
         
         if(Auth::attempt(['email'=>$email, 'password'=>$password], $remember)){
-            return redirect()->route('home');
+            return redirect()->route('index.users');
         }
         return redirect()->back()->withErrors(['Wrong email or password']);
     }
