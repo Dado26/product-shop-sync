@@ -1,27 +1,32 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Http\Requests\LoginRequest;
 
+use App\Http\Requests\LoginRequest;
 use Illuminate\Http\Request;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
     public function LoginForm()
     {
-$user = Auth::user();
-return view('auth.login', compact('user'));
+        return view('auth.login');
     }
-    
-    public function LoginAttempt(LoginRequest $request) 
-            {
-        $email = $request->get('email');
+
+    public function LoginAttempt(LoginRequest $request)
+    {
+        $email    = $request->get('email');
         $password = $request->get('password');
         $remember = $request->get('remember_me');
+<<<<<<< HEAD
         
         if(Auth::attempt(['email'=>$email, 'password'=>$password], $remember)){
             return redirect()->route('index.users');
+=======
+
+        if (Auth::attempt(['email' => $email, 'password' => $password], $remember)) {
+            return redirect()->route('home');
+>>>>>>> b67ec6197937b166c1868ca2bbb3b6cba525ab4a
         }
         return redirect()->back()->withErrors(['Wrong email or password']);
     }

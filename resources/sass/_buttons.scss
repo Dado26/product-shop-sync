@@ -50,3 +50,17 @@
     }
   }
 }
+
+.users-list-actions {
+    text-align: center;
+    .edit-user,
+    .delete-user {
+        display: inline-block;
+
+        button, a {
+            width: 100px;
+        }
+    }
+}
+
+
