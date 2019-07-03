@@ -1,5 +1,4 @@
 <?php
-use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -12,15 +11,9 @@ use App\Http\Controllers\AuthController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-
-
 Route::get('/login', 'AuthController@LoginForm')->name('login.form');
 
-Route::post('login', 'AuthController@LoginAttempt')->name('login');
+Route::post('login', 'AuthController@LoginAttempt')->middleware('throttle:10,1')->name('login');
 
 Route::get('/users', 'UserController@index')->name('index.users');
 
