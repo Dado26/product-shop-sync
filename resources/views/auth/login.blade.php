@@ -9,11 +9,7 @@
         <meta name="description" content="">
         <meta name="author" content="">
 
-<<<<<<< HEAD
-    <title>Login</title>
-=======
         <title>Product Sync - Login</title>
->>>>>>> c7c2132d4b383d5976998684a982de1aad2b449f
 
         <!-- Custom fonts for this template-->
         <link
@@ -60,23 +56,10 @@
                                                 @endif
                                             </div>
 
-<<<<<<< HEAD
                                         <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
                                             <input type="password" class="form-control form-control-user"
                                                 name="password" placeholder="Password" required>
                                         </div>
-=======
-                                            <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                                                <input type="password" class="form-control form-control-user"
-                                                       name="password" placeholder="Password" required>
-
-                                                @if ($errors->has('password'))
-                                                    <span class="help-block">
-                                                        <strong>{{ $errors->first('password') }}</strong>
-                                                    </span>
-                                                @endif
-                                            </div>
->>>>>>> c7c2132d4b383d5976998684a982de1aad2b449f
 
                                             <div class="form-group">
                                                 <div class="custom-control custom-checkbox small">
