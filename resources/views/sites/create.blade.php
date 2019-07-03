@@ -4,7 +4,7 @@
 @section('content')
 
 <!-- Main content -->
-{!! Form::open(['route'=>'site.store', 'method'=>'POST', 'class'=>'validate']) !!}
+{!! Form::open(['route'=>'sites.store', 'method'=>'POST', 'class'=>'validate']) !!}
 
 <section class="content">
     <div class="row">

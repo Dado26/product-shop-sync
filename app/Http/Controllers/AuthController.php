@@ -20,7 +20,7 @@ class AuthController extends Controller
         $remember = $request->get('remember_me');
         
         if(Auth::attempt(['email'=>$email, 'password'=>$password], $remember)){
-            return redirect()->route('index.users');
+            return redirect()->route('users.index');
         }
         return redirect()->back()->withErrors(['Wrong email or password']);
     }

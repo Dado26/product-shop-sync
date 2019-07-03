@@ -12,7 +12,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::query()->latest();
+        $users = User::query()->latest()->get();
 
         return view('user.index', compact('users'));
     }
@@ -37,7 +37,7 @@ class UserController extends Controller
 
         User::create($params);
 
-        return redirect()->route('index.users');
+        return redirect()->route('users.index');
     }
 
     /**
@@ -65,7 +65,7 @@ class UserController extends Controller
 
         $user->update($params);
 
-        return redirect()->route('index.users');
+        return redirect()->route('users.index');
     }
 
     /**
@@ -80,6 +80,6 @@ class UserController extends Controller
     {
         $user->delete();
         //flash('Uspešno ste izbrisali predmet!!')->success();
-        return redirect()->route('index.users');
+        return redirect()->route('users.index');
     }
 }

@@ -4,7 +4,7 @@
 @section('content')
 
     <!-- Main content -->
-    <form action="{{ route('site.update', $site->id) }}" method="POST" class="form-horizontal">
+    <form action="{{ route('sites.update', $site->id) }}" method="POST" class="form-horizontal">
              {!! csrf_field() !!}
             <input type="hidden" name="_method" value="PUT">
             
@@ -109,7 +109,7 @@
             </div>
             
             
-           <a href="{{route('site.index') }}" class="btn btn-primary pull-left" >Back</a>
+           <a href="{{route('sites.index') }}" class="btn btn-primary pull-left" >Back</a>
 
            <button type="submit" class="btn btn-success pull-right">Save</button>
             

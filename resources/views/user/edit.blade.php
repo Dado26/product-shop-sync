@@ -3,7 +3,7 @@
 @section('content')
 
     <!-- Main content -->
-    {!! Form::model($user, ['route'=>['update.user', $user->id], 'method'=>'PUT', 'class'=>'validate']) !!}
+    {!! Form::model($user, ['route'=>['user.update', $user->id], 'method'=>'PUT', 'class'=>'validate']) !!}
 <section class="content">
           <div class="row">
               <div class="col-md-6 members-position">
@@ -43,7 +43,7 @@
                         <div class="box-footer">
 
                             <div class="pull-left">
-                            <a href="{{route('index.users')}}" class="btn btn-primary btn-lg">Back</a>
+                            <a href="{{route('users.index')}}" class="btn btn-primary btn-lg">Back</a>
                             </div>
 
                             <div class="pull-right">
