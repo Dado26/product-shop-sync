@@ -18,15 +18,9 @@ class AuthController extends Controller
         $email    = $request->get('email');
         $password = $request->get('password');
         $remember = $request->get('remember_me');
-<<<<<<< HEAD
         
         if(Auth::attempt(['email'=>$email, 'password'=>$password], $remember)){
             return redirect()->route('index.users');
-=======
-
-        if (Auth::attempt(['email' => $email, 'password' => $password], $remember)) {
-            return redirect()->route('home');
->>>>>>> b67ec6197937b166c1868ca2bbb3b6cba525ab4a
         }
         return redirect()->back()->withErrors(['Wrong email or password']);
     }

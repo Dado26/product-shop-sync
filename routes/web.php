@@ -11,12 +11,6 @@
 |
 */
 
-<<<<<<< HEAD
-
-
-
-=======
->>>>>>> b67ec6197937b166c1868ca2bbb3b6cba525ab4a
 Route::get('/login', 'AuthController@LoginForm')->name('login.form');
 
 Route::post('login', 'AuthController@LoginAttempt')->middleware('throttle:10,1')->name('login');

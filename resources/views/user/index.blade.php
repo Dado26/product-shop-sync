@@ -1,30 +1,5 @@
 @extends('layouts.main')
 
-<<<<<<< HEAD
-                    <tr>   
-                        <td>                           
-                                <p> {{ $user->id }}  </p>                         
-                                                          
-                        </td>
-                        <td>
-                                <p> {{ $user->email}}  </p>    
-                        </td>
-
-                        <td>
-                                <p> {{ $user->first_name}}  </p>    
-                        </td>
-                        <td>
-                                <p> {{ $user->last_name}}  </p>    
-                        </td>
-                        <td>
-                                <p> {{ $user->created_at}}  </p>    
-                        </td>
-                        <td>
-                                <p> {{ $user->updated_at}}  </p>    
-                        </td>
-                        <td>
-                                <a href="{{ route('edit.user', $user->id) }}" class="btn btn-warning">Edit</a>
-=======
 @section('content')
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h4 mb-0 text-gray-800">Users</h1>
@@ -32,7 +7,6 @@
             <i class="fas fa-plus"></i> Create
         </a>
     </div>
->>>>>>> b67ec6197937b166c1868ca2bbb3b6cba525ab4a
 
     <table class="table table-striped">
         <tr>
