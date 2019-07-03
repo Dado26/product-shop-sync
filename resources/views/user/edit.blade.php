@@ -40,16 +40,17 @@
 
 
 
-    <div class="box-footer">
-         <div class="pull-left">
-         <a href="{{route('index.users')}}" class="btn btn-primary btn-lg">Back</a>
-         </div>
+                        <div class="box-footer">
 
-         <div class="pull-right">
-             <button class="btn btn-success btn-lg">Save</button>
-         </div>
+                            <div class="pull-left">
+                            <a href="{{route('index.users')}}" class="btn btn-primary btn-lg">Back</a>
+                            </div>
 
-                      </div>
+                            <div class="pull-right">
+                                <button class="btn btn-success btn-lg">Save</button>
+                            </div>
+
+                        </div>
                  </div>
              </div>
 
