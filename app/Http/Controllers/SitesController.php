@@ -92,7 +92,7 @@ class SitesController extends Controller
 
         $site->SyncRules->update($param['sync_Rules']);
 
-        return redirect()-route(site.index);
+        return redirect()-route(sites.index);
     }
 
     /**

@@ -4,7 +4,7 @@
 @section('content')
 
 <!-- Main content -->
-{!! Form::open(['route'=>'store.user', 'method'=>'POST', 'class'=>'validate']) !!}
+{!! Form::open(['route'=>'user.store', 'method'=>'POST', 'class'=>'validate']) !!}
 
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Create User</h1>
@@ -47,7 +47,7 @@
             <div class="card-footer d-flex justify-content-between">
 
                 <div class="back">
-                    <a href="{{route('index.users')}}" class="btn btn-primary d-none d-sm-inline-block">
+                    <a href="{{route('users.index')}}" class="btn btn-primary d-none d-sm-inline-block">
                         <i class="fas fa-angle-left"></i> Back
                     </a>
                 </div>

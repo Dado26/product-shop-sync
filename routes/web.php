@@ -23,18 +23,18 @@ Route::group(['middleware'=>'auth'], function(){
 
 Route::post('logout', 'AuthController@LogOut')->name('logOut');   
 
-Route::get('/users', 'UserController@index')->name('index.users');
+Route::get('/users', 'UserController@index')->name('users.index');
 
-Route::get('/create', 'UserController@create')->name('create.user');
+Route::get('/create', 'UserController@create')->name('user.create');
 
-Route::get('/user/{user}/edit', 'UserController@edit')->name('edit.user');
+Route::get('/user/{user}/edit', 'UserController@edit')->name('user.edit');
 
-Route::post('/user', 'UserController@store')->name('store.user');
+Route::post('/user', 'UserController@store')->name('user.store');
 
-Route::put('/user/{user}/edit', 'UserController@update')->name('update.user');
+Route::put('/user/{user}/edit', 'UserController@update')->name('user.update');
 
-Route::delete('/user/{user}', 'UserController@destroy')->name('destroy.user');
+Route::delete('/user/{user}', 'UserController@destroy')->name('user.destroy');
 
-Route::resource('/site','SitesController');
+Route::resource('sites','SitesController');
 
 });

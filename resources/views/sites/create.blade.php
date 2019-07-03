@@ -4,7 +4,7 @@
 @section('content')
 
     <!-- Main content -->
-    {!! Form::open(['route'=>'site.store', 'method'=>'POST', 'class'=>'validate']) !!}
+    {!! Form::open(['route'=>'sites.store', 'method'=>'POST', 'class'=>'validate']) !!}
 <section class="content">
           <div class="row">
               <div class="col-md-6 members-position">
@@ -66,7 +66,7 @@
                
     <div class="box-footer">
          <div class="pull-left">
-         <a href="{{route('site.index')}}" class="btn btn-primary btn-lg">Back</a>
+         <a href="{{route('sites.index')}}" class="btn btn-primary btn-lg">Back</a>
          </div>
             
          <div class="pull-right">

@@ -1,6 +1,6 @@
 @extends('layouts.main')
 @section('content')
-<a href="{{ route('site.create') }}" class="btn btn-success pull-right add-member" style="width: 200px">
+<a href="{{ route('sites.create') }}" class="btn btn-success pull-right add-member" style="width: 200px">
                 <i class="fa fa-plus"></i> Create
 </a>
 <table class="table table-striped">
@@ -39,9 +39,9 @@
                         </td>
 
                         <td> 
-                                <a href="{{ route('site.edit', $site->id) }}" class="btn btn-warning">Edit</a>
+                                <a href="{{ route('sites.edit', $site->id) }}" class="btn btn-warning">Edit</a>
 
-                        {!! Form::open(['route'=>['site.destroy', $site->id],'method'=>'DELETE','class'=>'pull-right delete']) !!}
+                        {!! Form::open(['route'=>['sites.destroy', $site->id],'method'=>'DELETE','class'=>'pull-right delete']) !!}
                             <button type="submit" value="Delete" class="btn btn-danger">Delete</button>
                           {!!Form::close()!!}
                         </td>
