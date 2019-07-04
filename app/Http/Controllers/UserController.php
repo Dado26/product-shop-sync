@@ -37,7 +37,7 @@ class UserController extends Controller
 
         User::create($params);
 
-        flash('Message')->success('you have succesfully created new user');
+        flash('you have succesfully created new user')->success();
 
         return redirect()->route('users.index');
     }

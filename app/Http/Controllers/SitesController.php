@@ -49,9 +49,9 @@ class SitesController extends Controller
 
         SyncRules::create($param['sync_Rules']);
 
-        flash('Message')->success('you have succesfully create new site');
+        flash('you have succesfully create new site')->success();
 
-        flash('Message')->error('Ups something went wrong');
+        //flash('Ups something went wrong')->error();
 
         return redirect()->route('sites.index');
 
@@ -96,9 +96,7 @@ class SitesController extends Controller
 
         $site->SyncRules->update($param['sync_Rules']);
 
-        flash('Message')->success('you have succesfully update site');
-
-        flash('Message')->error('Ups something went wrong');
+        flash('You have succesfully update site')->success();
 
         return redirect()->route('sites.index');
     }
