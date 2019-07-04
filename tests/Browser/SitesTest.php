@@ -8,6 +8,10 @@ use App\User;
 
 class SitesTest extends DuskTestCase
 {
+
+    /**
+     * Test if Page loads
+     */
     public function testIfPageLoads()
     {
         $this->browse(function (Browser $browser) {
@@ -17,7 +21,10 @@ class SitesTest extends DuskTestCase
         });
     }
 
-    public function testIfTheWarningMessagePopsUpWhenTheRequriedFieldIsEmpty() {
+    /**
+     * Test if the warning message pops up when creating new site
+     */
+    public function testIfTheWarningMessagePopsUpWhenCreatingSite() {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1));
             $browser->visit('/sites/create');
@@ -25,7 +32,7 @@ class SitesTest extends DuskTestCase
             $browser->assertPathIs('/sites/create');
             $browser->assertSee('The name field is required.');
             $browser->assertSee('The url field is required.');
-            $browser->assertSee('The email must be a valid email address.');
+            $browser->assertSee('The email field is required.');
             $browser->assertSee('The title field is required.');
             $browser->assertSee('The description field is required.');
             $browser->assertSee('The price field is required.');
@@ -35,6 +42,9 @@ class SitesTest extends DuskTestCase
         });
     }
 
+    /**
+     * Test if url format is valid
+     */
     public function testIfUrlFormatIsValid()
     {
         $this->browse(function (Browser $browser) {
@@ -56,6 +66,9 @@ class SitesTest extends DuskTestCase
         });
     }
 
+    /**
+     * Test if email adress is valid
+     */
     public function testIfEmailAdressIsValid()
     {
         $this->browse(function (Browser $browser) {
@@ -76,4 +89,51 @@ class SitesTest extends DuskTestCase
             $browser->assertSee( 'The email must be a valid email address.');
         });
     }
+
+    /**
+     * Test if url format is valid when edited
+     */
+    public function testIfUrlFormatIsValidWhenEdited()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1));
+            $browser->visit('/sites');
+            $browser->clickLink('Edit');
+            $browser->visit('/sites/20/edit');
+            $browser->type('sites[url]', 'url');
+            $browser->press('Save');
+            $browser->assertPathIs('/sites/20/edit');
+            $browser->assertSee('The url format is invalid.');
+        });
+    }
+
+    /**
+     * Test if email adress is valid when edited
+     */
+    public function testIfEmailAdressIsValidWhenEdited()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1));
+            $browser->visit('/sites/20/edit');
+            $browser->type('sites[email]', 'zryan');
+            $browser->press('Save');
+            $browser->assertPathIs('/sites/20/edit');
+            $browser->assertSee('The email must be a valid email address.');
+        });
+    }
+
+    /**
+     * Test if message pops up when edited
+     */
+    public function testIfMessagePopsUpWhenEdited()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1));
+            $browser->visit('/sites/33/edit');
+            $browser->press('Save');
+            $browser->assertPathIs('/sites');
+            $browser->assertSee('You have succesfully update site');
+        });
+    }
+
 }
