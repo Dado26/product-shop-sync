@@ -55,7 +55,7 @@ class SitesController extends Controller
 
         return redirect()->route('sites.index');
 
-        
+
 
     }
 
@@ -88,7 +88,7 @@ class SitesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request,Site $site)
+    public function update(SitesRequest $request,Site $site)
     {
         $param = $request->all();
 

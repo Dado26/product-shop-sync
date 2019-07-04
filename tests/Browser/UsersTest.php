@@ -69,17 +69,14 @@ class UsersTest extends DuskTestCase
 
     public function testEditUserWithPasswordNotMatch(){
 
-    $this->browse(function(Browser $browser) {
-            $browser->loginAs(User::find(1));
-            $browser->visit('/user/2/edit');
-            $browser->type('password', 'sdfgsddf');
-            $browser->type('password_confirmation', 'hgjkdfff');
-            $browser->press('Save');
-            $browser->assertPathIs('/user/2/edit');
-        $browser->assertSee('The password confirmation does not match.');
-        
+        $this->browse(function(Browser $browser) {
+                $browser->loginAs(User::find(1));
+                $browser->visit('/user/2/edit');
+                $browser->type('password', 'sdfgsddf');
+                $browser->type('password_confirmation', 'hgjkdfff');
+                $browser->press('Save');
+                $browser->assertPathIs('/user/2/edit');
+            $browser->assertSee('The password confirmation does not match.');
         });
-  } 
-
-
+    }
 }
