@@ -9,7 +9,6 @@ class LoginTest extends DuskTestCase
 {
     public function testLoginUserThatDoesNotExist()
     {
-
         $this->browse(function (Browser $browser) {
             $browser->visit('/login');
             $browser->type('email', 'unknown@mail.com');

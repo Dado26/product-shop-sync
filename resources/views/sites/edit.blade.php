@@ -71,7 +71,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">Description</label>
+                        <label class="col-sm-3 control-label">Description</label>
                         <div class="col-sm-12">
                             <textarea rows="5" cols="80" name="sync_Rules[description]"class="form-control">{{ $site->SyncRules->description}}</textarea>
                         </div>

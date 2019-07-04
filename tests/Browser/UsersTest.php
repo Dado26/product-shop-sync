@@ -68,8 +68,7 @@ class UsersTest extends DuskTestCase
     }
 
     public function testEditUserWithPasswordNotMatch(){
-
-    $this->browse(function(Browser $browser) {
+        $this->browse(function(Browser $browser) {
             $browser->loginAs(User::find(1));
             $browser->visit('/user/2/edit');
             $browser->type('password', 'sdfgsddf');
@@ -77,9 +76,8 @@ class UsersTest extends DuskTestCase
             $browser->press('Save');
             $browser->assertPathIs('/user/2/edit');
             $browser->assertSee('The password confirmation does not match.');
-        
         });
-  } 
+    }
 
   public function testCreateNewUser(){
     
@@ -124,5 +122,4 @@ class UsersTest extends DuskTestCase
             $browser->assertPathIs('/login');
         });
     }
-
 }

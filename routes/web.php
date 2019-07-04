@@ -39,6 +39,6 @@ Route::delete('/user/{user}', 'UserController@destroy')->name('user.destroy');
 
 Route::resource('sites','SitesController');
 
-Route::resource('products', '')
+Route::resource('products', 'ProductsController');
 
 });
