@@ -40,25 +40,25 @@
             <hr class="sidebar-divider my-0">
 
             <!-- Nav Item - Dashboard -->
-            <li class="nav-item active">
-                <a class="nav-link" href="index.html">
+            <li class="nav-item {{ (request()->is('products*')) ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('products.index') }}">
                     <i class="fas fa-boxes"></i>
                     <span>Products</span></a>
             </li>
 
-            <li class="nav-item active">
+            <li class="nav-item {{ (request()->is('sites*')) ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('sites.index') }}">
                     <i class="fas fa-sitemap"></i>
                     <span>Sites</span></a>
             </li>
 
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a class="nav-link" href="">
                     <i class="fas fa-briefcase"></i>
                     <span>Sync jobs</span></a>
             </li>
 
-            <li class="nav-item active">
+            <li class="nav-item {{ (request()->is('users*')) ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('users.index') }}">
                     <i class="fas fa-users"></i>
                     <span>Users</span></a>
