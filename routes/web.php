@@ -23,7 +23,7 @@ Route::post('login', 'AuthController@LoginAttempt')->middleware('throttle:10,1')
 
 Route::group(['middleware'=>'auth'], function(){
 
-Route::get('logout', 'AuthController@LogOut')->name('logOut');   
+Route::get('logout', 'AuthController@LogOut')->name('logOut');
 
 Route::get('/users', 'UserController@index')->name('users.index');
 
@@ -36,6 +36,8 @@ Route::post('/user', 'UserController@store')->name('user.store');
 Route::put('/user/{user}/edit', 'UserController@update')->name('user.update');
 
 Route::delete('/user/{user}', 'UserController@destroy')->name('user.destroy');
+
+Route::get('/jobs', 'SyncJobsController@index')->name('jobs.index');
 
 Route::resource('sites','SitesController');
 
