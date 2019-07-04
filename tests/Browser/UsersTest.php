@@ -114,12 +114,5 @@ class UsersTest extends DuskTestCase
         });
     }
 
-    public function testLogOut(){
-        $this->browse(function (Browser $browser) {
-            $browser->visit('/users');
-            $browser->clickLink('John Doe');
-            $browser->clickLink('Logout');
-            $browser->assertPathIs('/login');
-        });
-    }
+    
 }
