@@ -91,7 +91,7 @@
 
 </table>
 
-<div class="pull-right">
+<div class="d-inline-flex">
     {!! $sites->render() !!}
 </div>
 

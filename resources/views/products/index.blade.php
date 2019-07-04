@@ -4,8 +4,4 @@
 
 
 
-<div class="pull-right">
-    
-</div>
-
 @endsection

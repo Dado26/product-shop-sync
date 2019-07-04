@@ -52,8 +52,8 @@
                     <span>Sites</span></a>
             </li>
 
-            <li class="nav-item">
-                <a class="nav-link" href="">
+            <li class="nav-item {{ (request()->is('jobs*')) ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('jobs.index') }}">
                     <i class="fas fa-briefcase"></i>
                     <span>Sync jobs</span></a>
             </li>
