@@ -33,9 +33,11 @@ class UserController extends Controller
     public function store(UserRequest $request)
     {
         $params             = $request->all();
-        $params['password'] = bcrypt('asdasd');
+        $params['password'] = bcrypt($params['password']);
 
         User::create($params);
+
+        flash('Message')->success('you have succesfully created new user');
 
         return redirect()->route('users.index');
     }
@@ -65,6 +67,8 @@ class UserController extends Controller
 
         $user->update($params);
 
+        flash('you have succesfully updated user')->success();
+
         return redirect()->route('users.index');
     }
 
@@ -79,7 +83,7 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         $user->delete();
-        //flash('Uspešno ste izbrisali predmet!!')->success();
+        flash('you have succesfully deleted user')->success();
         return redirect()->route('users.index');
     }
 }

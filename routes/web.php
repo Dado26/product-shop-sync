@@ -11,17 +11,19 @@
 |
 */
 
-Route::get('/login', 'AuthController@LoginForm')->name('login.form');
+
+Route::group(['middleware'=>'guest'], function(){
+Route::get('login', 'AuthController@LoginForm')->name('login.form');
 
 Route::post('login', 'AuthController@LoginAttempt')->middleware('throttle:10,1')->name('login');
 
-
+});
 
 
 
 Route::group(['middleware'=>'auth'], function(){
 
-Route::post('logout', 'AuthController@LogOut')->name('logOut');   
+Route::get('logout', 'AuthController@LogOut')->name('logOut');   
 
 Route::get('/users', 'UserController@index')->name('users.index');
 

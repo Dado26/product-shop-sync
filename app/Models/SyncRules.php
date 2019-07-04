@@ -8,6 +8,8 @@ class SyncRules extends Model
 {
     protected $table = 'sync_rules';
 
+    protected $primaryKey = 'site_id';
+
     public $timestamps = false;
 
     protected $fillable = ['title', 'description', 'price','in_stock','in_stock_value','images','variants', 'site_id'];

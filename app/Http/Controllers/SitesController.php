@@ -49,6 +49,12 @@ class SitesController extends Controller
 
         SyncRules::create($param['sync_Rules']);
 
+        flash('Message')->success('you have succesfully create new site');
+
+        flash('Message')->error('Ups something went wrong');
+
+        return redirect()->route('sites.index');
+
         
 
     }
@@ -88,11 +94,13 @@ class SitesController extends Controller
 
         $site->update($param['sites']); 
 
-       // $param['sync_Rules']['site_id'] = $site->id;
-
         $site->SyncRules->update($param['sync_Rules']);
 
-        return redirect()-route(sites.index);
+        flash('Message')->success('you have succesfully update site');
+
+        flash('Message')->error('Ups something went wrong');
+
+        return redirect()->route('sites.index');
     }
 
     /**
@@ -104,7 +112,7 @@ class SitesController extends Controller
     public function destroy(Site $site)
     {
         $site->delete();
-        //flash('Uspešno ste izbrisali predmet!!')->success();
+        flash('you have succesfully deleted site')->success();
         return redirect()->back();
     }
 }
