@@ -27,7 +27,7 @@ Route::get('logout', 'AuthController@LogOut')->name('logOut');
 
 Route::get('/users', 'UserController@index')->name('users.index');
 
-Route::get('/create', 'UserController@create')->name('user.create');
+Route::get('/user/create', 'UserController@create')->name('user.create');
 
 Route::get('/user/{user}/edit', 'UserController@edit')->name('user.edit');
 
