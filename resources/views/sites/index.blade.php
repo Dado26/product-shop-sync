@@ -11,62 +11,77 @@
 
 <table class="table table-striped">
     <tr>
-        <th>Name</th>
-        <th>Url</th>
-        <th>Imported</th>
-        <th>Created at</th>
-        <th>Updated at</th>
-        <th>Actions</th>
+        <th class="text-center">Name</th>
+        <th class="text-center">Url</th>
+        <th class="text-center">Imported</th>
+        <th class="text-center">Created at</th>
+        <th class="text-center">Updated at</th>
+        <th class="text-center">Actions</th>
     </tr>
 
     @foreach($sites as $site)
 
     <tr>
-        <td>
+        <td class="text-center">
             <p> {{ $site->name}} </p>
-
         </td>
 
-        <td>
+        <td class="text-center">
             <p> {{ $site->url}} </p>
         </td>
 
-        <td>
+        <td class="text-center">
             <p> {{ $site->Imported}} </p>
         </td>
 
-        <td>
+        <td class="text-center">
             <p> {{ $site->created_at}} </p>
         </td>
 
-        <td>
+        <td class="text-center">
             <p> {{ $site->updated_at}} </p>
         </td>
 
-        <td>
-
-            <a href="{{ route('sites.edit', $site->id) }}" class="btn btn-warning">Edit</a>
-
-            {!! Form::open(['route'=>['sites.destroy', $site->id],'method'=>'DELETE','class'=>'pull-right delete']) !!}
-            <button type="submit" value="Delete" class="btn btn-danger">Delete</button>
-            {!!Form::close()!!}
-
+        <td class="text-center">
             <div class="users-list-actions">
-                        <div class="delete-user">
-                            {!! Form::open(['route'=>['user.destroy', $user->id],'method'=>'DELETE','class'=>'delete']) !!}
-                                <button type="submit" value="Delete" class="btn btn-danger d-none d-sm-inline-block btn-sm">
-                                    <i class="fas fa-user-minus fa-fw"></i>  Delete
+
+                <div class="edit-user">
+                    <button type="button" data-toggle="modal" data-target="#confirmButton" class="btn btn-danger d-none d-sm-inline-block btn-sm">
+                        <i class="fas fa-trash"></i> Delete
+                    </button>
+                </div>
+
+                <div class="delete-user">
+                    <a href="{{ route('sites.edit', $site->id) }}" class="btn btn-success d-none d-sm-inline-block btn-sm">
+                        <i class="fas fa-keyboard"></i> Edit
+                    </a>
+                </div>
+
+                <!-- Delete button Warrning Modal -->
+                <div class="modal fade" id="confirmButton" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" >Delete site</h5>
+                                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
                                 </button>
-                            {!!Form::close()!!}
-                        </div>
-                        <div class="edit-user">
-                            <a href="{{ route('user.edit', $user->id) }}" class="btn btn-success d-none d-sm-inline-block btn-sm">
-                                <i class="fas fa-user-edit fa-fw"></i> Edit
-                            </a>
+                            </div>
+                            <div class="modal-body">
+                                Are you sure you want to delete this site?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+
+                                {!! Form::open(['route'=>['sites.destroy', $site->id],'method'=>'DELETE','class'=>'pull-right delete']) !!}
+                                    <button type="submit" value="Delete" class="btn btn-danger">Delete</button>
+                                {!!Form::close()!!}
+                            </div>
                         </div>
                     </div>
-
-
+                </div>
+                <!-- Delete button Warrning Modal End-->
+            </div>
         </td>
     </tr>
 

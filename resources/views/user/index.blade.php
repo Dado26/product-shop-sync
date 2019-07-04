@@ -42,11 +42,9 @@
                 <td>
                     <div class="users-list-actions">
                         <div class="delete-user">
-                            {!! Form::open(['route'=>['user.destroy', $user->id],'method'=>'DELETE','class'=>'delete']) !!}
-                                <button type="submit" value="Delete" class="btn btn-danger d-none d-sm-inline-block btn-sm">
-                                    <i class="fas fa-user-minus fa-fw"></i>  Delete
-                                </button>
-                            {!!Form::close()!!}
+                            <button type="button" data-toggle="modal" data-target="#confirmButton" class="btn btn-danger d-none d-sm-inline-block btn-sm">
+                                <i class="fas fa-user-minus fa-fw"></i>  Delete
+                            </button>
                         </div>
                         <div class="edit-user">
                             <a href="{{ route('user.edit', $user->id) }}" class="btn btn-success d-none d-sm-inline-block btn-sm">
@@ -54,6 +52,31 @@
                             </a>
                         </div>
                     </div>
+
+                    <!-- Delete button Warrning Modal -->
+                    <div class="modal fade" id="confirmButton" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" >Delete user</h5>
+                                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">×</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you want to delete this user?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+
+                                    {!! Form::open(['route'=>['user.destroy', $user->id],'method'=>'DELETE','class'=>'pull-right delete']) !!}
+                                        <button type="submit" value="Delete" class="btn btn-danger">Delete</button>
+                                    {!!Form::close()!!}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Delete button Warrning Modal End-->
                 </td>
             </tr>
         @endforeach

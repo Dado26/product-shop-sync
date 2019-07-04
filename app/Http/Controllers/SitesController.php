@@ -43,13 +43,13 @@ class SitesController extends Controller
     {
         $param = $request->all();
 
-        $site = auth()->user()->Sites()->create($param['sites']); 
+        $site = auth()->user()->Sites()->create($param['sites']);
 
         $param['sync_Rules']['site_id'] = $site->id;
 
         SyncRules::create($param['sync_Rules']);
 
-        
+
 
     }
 
@@ -86,13 +86,13 @@ class SitesController extends Controller
     {
         $param = $request->all();
 
-        $site->update($param['sites']); 
+        $site->update($param['sites']);
 
        // $param['sync_Rules']['site_id'] = $site->id;
 
         $site->SyncRules->update($param['sync_Rules']);
 
-        return redirect()-route(sites.index);
+        return redirect()->route('sites.index');
     }
 
     /**
