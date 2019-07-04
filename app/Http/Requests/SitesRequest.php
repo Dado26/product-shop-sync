@@ -26,7 +26,7 @@ class SitesRequest extends FormRequest
         return [
             'sites.name'=> 'required|min:2',
             'sites.url'=> 'required|url',
-            'sites.email'=>'email',
+            'sites.email'=>'required|email',
             'sync_Rules.title' => 'required|min:2',
             'sync_Rules.description'=> 'required|min:6',
             'sync_Rules.price'=> 'required',
