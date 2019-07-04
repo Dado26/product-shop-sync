@@ -15,7 +15,7 @@
 
         @include('partials.errors')
 
-        <div class="card mb-4">
+        <div class="card shadow mb-4">
 
             <div class="card-body">
                 <div class="form-group">
@@ -45,7 +45,6 @@
             </div>
 
             <div class="card-footer d-flex justify-content-between">
-
                 <div class="back">
                     <a href="{{route('users.index')}}" class="btn btn-primary d-none d-sm-inline-block">
                         <i class="fas fa-angle-left"></i> Back
@@ -56,9 +55,7 @@
                     <button class="btn btn-success d-none d-sm-inline-block">
                         <i class="far fa-save"></i> Save
                     </button>
-
                 </div>
-
             </div>
 
         </div>

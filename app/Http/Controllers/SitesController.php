@@ -43,7 +43,7 @@ class SitesController extends Controller
     {
         $param = $request->all();
 
-        $site = auth()->user()->Sites()->create($param['sites']); 
+        $site = auth()->user()->Sites()->create($param['sites']);
 
         $param['sync_Rules']['site_id'] = $site->id;
 
@@ -92,7 +92,7 @@ class SitesController extends Controller
     {
         $param = $request->all();
 
-        $site->update($param['sites']); 
+        $site->update($param['sites']);
 
         $site->SyncRules->update($param['sync_Rules']);
 
