@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use Artisan;
 use Laravel\Dusk\TestCase as BaseTestCase;
 use Facebook\WebDriver\Chrome\ChromeOptions;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
@@ -10,6 +11,21 @@ use Facebook\WebDriver\Remote\DesiredCapabilities;
 abstract class DuskTestCase extends BaseTestCase
 {
     use CreatesApplication;
+
+    protected static $setUpRun = false;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        // run migrations & seeds only once
+        if (!static::$setUpRun) {
+            Artisan::call('migrate:fresh');
+            Artisan::call('db:seed');
+
+            static::$setUpRun = true;
+        }
+    }
 
     /**
      * Prepare for Dusk test execution.
@@ -37,8 +53,8 @@ abstract class DuskTestCase extends BaseTestCase
 
         return RemoteWebDriver::create(
             'http://localhost:9515', DesiredCapabilities::chrome()->setCapability(
-                ChromeOptions::CAPABILITY, $options
-            )
+            ChromeOptions::CAPABILITY, $options
+        )
         );
     }
 }

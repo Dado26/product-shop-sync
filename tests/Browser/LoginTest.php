@@ -2,7 +2,6 @@
 
 namespace Tests\Browser;
 
-use App\User;
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
 
@@ -30,5 +29,5 @@ class LoginTest extends DuskTestCase
             $browser->assertSee('John Doe');
         });
     }
-    
+
 }
