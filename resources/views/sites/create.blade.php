@@ -96,8 +96,7 @@
 
 </div>
 
-<div class="d-flex justify-content-center mt-5 mb-4">
-    <div class="col-8 d-flex justify-content-between">
+    <div class="d-flex justify-content-between mb-5">
         <div class="back">
             <a href="{{route('sites.index')}}" class="btn btn-primary d-none d-sm-inline-block btn-lg">
                 <i class="fas fa-angle-left"></i> Back
@@ -110,7 +109,6 @@
             </button>
         </div>
     </div>
-</div>
 
 {!! Form::close() !!}
 
