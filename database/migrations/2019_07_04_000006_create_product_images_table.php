@@ -4,17 +4,17 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePasswordResetsTable extends Migration
+class CreateProductImagesTable extends Migration
 {
     /**
      * Schema table name to migrate
      * @var string
      */
-    public $tableName = 'password_resets';
+    public $tableName = 'product_images';
 
     /**
      * Run the migrations.
-     * @table password_resets
+     * @table product_images
      *
      * @return void
      */
@@ -22,11 +22,18 @@ class CreatePasswordResetsTable extends Migration
     {
         Schema::create($this->tableName, function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->string('email');
-            $table->string('token');
-            $table->timestamp('created_at')->nullable()->default(null);
+            $table->increments('id');
+            $table->unsignedInteger('product_id');
+            $table->string('url');
 
-            $table->index(["email"], 'password_resets_email_index');
+            $table->index(["product_id"], 'fk_product_images_products1_idx');
+            $table->nullableTimestamps();
+
+
+            $table->foreign('product_id', 'fk_product_images_products1_idx')
+                ->references('id')->on('products')
+                ->onDelete('no action')
+                ->onUpdate('no action');
         });
     }
 
