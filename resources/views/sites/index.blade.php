@@ -3,6 +3,9 @@
 <a href="{{ route('sites.create') }}" class="btn btn-success pull-right add-member" style="width: 200px">
                 <i class="fa fa-plus"></i> Create
 </a>
+
+@include('flash::message')
+
 <table class="table table-striped">
                     <tr>                    
                         <th>Name</th>

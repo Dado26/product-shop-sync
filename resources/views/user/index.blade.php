@@ -8,6 +8,8 @@
         </a>
     </div>
 
+    @include('flash::message')
+
     <table class="table table-striped">
         <tr>
             <th class="text-center">ID</th>
