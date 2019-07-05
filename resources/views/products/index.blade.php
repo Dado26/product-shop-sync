@@ -53,7 +53,7 @@
 
         <form action="" method="get" class="d-flex d-inline-block mb-4 w-50">
             <div class="input-group">
-                <input name="search" type="text" value="{{ request()->get('search') }}" class="form-control border" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+                <input name="search" type="text" value="{{ request()->get('search') }}" class="form-control border" placeholder="Search">
                 <div class="input-group-append">
                     <button class="btn btn-light border text-muted" type="submit">
                         Go!
