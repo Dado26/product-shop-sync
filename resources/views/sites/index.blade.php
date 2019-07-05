@@ -15,6 +15,7 @@
     <div class="card-body">
         <table class="table table-bordered">
             <tr class="card-header">
+                <th class="text-center">ID</th>
                 <th class="text-center">Name</th>
                 <th class="text-center">Url</th>
                 <th class="text-center">Imported</th>
@@ -27,7 +28,11 @@
 
             <tr class="align-td">
                 <td class="text-center">
-                    {{ $site->name}}
+                    {{ $site->id }}
+                </td>
+
+                <td class="text-center">
+                    {{ $site->name }}
                 </td>
 
                 <td class="text-center">
@@ -35,15 +40,15 @@
                 </td>
 
                 <td class="text-center">
-                    {{ $site->Imported}}
+                    {{ $site->Imported }}
                 </td>
 
                 <td class="text-center">
-                    {{ $site->created_at}}
+                    {{ $site->created_at }}
                 </td>
 
                 <td class="text-center">
-                    {{ $site->updated_at}}
+                    {{ $site->updated_at }}
                 </td>
 
                 <td class="text-center">
