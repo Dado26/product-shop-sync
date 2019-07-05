@@ -8,7 +8,7 @@ use Laravel\Dusk\Browser;
 
 class AuthTest extends DuskTestCase
 {
-    public function testGuestCantAccesAuthPages()
+    public function testGuestCantAccessAuthPages()
     {
         $this->browse(function (Browser $browser) {
             $browser->logout();
@@ -17,7 +17,7 @@ class AuthTest extends DuskTestCase
         });
     }
 
-    public function testAuthCantAccesLogin()
+    public function testAuthCantAccessLogin()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1));
