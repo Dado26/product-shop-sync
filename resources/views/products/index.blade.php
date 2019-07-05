@@ -95,7 +95,7 @@
                     </td>
 
                     <td class="text-center">
-                        {{ number_format($product->variants->average('price'), 2) }} din.
+                        {{ number_format($product->variants->average('price'), 2) }} din
                     </td>
 
                      <td class="text-center">
