@@ -102,7 +102,11 @@
                         </td>
 
                         <td class="text-center">
-                            {{ $product->synced_at }}
+                            @if ($product->synced_at !== null)
+                                {{ $product->synced_at }}
+                            @else
+                                <span class="text-danger">Queued</span>
+                            @endif
                         </td>
 
                         <td class="text-center">
