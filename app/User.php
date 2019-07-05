@@ -10,7 +10,6 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class User extends Authenticatable
 {
     use SoftDeletes;
-    
     use Notifiable;
 
     /**
@@ -19,7 +18,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'first_name','last_name', 'email', 'password',
+        'first_name', 'last_name', 'email', 'password',
     ];
 
     /**
@@ -40,7 +39,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function Sites(){
+    public function sites()
+    {
         return $this->hasMany(Site::class);
-    } 
+    }
 }

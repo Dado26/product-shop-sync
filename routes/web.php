@@ -11,6 +11,8 @@
 |
 */
 
+Route::redirect('/', 'products');
+
 Route::group(['middleware' => 'guest'], function () {
     Route::get('login', 'AuthController@LoginForm')->name('login.form');
 

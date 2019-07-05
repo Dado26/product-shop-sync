@@ -2,10 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
 use App\Models\SyncRules;
-
 use App\Http\Requests\SitesRequest;
 use App\Models\Site;
 
@@ -18,7 +15,7 @@ class SitesController extends Controller
      */
     public function index()
     {
-        $sites = Site::latest()->paginate(5);
+        $sites = Site::latest()->paginate(10);
 
         return view('sites.index', compact('sites'));
     }
@@ -36,14 +33,15 @@ class SitesController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\SitesRequest  $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(SitesRequest $request)
     {
         $param = $request->all();
 
-        $site = auth()->user()->Sites()->create($param['sites']);
+        $site = auth()->user()->sites()->create($param['sites']);
 
         $param['sync_Rules']['site_id'] = $site->id;
 
@@ -54,26 +52,13 @@ class SitesController extends Controller
         //flash('Ups something went wrong')->error();
 
         return redirect()->route('sites.index');
-
-
-
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Site  $site
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit(Site $site)
@@ -84,11 +69,12 @@ class SitesController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Http\Requests\SitesRequest  $request
+     * @param  \App\Models\Site  $site
+     *
      * @return \Illuminate\Http\Response
      */
-    public function update(SitesRequest $request,Site $site)
+    public function update(SitesRequest $request, Site $site)
     {
         $param = $request->all();
 
@@ -104,13 +90,16 @@ class SitesController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Models\Site  $site
+     *
      * @return \Illuminate\Http\Response
+     * @throws \Exception
      */
     public function destroy(Site $site)
     {
         $site->delete();
         flash('You have successfully deleted site')->success();
+
         return redirect()->back();
     }
 }
