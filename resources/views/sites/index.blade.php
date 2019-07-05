@@ -13,8 +13,8 @@
 
 <div class="card shadow">
     <div class="card-body">
-        <table class="table table-striped table-bordered">
-            <tr>
+        <table class="table table-bordered">
+            <tr class="card-header">
                 <th class="text-center">Name</th>
                 <th class="text-center">Url</th>
                 <th class="text-center">Imported</th>
@@ -25,25 +25,25 @@
 
             @foreach($sites as $site)
 
-                <tr>
+                <tr class="align-td">
                     <td class="text-center">
-                        <p> {{ $site->name}} </p>
+                        {{ $site->name}}
                     </td>
 
                     <td class="text-center">
-                        <p><a href="{{ $site->url }}" target="_blank">{{ $site->url }}</a></p>
+                        <a href="{{ $site->url }}" target="_blank">{{ $site->url }}</a>
                     </td>
 
                     <td class="text-center">
-                        <p> {{ $site->Imported}} </p>
+                        {{ $site->Imported}}
                     </td>
 
                     <td class="text-center">
-                        <p> {{ $site->created_at}} </p>
+                        {{ $site->created_at}}
                     </td>
 
                     <td class="text-center">
-                        <p> {{ $site->updated_at}} </p>
+                        {{ $site->updated_at}}
                     </td>
 
                     <td class="text-center">
