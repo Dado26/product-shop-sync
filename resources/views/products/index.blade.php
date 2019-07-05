@@ -13,11 +13,11 @@
             <div class="input-group">
 
                 <div class="input-group-append">
-                    <button class="btn btn-light border-light rounded-left" type="button">
+                    <button class="btn btn-light border-light rounded-left text-muted" type="button">
                         url
                     </button>
                 </div>
-                <input type="text" class="form-control border-light" placeholder="https://sample.rs/product/123" aria-label="Search" aria-describedby="basic-addon2">
+                <input type="text" class="form-control border-light" placeholder="https://webartisan.in.rs" aria-label="Search" aria-describedby="basic-addon2">
             </div>
         </form>
 
@@ -25,11 +25,11 @@
 
             <div class="dropdown d-inline-block w-50 ml-4">
                 <button class="btn border-light bg-light dropdown-toggle w-100" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Dropdown
+                    Category
                 </button>
                 <div class="dropdown-menu animated--fade-in" aria-labelledby="dropdownMenuButton" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
+                    <a class="dropdown-item" href="#">Lap top</a>
+                    <a class="dropdown-item" href="#">Desktop</a>
                     <a class="dropdown-item" href="#">Something else here</a>
                 </div>
             </div>
@@ -54,7 +54,7 @@
             <div class="input-group">
                 <input type="text" class="form-control border-light" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
                 <div class="input-group-append">
-                    <button class="btn btn-light border-light" type="button">
+                    <button class="btn btn-light border-light text-muted" type="button">
                         Go!
                     </button>
                 </div>
