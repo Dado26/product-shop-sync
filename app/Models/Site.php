@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 use App\User;
 use App\Models\SyncRules;
+use App\Models\Product;
 
 class Site extends Model
 {
@@ -20,5 +21,9 @@ class Site extends Model
 
     public function SyncRules(){
         return $this->hasOne(SyncRules::class);
+    }
+
+    public function Product(){
+        return $this->hasMany(Product::class);
     }
 }
