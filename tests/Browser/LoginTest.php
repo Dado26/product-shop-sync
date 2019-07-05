@@ -29,5 +29,4 @@ class LoginTest extends DuskTestCase
             $browser->assertSee('John Doe');
         });
     }
-
 }

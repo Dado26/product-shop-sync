@@ -12,5 +12,5 @@ class SyncRules extends Model
 
     public $timestamps = false;
 
-    protected $fillable = ['title', 'description', 'price','in_stock','in_stock_value','images','variants', 'site_id'];
+    protected $fillable = ['title', 'description', 'price', 'in_stock', 'in_stock_value', 'images', 'variants', 'site_id'];
 }

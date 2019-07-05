@@ -15,6 +15,7 @@ class LoginRequest extends FormRequest
     {
         return true;
     }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -22,8 +23,8 @@ class LoginRequest extends FormRequest
      */
     public function rules()
     {
-          return [
-            'email' => 'required|email',
+        return [
+            'email'    => 'required|email',
             'password' => 'required',
         ];
     }

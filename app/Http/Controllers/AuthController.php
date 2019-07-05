@@ -18,16 +18,17 @@ class AuthController extends Controller
         $email    = $request->get('email');
         $password = $request->get('password');
         $remember = $request->get('remember_me');
-        
-        if(Auth::attempt(['email'=>$email, 'password'=>$password], $remember)){
+
+        if (Auth::attempt(['email' => $email, 'password' => $password], $remember)) {
             return redirect()->route('products.index');
         }
         return redirect()->back()->withErrors(['Wrong email or password']);
     }
 
-    public function LogOut(){
+    public function LogOut()
+    {
         Auth::logout();
-        
+
         return redirect()->route('login.form');
     }
 }

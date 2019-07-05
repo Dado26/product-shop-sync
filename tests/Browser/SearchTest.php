@@ -15,14 +15,15 @@ class SearchTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1));
             $browser->visit('/products');
-            $browser->type('search', '154');
+            $browser->type('search', '20');
             $browser->press('Go!');
             $browser->assertPathIs('/products');
-            $browser->assertSee('154');
+            $browser->assertSee('20');
         });
     }
 
-    public function testSearchByTitle(){
+    public function testSearchByTitle()
+    {
         $this->browse(function (Browser $browser) {
             Product::first()->update(['title' => 'Headphones']);
 
@@ -34,5 +35,4 @@ class SearchTest extends DuskTestCase
             $browser->assertSee('Headphones');
         });
     }
-
 }

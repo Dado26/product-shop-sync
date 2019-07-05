@@ -24,10 +24,10 @@ class UserRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'first_name'=> 'min:2',
-            'last_name'=> 'min:3',
-            'email'=>'required|email',
-            'password' => 'confirmed|required|min:8',
+            'first_name' => 'min:2',
+            'last_name'  => 'min:3',
+            'email'      => 'required|email',
+            'password'   => 'confirmed|required|min:8',
         ];
 
         if (request()->isMethod('PUT') && empty(request()->get('password'))) {
