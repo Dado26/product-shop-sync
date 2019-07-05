@@ -12,9 +12,18 @@ class ProductsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-       $products = Product::with(['site'])->with(['variants'])->latest()->paginate();
+        $search = $request->input('search');
+        
+        $products = Product::query()
+            ->where(function ($query) use ($search) {
+                $query->where('id', 'LIKE', "%$search%")
+                      ->orWhere('title', 'LIKE', "%$search%");
+            })
+            ->with(['site', 'variants'])
+            ->latest()
+            ->paginate();
 
         return view('products.index', compact('products'));
     }

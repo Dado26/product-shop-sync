@@ -6,7 +6,7 @@ use App\Models\Variant;
 use App\Models\ProductImage;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-//use App\Models\Site;
+use App\Models\Site;
 
 
 class Product extends Model
