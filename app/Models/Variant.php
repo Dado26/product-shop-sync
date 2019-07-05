@@ -9,5 +9,5 @@ class Variant extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['name', 'price','product_id'];
+    protected $fillable = ['name', 'price', 'product_id'];
 }

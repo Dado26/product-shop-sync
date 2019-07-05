@@ -43,8 +43,8 @@
                     </td>
                     <td class="text-center">
                         {{ $user->updated_at}}
-                    </td class="text-center">
-                    <td>
+                    </td>
+                    <td class="text-center">
                         <div class="users-list-actions">
                             <div class="delete-user">
                                 {!! Form::open(['route'=>['user.destroy', $user->id],'method'=>'DELETE','class'=>'pull-right delete', 'id'=>'form-delete-user-'.$user->id]) !!}
