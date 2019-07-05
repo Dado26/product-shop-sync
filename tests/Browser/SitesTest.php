@@ -8,7 +8,6 @@ use App\User;
 
 class SitesTest extends DuskTestCase
 {
-
     /**
      * Test if Page loads
      */
@@ -24,7 +23,8 @@ class SitesTest extends DuskTestCase
     /**
      * Test if the warning message pops up when creating new site
      */
-    public function testIfTheWarningMessagePopsUpWhenCreatingSite() {
+    public function testIfTheWarningMessagePopsUpWhenCreatingSite()
+    {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1));
             $browser->visit('/sites/create');
@@ -67,9 +67,9 @@ class SitesTest extends DuskTestCase
     }
 
     /**
-     * Test if email adress is valid
+     * Test if email address is valid
      */
-    public function testIfEmailAdressIsValid()
+    public function testIfEmailAddressIsValid()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1));
@@ -86,7 +86,7 @@ class SitesTest extends DuskTestCase
             $browser->type('sync_Rules[variants]', 'Variants');
             $browser->press('Save');
             $browser->assertPathIs('/sites/create');
-            $browser->assertSee( 'The email must be a valid email address.');
+            $browser->assertSee('The email must be a valid email address.');
         });
     }
 
@@ -108,9 +108,9 @@ class SitesTest extends DuskTestCase
     }
 
     /**
-     * Test if email adress is valid when edited
+     * Test if email address is valid when edited
      */
-    public function testIfEmailAdressIsValidWhenEdited()
+    public function testIfEmailAddressIsValidWhenEdited()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1));
@@ -129,11 +129,10 @@ class SitesTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1));
-            $browser->visit('/sites/33/edit');
+            $browser->visit('/sites/10/edit');
             $browser->press('Save');
             $browser->assertPathIs('/sites');
-            $browser->assertSee('You have succesfully update site');
+            $browser->assertSee('You have successfully updated site');
         });
     }
-
 }

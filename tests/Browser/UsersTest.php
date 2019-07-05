@@ -25,8 +25,8 @@ class UsersTest extends DuskTestCase
         });
     }
 
-    public function testCreateUserWithEmptyFields(){
-
+    public function testCreateUserWithEmptyFields()
+    {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1));
             $browser->visit('/user/create');
@@ -39,8 +39,8 @@ class UsersTest extends DuskTestCase
         });
     }
 
-    public function testCreateUserWithPasswordMissmatch(){
-
+    public function testCreateUserWithPasswordMismatch()
+    {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1));
             $browser->visit('/user/create');
@@ -55,7 +55,8 @@ class UsersTest extends DuskTestCase
         });
     }
 
-    public function testEditUserWithShortPassword(){
+    public function testEditUserWithShortPassword()
+    {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1));
             $browser->visit('/user/7/edit');
@@ -67,8 +68,9 @@ class UsersTest extends DuskTestCase
         });
     }
 
-    public function testEditUserWithPasswordNotMatch(){
-        $this->browse(function(Browser $browser) {
+    public function testEditUserWithPasswordNotMatch()
+    {
+        $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1));
             $browser->visit('/user/2/edit');
             $browser->type('password', 'sdfgsddf');
@@ -79,9 +81,8 @@ class UsersTest extends DuskTestCase
         });
     }
 
-  public function testCreateNewUser(){
-    
-
+    public function testCreateNewUser()
+    {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1));
             $browser->visit('/user/create');
@@ -92,17 +93,15 @@ class UsersTest extends DuskTestCase
             $browser->type('password_confirmation', '12345678');
             $browser->press('Save');
             $browser->assertPathIs('/users');
-            $browser->assertSee('you have succesfully created new user');
-
-
+            $browser->assertSee('You have successfully created new user');
         });
+    }
 
-    
-}
-    public function testEditUser(){
+    public function testEditUser()
+    {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1));
-            $browser->visit('/user/14/edit');
+            $browser->visit('/user/10/edit');
             $browser->type('email', 'test222@email.com');
             $browser->type('last_name', 'lasttes222');
             $browser->type('first_name', 'test2user22');
@@ -110,9 +109,7 @@ class UsersTest extends DuskTestCase
             $browser->type('password_confirmation', '123456789');
             $browser->press('Save');
             $browser->assertPathIs('/users');
-            $browser->assertSee('you have succesfully updated user');
+            $browser->assertSee('You have successfully updated user');
         });
     }
-
-    
 }

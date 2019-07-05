@@ -37,7 +37,7 @@ class UserController extends Controller
 
         User::create($params);
 
-        flash('you have succesfully created new user')->success();
+        flash('You have successfully created new user')->success();
 
         return redirect()->route('users.index');
     }
@@ -67,7 +67,7 @@ class UserController extends Controller
 
         $user->update($params);
 
-        flash('you have succesfully updated user')->success();
+        flash('You have successfully updated user')->success();
 
         return redirect()->route('users.index');
     }
@@ -83,7 +83,7 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         $user->delete();
-        flash('you have succesfully deleted user')->success();
+        flash('You have successfully deleted user')->success();
         return redirect()->route('users.index');
     }
 }

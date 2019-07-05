@@ -49,7 +49,7 @@ class SitesController extends Controller
 
         SyncRules::create($param['sync_Rules']);
 
-        flash('you have succesfully create new site')->success();
+        flash('You have successfully created new site')->success();
 
         //flash('Ups something went wrong')->error();
 
@@ -96,7 +96,7 @@ class SitesController extends Controller
 
         $site->SyncRules->update($param['sync_Rules']);
 
-        flash('You have succesfully update site')->success();
+        flash('You have successfully updated site')->success();
 
         return redirect()->route('sites.index');
     }
@@ -110,7 +110,7 @@ class SitesController extends Controller
     public function destroy(Site $site)
     {
         $site->delete();
-        flash('you have succesfully deleted site')->success();
+        flash('You have successfully deleted site')->success();
         return redirect()->back();
     }
 }
