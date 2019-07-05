@@ -49,24 +49,16 @@
                 <td class="text-center">
                     <div class="users-list-actions">
                         <div class="delete-user">
-
-                            {!! Form::open(['route'=>['sites.destroy',
-                            $site->id],'method'=>'DELETE','class'=>'pull-right delete',
-                            'id'=>'form-delete-user-'.$site->id]) !!}
-                            <button type="submit" data-toggle="modal" data-target="#confirmButton"
-                                class="btn btn-danger d-none d-sm-inline-block btn-sm btn-delete">
-                                <i class="fas fa-user-minus fa-fw"></i> Delete
+                            {!! Form::open(['route'=>['sites.destroy', $site->id],'method'=>'DELETE','class'=>'pull-right delete', 'id'=>'form-delete-user-'.$site->id]) !!}
+                            <button type="submit" data-toggle="modal" data-target="#confirmButton" class="btn btn-danger d-none d-sm-inline-block btn-sm btn-delete">
+                                Delete
                             </button>
                             {!! Form::close() !!}
                         </div>
 
-
-                        <!-- Delete button Warrning Modal End-->
-
                         <div class="edit-user">
-                            <a href="{{ route('sites.edit', $site->id) }}"
-                                class="btn btn-success d-none d-sm-inline-block btn-sm">
-                                <i class="fas fa-edit"></i> Edit
+                            <a href="{{ route('sites.edit', $site->id) }}" class="btn btn-success d-none d-sm-inline-block btn-sm">
+                                Edit
                             </a>
                         </div>
                     </div>

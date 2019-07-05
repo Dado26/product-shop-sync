@@ -49,13 +49,13 @@
                             <div class="delete-user">
                                 {!! Form::open(['route'=>['user.destroy', $user->id],'method'=>'DELETE','class'=>'pull-right delete', 'id'=>'form-delete-user-'.$user->id]) !!}
                                     <button type="submit" data-toggle="modal" data-target="#confirmButton" class="btn btn-danger d-none d-sm-inline-block btn-sm btn-delete">
-                                        <i class="fas fa-user-minus fa-fw"></i>  Delete
+                                        Delete
                                     </button>
                                 {!! Form::close() !!}
                             </div>
                             <div class="edit-user">
                                 <a href="{{ route('user.edit', $user->id) }}" class="btn btn-success d-none d-sm-inline-block btn-sm">
-                                    <i class="fas fa-user-edit fa-fw"></i> Edit
+                                    Edit
                                 </a>
                             </div>
                         </div>
@@ -68,9 +68,9 @@
 
 @component('components.confirmation_modal')
     @slot('title')
-        Delete user     
+        Delete user
     @endslot
-    
+
     Are you sure you want to delete this user?
 @endcomponent
 
