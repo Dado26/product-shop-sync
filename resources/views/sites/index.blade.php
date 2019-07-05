@@ -25,49 +25,52 @@
 
             @foreach($sites as $site)
 
-                <tr class="align-td">
-                    <td class="text-center">
-                        {{ $site->name}}
-                    </td>
+            <tr class="align-td">
+                <td class="text-center">
+                    {{ $site->name}}
+                </td>
 
-                    <td class="text-center">
-                        <a href="{{ $site->url }}" target="_blank">{{ $site->url }}</a>
-                    </td>
+                <td class="text-center">
+                    <a href="{{ $site->url }}" target="_blank">{{ $site->url }}</a>
+                </td>
 
-                    <td class="text-center">
-                        {{ $site->Imported}}
-                    </td>
+                <td class="text-center">
+                    {{ $site->Imported}}
+                </td>
 
-                    <td class="text-center">
-                        {{ $site->created_at}}
-                    </td>
+                <td class="text-center">
+                    {{ $site->created_at}}
+                </td>
 
-                    <td class="text-center">
-                        {{ $site->updated_at}}
-                    </td>
+                <td class="text-center">
+                    {{ $site->updated_at}}
+                </td>
 
-                    <td class="text-center">
-        <div class="users-list-actions">  
-            <div class="delete-user">
-                
-                {!! Form::open(['route'=>['sites.destroy', $site->id],'method'=>'DELETE','class'=>'pull-right delete', 'id'=>'form-delete-user-'.$site->id]) !!}
-                                    <button type="submit" data-toggle="modal" data-target="#confirmButton" class="btn btn-danger d-none d-sm-inline-block btn-sm btn-delete">
-                                        <i class="fas fa-user-minus fa-fw"></i>  Delete
-                                    </button>
-                {!! Form::close() !!}
-            </div>
-        
-   
-<!-- Delete button Warrning Modal End-->
+                <td class="text-center">
+                    <div class="users-list-actions">
+                        <div class="delete-user">
+
+                            {!! Form::open(['route'=>['sites.destroy',
+                            $site->id],'method'=>'DELETE','class'=>'pull-right delete',
+                            'id'=>'form-delete-user-'.$site->id]) !!}
+                            <button type="submit" data-toggle="modal" data-target="#confirmButton"
+                                class="btn btn-danger d-none d-sm-inline-block btn-sm btn-delete">
+                                <i class="fas fa-user-minus fa-fw"></i> Delete
+                            </button>
+                            {!! Form::close() !!}
+                        </div>
+
+
+                        <!-- Delete button Warrning Modal End-->
 
                         <div class="edit-user">
-                                <a href="{{ route('sites.edit', $site->id) }}" class="btn btn-success d-none d-sm-inline-block btn-sm">
-                                    <i class="fas fa-edit"></i> Edit
-                                </a>
-                            </div>
+                            <a href="{{ route('sites.edit', $site->id) }}"
+                                class="btn btn-success d-none d-sm-inline-block btn-sm">
+                                <i class="fas fa-edit"></i> Edit
+                            </a>
                         </div>
-        </div>
-                    </td>
+                    </div>
+                </td>
             </tr>
 
             @endforeach
@@ -85,9 +88,9 @@
 
 @component('components.confirmation_modal')
     @slot('title')
-        Delete site   
+        Delete site
     @endslot
-    
+
     Are you sure you want to delete this site?
 @endcomponent
 
