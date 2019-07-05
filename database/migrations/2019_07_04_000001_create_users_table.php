@@ -31,6 +31,7 @@ class CreateUsersTable extends Migration
             $table->tinyInteger('admin')->default('0');
 
             $table->unique(["email"], 'users_email_unique');
+            $table->softDeletes();
             $table->nullableTimestamps();
         });
     }
