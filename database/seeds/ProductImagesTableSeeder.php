@@ -13,10 +13,8 @@ class ProductImagesTableSeeder extends Seeder
      */
     public function run()
     {
-        {
-            Product::all()->each(function ($product) {
-                factory(ProductImage::class, rand(1, 4))->create(['product_id' => $product->id]);
-            });
-        }
+        Product::all()->each(function ($product) {
+            factory(ProductImage::class, rand(1, 4))->create(['product_id' => $product->id]);
+        });
     }
 }

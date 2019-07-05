@@ -12,11 +12,9 @@ class VariantsTableSeeder extends Seeder
      * @return void
      */
     public function run()
-    
-        {
-            Product::all()->each(function ($product) {
-                factory(Variant::class, rand(1, 4))->create(['product_id' => $product->id]);
-            });
-        }
-    
+    {
+        Product::all()->each(function ($product) {
+            factory(Variant::class, rand(1, 4))->create(['product_id' => $product->id]);
+        });
+    }
 }

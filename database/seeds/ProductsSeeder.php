@@ -14,7 +14,7 @@ class ProductsSeeder extends Seeder
     public function run()
     {
         Site::all()->each(function ($site) {
-            factory(Product::class, rand(1, 10))->create(['site_id' => $site->id]);
+            factory(Product::class, rand(1, 6))->create(['site_id' => $site->id]);
         });
     }
 }
