@@ -51,16 +51,17 @@
 <div class="card shadow mt-5">
     <div class="card-body">
 
-        <form class="d-flex d-inline-block mb-4 w-50">
+        <form action="" method="get" class="d-flex d-inline-block mb-4 w-50">
             <div class="input-group">
-                <input type="text" class="form-control border" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+                <input name="search" type="text" value="{{ request()->get('search') }}" class="form-control border" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
                 <div class="input-group-append">
-                    <button class="btn btn-light border text-muted" type="button">
+                    <button class="btn btn-light border text-muted" type="submit">
                         Go!
                     </button>
                 </div>
             </div>
         </form>
+
 
         <table class="table table-bordered">
             <tr class="card-header">
@@ -82,11 +83,11 @@
                     </td>
 
                     <td class="text-center">
-                        {{ $product->site->name}}
+                        {{ $product->title }}
                     </td>
 
                     <td class="text-center">
-                        {{ $product->site->url}}
+                        {{ $product->site()->withTrashed()->first()->name}}
                     </td>
 
                     <td class="text-center">

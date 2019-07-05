@@ -4,17 +4,17 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUsersTable extends Migration
+class CreateFailedJobsTable extends Migration
 {
     /**
      * Schema table name to migrate
      * @var string
      */
-    public $tableName = 'users';
+    public $tableName = 'failed_jobs';
 
     /**
      * Run the migrations.
-     * @table users
+     * @table failed_jobs
      *
      * @return void
      */
@@ -23,16 +23,11 @@ class CreateUsersTable extends Migration
         Schema::create($this->tableName, function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->bigIncrements('id');
-            $table->string('first_name');
-            $table->string('last_name');
-            $table->string('email');
-            $table->string('password');
-            $table->rememberToken();
-            $table->tinyInteger('admin')->default('0');
-
-            $table->unique(["email"], 'users_email_unique');
-            $table->softDeletes();
-            $table->nullableTimestamps();
+            $table->text('connection');
+            $table->text('queue');
+            $table->longText('payload');
+            $table->longText('exception');
+            $table->timestamp('failed_at')->default(DB::raw('CURRENT_TIMESTAMP'));
         });
     }
 

@@ -11,36 +11,33 @@
 |
 */
 
+Route::group(['middleware' => 'guest'], function () {
+    Route::get('login', 'AuthController@LoginForm')->name('login.form');
 
-Route::group(['middleware'=>'guest'], function(){
-Route::get('login', 'AuthController@LoginForm')->name('login.form');
-
-Route::post('login', 'AuthController@LoginAttempt')->middleware('throttle:10,1')->name('login');
-
+    Route::post('login', 'AuthController@LoginAttempt')->middleware('throttle:10,1')->name('login');
 });
 
 
+Route::group(['middleware' => 'auth'], function () {
 
-Route::group(['middleware'=>'auth'], function(){
+    Route::get('logout', 'AuthController@LogOut')->name('logOut');
 
-Route::get('logout', 'AuthController@LogOut')->name('logOut');
+    Route::get('/users', 'UserController@index')->name('users.index');
 
-Route::get('/users', 'UserController@index')->name('users.index');
+    Route::get('/user/create', 'UserController@create')->name('user.create');
 
-Route::get('/user/create', 'UserController@create')->name('user.create');
+    Route::get('/user/{user}/edit', 'UserController@edit')->name('user.edit');
 
-Route::get('/user/{user}/edit', 'UserController@edit')->name('user.edit');
+    Route::post('/user', 'UserController@store')->name('user.store');
 
-Route::post('/user', 'UserController@store')->name('user.store');
+    Route::put('/user/{user}/edit', 'UserController@update')->name('user.update');
 
-Route::put('/user/{user}/edit', 'UserController@update')->name('user.update');
+    Route::delete('/user/{user}', 'UserController@destroy')->name('user.destroy');
 
-Route::delete('/user/{user}', 'UserController@destroy')->name('user.destroy');
+    Route::get('/jobs', 'SyncJobsController@index')->name('jobs.index');
 
-Route::get('/jobs', 'SyncJobsController@index')->name('jobs.index');
+    Route::resource('sites', 'SitesController');
 
-Route::resource('sites','SitesController');
-
-Route::resource('products', 'ProductsController');
+    Route::resource('products', 'ProductsController');
 
 });

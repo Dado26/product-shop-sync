@@ -11,7 +11,7 @@
         <div class="card border-success alert-success text-dark shadow">
         <div class="card-body text-center">
             Queued jobs
-            <div class="h2 font-weight-bold mt-2">111</div>
+            <div class="h2 font-weight-bold mt-2">{{ $queuedJobs }}</div>
         </div>
         </div>
     </div>
@@ -19,7 +19,7 @@
         <div class="card border-danger alert-danger text-dark shadow">
         <div class="card-body text-center">
             Failed jobs
-            <div class="h2 font-weight-bold mt-2">0</div>
+            <div class="h2 font-weight-bold mt-2">{{ $jobsFails }}</div>
         </div>
         </div>
     </div>
