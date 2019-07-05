@@ -7,40 +7,40 @@
 </div>
 
 <div class="card">
-    <div class="card-body d-flex justify-content-between">
+    <div class="card-body d-flex justify-content-between shadow">
 
         <form class="d-none d-sm-inline-block form-inline navbar-search col-8">
             <div class="input-group">
 
                 <div class="input-group-append">
-                    <button class="btn btn-light border-light rounded-left text-muted" type="button">
+                    <button class="btn btn-light rounded-left text-muted border" type="button">
                         url
                     </button>
                 </div>
-                
-                <input type="text" class="form-control border-light"  aria-label="Search" aria-describedby="basic-addon2">
+                <input type="text" class="form-control border" placeholder="https://webartisan.in.rs" aria-label="Search" aria-describedby="basic-addon2">
             </div>
         </form>
 
         <div class="col-4 d-flex justify-content-between">
 
-            <div class="dropdown d-inline-block w-50 ml-4">
-                <button class="btn border-light bg-light dropdown-toggle w-100" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Category
-                </button>
-                <div class="dropdown-menu animated--fade-in" aria-labelledby="dropdownMenuButton" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                    <a class="dropdown-item" href="#">Lap top</a>
-                    <a class="dropdown-item" href="#">Desktop</a>
-                    <a class="dropdown-item" href="#">Something else here</a>
+            {{-- select2 dropdown --}}
+                <div class="w-50">
+                    <select class="form-control" name="category" id="id_label_multiple" multiple="" data-select2-id="id_label_multiple" tabindex="-1" aria-hidden="true">
+                        <optgroup label="Alaskan/Hawaiian Time Zone" data-select2-id="81">
+                            <option value="CA" data-select2-id="85">California</option>
+                            <option value="NV" data-select2-id="86">Nevada</option>
+                            <option value="OR" data-select2-id="87">Oregon</option>
+                            <option value="WA" data-select2-id="88">Washington</option>
+                        </optgroup>
+                    </select>
                 </div>
-            </div>
+            {{-- select2 dropdown end --}}
 
             <div class="d-inline-block">
                 <a href="{{ route('sites.create') }}" class="d-none d-sm-inline-block btn btn-primary shadow-sm">
                     <i class="fas fa-plus"></i> import
                 </a>
             </div>
-
         </div>
 
     </div>
@@ -53,9 +53,9 @@
 
         <form action="" method="get" class="d-flex d-inline-block mb-4 w-50">
             <div class="input-group">
-                <input name="search" type="text" value="{{ request()->get('search') }}" class="form-control border-light" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+                <input name="search" type="text" value="{{ request()->get('search') }}" class="form-control border" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
                 <div class="input-group-append">
-                    <button class="btn btn-light border-light text-muted" type="submit">
+                    <button class="btn btn-light border text-muted" type="submit">
                         Go!
                     </button>
                 </div>
@@ -127,4 +127,15 @@
     </div>
 </div>
 
+@endsection
+
+@section('script')
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
+
+    <script>
+        $("select[name=category]").select2({
+            placeholder: "Select Category",
+        });
+    </script>
 @endsection

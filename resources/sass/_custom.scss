@@ -3,3 +3,23 @@
         vertical-align: 0;
     }
 }
+
+.select2-selection--multiple {
+    border: 1px solid #e3e6f0 !important;
+    border-radius: 0.35rem !important;
+}
+
+.select2-dropdown--below {
+    border: 1px solid #e3e6f0 !important;
+}
+
+.select2-selection__choice {
+    border: none !important;
+}
+
+.select2-search__field::placeholder {
+    color: #cecfd0;
+    padding-left: 10px;
+    display: inline-block;
+}
+
