@@ -2,14 +2,17 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use App\Models\Variant;
 use App\Models\ProductImage;
-use App\Models\Site;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+//use App\Models\Site;
 
 
 class Product extends Model
 {
+      use SoftDeletes;
+
       public const STATUS_AVAILABLE = 'available';
       public const STATUS_UNAVAILABLE = 'unavailable';
 

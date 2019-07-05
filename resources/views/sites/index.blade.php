@@ -47,41 +47,28 @@
                     </td>
 
                     <td class="text-center">
-                        <div class="users-list-actions">
-
-                           <!-- Delete button Warrning Modal -->
-<div class="modal fade" id="confirmButton" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" >Delete site</h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
+        <div class="users-list-actions">  
+            <div class="delete-user">
+                
+                {!! Form::open(['route'=>['sites.destroy', $site->id],'method'=>'DELETE','class'=>'pull-right delete', 'id'=>'form-delete-user-'.$site->id]) !!}
+                                    <button type="submit" data-toggle="modal" data-target="#confirmButton" class="btn btn-danger d-none d-sm-inline-block btn-sm btn-delete">
+                                        <i class="fas fa-user-minus fa-fw"></i>  Delete
+                                    </button>
+                {!! Form::close() !!}
             </div>
-            <div class="modal-body">
-                Are you sure you want to delete this site?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
-
-                {!! Form::open(['route'=>['sites.destroy', $site->id],'method'=>'DELETE','class'=>'pull-right delete']) !!}
-                <button type="submit" value="Delete" class="btn btn-danger">Delete</button>
-                {!!Form::close()!!}
-            </div>
-        </div>
-    </div>
-</div>
+        
+   
 <!-- Delete button Warrning Modal End-->
 
-                            <div class="edit-user">
+                        <div class="edit-user">
                                 <a href="{{ route('sites.edit', $site->id) }}" class="btn btn-success d-none d-sm-inline-block btn-sm">
                                     <i class="fas fa-edit"></i> Edit
                                 </a>
                             </div>
                         </div>
+        </div>
                     </td>
-                </tr>
+            </tr>
 
             @endforeach
 
@@ -96,29 +83,12 @@
 </div>
 
 
-<!-- Delete button Warrning Modal -->
-<div class="modal fade" id="confirmButton" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" >Delete site</h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                Are you sure you want to delete this site?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
-
-                {!! Form::open(['route'=>['sites.destroy', $site->id],'method'=>'DELETE','class'=>'pull-right delete']) !!}
-                <button type="submit" value="Delete" class="btn btn-danger">Delete</button>
-                {!!Form::close()!!}
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Delete button Warrning Modal End-->
+@component('components.confirmation_modal')
+    @slot('title')
+        Delete site   
+    @endslot
+    
+    Are you sure you want to delete this site?
+@endcomponent
 
 @endsection
