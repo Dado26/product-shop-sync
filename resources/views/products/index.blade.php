@@ -11,13 +11,10 @@
 
             <form class="d-none d-sm-inline-block form-inline navbar-search col-8">
                 <div class="input-group">
-
-                    <div class="input-group-append">
-                        <button class="btn btn-light rounded-left text-muted border" type="button">
-                            url
-                        </button>
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">URL:</span>
                     </div>
-                    <input type="text" class="form-control border" placeholder="https://webartisan.in.rs" aria-label="Search" aria-describedby="basic-addon2">
+                    <input type="text" class="form-control border" placeholder="https://shop.com/product/73625" aria-label="Search" aria-describedby="basic-addon2">
                 </div>
             </form>
 
