@@ -118,6 +118,9 @@
     .sidebar-brand-icon i {
       font-size: 2rem;
     }
+    .sidebar-brand-icon {
+      display: none;
+    }
     .sidebar-brand-text {
       display: none;
     }
@@ -250,6 +253,9 @@
       .sidebar-brand {
         .sidebar-brand-icon i {
           font-size: 2rem;
+        }
+        .sidebar-brand-icon {
+          display: block;
         }
         .sidebar-brand-text {
           display: none;

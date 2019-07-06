@@ -21,9 +21,9 @@ class SitesTest extends DuskTestCase
     }
 
     /**
-     * Test if the warning message pops up when creating new site
+     * Test validation errors when creating new site
      */
-    public function testIfTheWarningMessagePopsUpWhenCreatingSite()
+    public function testValidationErrorsWhenCreatingSite()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1));
@@ -77,13 +77,13 @@ class SitesTest extends DuskTestCase
             $browser->type('sites[name]', 'Voja');
             $browser->type('sites[url]', 'https://sirka.com/');
             $browser->type('sites[email]', 'vojkemail.com');
-            $browser->type('sync_Rules[title]', 'Title');
-            $browser->type('sync_Rules[description]', 'Description');
+            $browser->type('sync_Rules[title]', '.title');
+            $browser->type('sync_Rules[description]', '.description');
             $browser->type('sync_Rules[price]', '1');
-            $browser->type('sync_Rules[in_stock]', '1');
-            $browser->type('sync_Rules[in_stock_value]', '1');
-            $browser->type('sync_Rules[images]', 'img.jpg');
-            $browser->type('sync_Rules[variants]', 'Variants');
+            $browser->type('sync_Rules[in_stock]', '#product-stock');
+            $browser->type('sync_Rules[in_stock_value]', 'Available');
+            $browser->type('sync_Rules[images]', '#product .images');
+            $browser->type('sync_Rules[variants]', '#product .variant');
             $browser->press('Save');
             $browser->assertPathIs('/sites/create');
             $browser->assertSee('The email must be a valid email address.');
@@ -133,6 +133,42 @@ class SitesTest extends DuskTestCase
             $browser->press('Save');
             $browser->assertPathIs('/sites');
             $browser->assertSee('You have successfully updated site');
+        });
+    }
+
+    /**
+     * Test if all data was updated on save
+     */
+    public function testIfAllDataWasUpdatedOnSave()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1));
+            $browser->visit('/sites/10/edit');
+            $browser->type('sites[name]', 'Voja');
+            $browser->type('sites[url]', 'https://sirka.com/');
+            $browser->type('sites[email]', 'some-random@email.com');
+            $browser->type('sync_Rules[title]', '.title');
+            $browser->type('sync_Rules[description]', '.description');
+            $browser->type('sync_Rules[price]', '#product-price');
+            $browser->type('sync_Rules[in_stock]', '#product-stock');
+            $browser->type('sync_Rules[in_stock_value]', 'Available');
+            $browser->type('sync_Rules[images]', '#product .images');
+            $browser->type('sync_Rules[variants]', '#product .variant');
+            $browser->press('Save');
+            $browser->assertPathIs('/sites');
+
+            // check if data was save successfully
+            $browser->visit('/sites/10/edit');
+            $browser->assertInputValue('sites[name]', 'Voja');
+            $browser->assertInputValue('sites[url]', 'https://sirka.com/');
+            $browser->assertInputValue('sites[email]', 'some-random@email.com');
+            $browser->assertInputValue('sync_Rules[title]', '.title');
+            $browser->assertInputValue('sync_Rules[description]', '.description');
+            $browser->assertInputValue('sync_Rules[price]', '#product-price');
+            $browser->assertInputValue('sync_Rules[in_stock]', '#product-stock');
+            $browser->assertInputValue('sync_Rules[in_stock_value]', 'Available');
+            $browser->assertInputValue('sync_Rules[images]', '#product .images');
+            $browser->assertInputValue('sync_Rules[variants]', '#product .variant');
         });
     }
 }

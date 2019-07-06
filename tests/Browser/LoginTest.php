@@ -27,6 +27,7 @@ class LoginTest extends DuskTestCase
             $browser->type('password', 'asdasd');
             $browser->press('Login');
             $browser->assertSee('John Doe');
+            $browser->assertAuthenticated();
         });
     }
 }

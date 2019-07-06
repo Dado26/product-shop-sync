@@ -40,7 +40,7 @@
                 </td>
 
                 <td class="text-center">
-                    {{ $site->Imported }}
+                    {{-- count number of products that are associated with site--}}
                 </td>
 
                 <td class="text-center">

@@ -56,10 +56,12 @@
     .card-body {
         padding: 1rem;
         ul {
+            margin-left: 1.2rem;
             margin-bottom: 0;
-            padding: 1px;
-            list-style-type: none;
-            text-align: center;
+
+            li {
+                margin-bottom: 0.5rem;
+            }
         }
     }
 }

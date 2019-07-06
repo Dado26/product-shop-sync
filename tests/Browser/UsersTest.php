@@ -8,23 +8,6 @@ use Laravel\Dusk\Browser;
 
 class UsersTest extends DuskTestCase
 {
-    public function testCreateWithPasswordThatDoNotMatch()
-    {
-        $this->browse(function (Browser $browser) {
-            $browser->loginAs(User::find(1));
-            $browser->visit('/user/create');
-            $browser->type('first_name', 'Test');
-            $browser->type('last_name', 'User');
-            $browser->type('email', 'asd@mail.com');
-            $browser->type('password', 'asdasd');
-            $browser->type('password_confirmation', 'asdasdasd');
-            $browser->press('Save');
-            $browser->assertPathIs('/user/create');
-            $browser->assertSee('The password confirmation does not match');
-            $browser->assertSee('The password must be at least 8 characters');
-        });
-    }
-
     public function testCreateUserWithEmptyFields()
     {
         $this->browse(function (Browser $browser) {
@@ -102,14 +85,20 @@ class UsersTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1));
             $browser->visit('/user/10/edit');
-            $browser->type('email', 'test222@email.com');
-            $browser->type('last_name', 'lasttes222');
-            $browser->type('first_name', 'test2user22');
+            $browser->type('email', 'new_user_email@email.com');
+            $browser->type('last_name', 'NewLastName');
+            $browser->type('first_name', 'NewFirstName');
             $browser->type('password', '123456789');
             $browser->type('password_confirmation', '123456789');
             $browser->press('Save');
             $browser->assertPathIs('/users');
             $browser->assertSee('You have successfully updated user');
+
+            // check if data was save successfully
+            $browser->visit('/user/10/edit');
+            $browser->assertInputValue('email', 'new_user_email@email.com');
+            $browser->assertInputValue('last_name', 'NewLastName');
+            $browser->assertInputValue('first_name', 'NewFirstName');
         });
     }
 }

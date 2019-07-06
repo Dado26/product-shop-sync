@@ -25,17 +25,17 @@
             <div class="card-body">
 
                 <div class="form-group">
-                    <label>Name</label>
+                    <label class="control-label">Name</label>
                     {!! Form::input('text', 'sites[name]', null, ['class'=>'form-control']) !!}
                 </div>
 
                 <div class="form-group">
-                    <label>Url</label>
+                    <label class="control-label">Url</label>
                     {!! Form::input('text', 'sites[url]', null, ['class'=>'form-control']) !!}
                 </div>
 
                 <div class="form-group">
-                    <label>Email</label>
+                    <label class="control-label">Email</label>
                     {!! Form::input('text', 'sites[email]', null, ['class'=>'form-control']) !!}
                 </div>
 
@@ -56,36 +56,36 @@
             <div class="card-body">
 
                 <div class="form-group">
-                    <label>Title</label>
+                    <label class="control-label">Title</label>
                     {!! Form::input('text', 'sync_Rules[title]', null, ['class'=>'form-control']) !!}
                 </div>
 
                 <div class="form-group">
-                    <label>Description</label>
+                    <label class="control-label">Description</label>
                     {!! Form::input('text', 'sync_Rules[description]', null, ['class'=>'form-control']) !!}
                 </div>
 
                 <div class="form-group">
-                    <label>Price</label>
+                    <label class="control-label">Price</label>
                     {!! Form::input('text', 'sync_Rules[price]', null, ['class'=>'form-control']) !!}
                 </div>
                 <div class="form-group">
-                    <label>In_stock</label>
+                    <label class="control-label">In stock</label>
                     {!! Form::input('text', 'sync_Rules[in_stock]', null, ['class'=>'form-control']) !!}
                 </div>
 
                 <div class="form-group">
-                    <label>In_stock_value</label>
+                    <label class="control-label">In stock value</label>
                     {!! Form::input('text', 'sync_Rules[in_stock_value]', null, ['class'=>'form-control']) !!}
                 </div>
 
                 <div class="form-group">
-                    <label>Images</label>
+                    <label class="control-label">Images</label>
                     {!! Form::input('text', 'sync_Rules[images]', null, ['class'=>'form-control']) !!}
                 </div>
 
                 <div class="form-group">
-                    <label>Variants</label>
+                    <label class="control-label">Variants</label>
                     {!! Form::input('text', 'sync_Rules[variants]', null, ['class'=>'form-control']) !!}
                 </div>
             </div>

@@ -17,7 +17,7 @@ class AuthTest extends DuskTestCase
         });
     }
 
-    public function testAuthCantAccessLogin()
+    public function testAuthUserCantAccessLogin()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1));

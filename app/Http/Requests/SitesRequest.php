@@ -46,8 +46,8 @@ class SitesRequest extends FormRequest
             'sync_Rules.title'          => 'title',
             'sync_Rules.description'    => 'description',
             'sync_Rules.price'          => 'price',
-            'sync_Rules.in_stock'       => 'in_stock',
-            'sync_Rules.in_stock_value' => 'in_stock_value',
+            'sync_Rules.in_stock'       => 'in stock',
+            'sync_Rules.in_stock_value' => 'in stock value',
             'sync_Rules.images'         => 'images',
         ];
     }
