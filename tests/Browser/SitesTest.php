@@ -36,8 +36,8 @@ class SitesTest extends DuskTestCase
             $browser->assertSee('The title field is required.');
             $browser->assertSee('The description field is required.');
             $browser->assertSee('The price field is required.');
-            $browser->assertSee('The in_stock field is required.');
-            $browser->assertSee('The in_stock_value field is required.');
+            $browser->assertSee('The in stock field is required.');
+            $browser->assertSee('The in stock value field is required.');
             $browser->assertSee('The images field is required.');
         });
     }
