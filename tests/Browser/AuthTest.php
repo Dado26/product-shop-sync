@@ -25,4 +25,23 @@ class AuthTest extends DuskTestCase
             $browser->assertPathIs('/products');
         });
     }
+
+
+    public function testGuestCanAccessHorizon()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->logout();
+            $browser->visit('/debug');
+            $browser->assertPathIs( '/requests');
+        });
+    }
+
+    public function testAuthUserCanAccessHorizon()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1));
+            $browser->visit('/debug');
+            $browser->assertPathIs( '/requests');
+        });
+    }
 }
