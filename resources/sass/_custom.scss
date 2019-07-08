@@ -4,6 +4,9 @@
     }
 }
 
+
+/* Dropdown Menu On Page Products */
+
 .select2-selection--multiple {
     border: 1px solid #e3e6f0 !important;
     border-radius: 0.35rem !important;
@@ -17,9 +20,57 @@
     border: none !important;
 }
 
+.select2-selection__rendered {
+    padding-left: 15px !important;
+    padding-top: 1px !important;
+    font-family: "Nunito",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    sans-serif,
+    "Apple Color Emoji",
+    "Segoe UI Emoji",
+    "Segoe UI Symbol",
+    "Noto Color Emoji" !important;
+}
+
+.select2-search__field {
+    color: #6e707e !important;
+}
+
 .select2-search__field::placeholder {
     color: #cecfd0;
-    padding-left: 10px;
     display: inline-block;
+}
+
+
+/* Placeholder color */
+
+/* Microsoft Edge */
+.form-control::-webkit-input-placeholder {
+    color: #cecfd0;
+}
+
+/* WebKit, Blink, Edge */
+.form-control:-moz-placeholder {
+    color: #cecfd0;
+}
+
+/* Mozilla Firefox 4 to 18 */
+.form-control::-moz-placeholder {
+    color: #cecfd0;
+}
+
+/* Mozilla Firefox 19+ */
+.form-control:-ms-input-placeholder {
+    color: #cecfd0;
+}
+
+/* Internet Explorer 10-11 */
+.form-control::-ms-input-placeholder {
+    color: #cecfd0;
 }
 
