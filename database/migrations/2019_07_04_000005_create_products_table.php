@@ -28,9 +28,9 @@ class CreateProductsTable extends Migration
             $table->text('description')->nullable();
             $table->string('url');
             $table->string('category', 60);
+            $table->string('specifications', 60);
             $table->string('status', 20);
             $table->timestamp('synced_at')->nullable();
-
             $table->index(["site_id"], 'fk_products_sites1_idx');
             $table->softDeletes();
             $table->nullableTimestamps();
