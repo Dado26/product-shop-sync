@@ -42,6 +42,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('sites', 'SitesController');
 
-    Route::resource('products', 'ProductsController');
+    Route::get('products', 'ProductsController@index')->name('products.index');
+
+    Route::resource('sites', 'SitesController');
 
 });

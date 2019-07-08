@@ -1,5 +1,7 @@
 @extends('layouts.main')
 
+@section('title','Product Sync - Jobs')
+
 @section('content')
     <div class="d-sm-flex">
         <h1 class="h4 text-gray-800">Sync jobs</h1>

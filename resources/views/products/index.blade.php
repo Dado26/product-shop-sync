@@ -1,5 +1,7 @@
 @extends('layouts.main')
 
+@section('title','Product Sync - Products')
+
 @section('content')
 
     <div class="d-sm-flex align-items-center mb-4">
@@ -78,6 +80,7 @@
                     <th class="text-center">Title</th>
                     <th class="text-center">Store</th>
                     <th class="text-center">Category</th>
+                    <th class="text-center">Specification</th>
                     <th class="text-center">Price</th>
                     <th class="text-center">Status</th>
                     <th class="text-center">Synced at</th>
@@ -101,6 +104,10 @@
 
                         <td class="text-center">
                             {{ $product->category }}
+                        </td>
+
+                         <td class="text-center">
+                            {{ 'Specification' }}
                         </td>
 
                         <td class="text-center">

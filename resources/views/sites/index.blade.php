@@ -1,5 +1,7 @@
 @extends('layouts.main')
 
+@section('title','Product Sync - Sites')
+
 @section('content')
 
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -41,7 +43,7 @@
                 </td>
 
                 <td class="text-center">
-                    {{-- count number of products that are associated with site--}}
+                    {{ $site->product->count() }}
                 </td>
 
                 <td class="text-center">

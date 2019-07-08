@@ -16,15 +16,21 @@ class ProductsController extends Controller
     {
         $search = $request->input('search');
 
+        $searchWords = explode(' ', $search);
+           
+        
         $products = Product::query()
-            ->where(function ($query) use ($search) {
-                $query->where('id', 'LIKE', "%$search%")
-                      ->orWhere('title', 'LIKE', "%$search%");
+            ->where(function ($query) use ($searchWords) {
+                foreach($searchWords as $searchWord){
+                    $query->orWhere('title', 'LIKE', "%$searchWord%")
+                          ->orWhere('id', 'LIKE', "%$searchWord%");
+                }
             })
+        
             ->with(['site', 'variants'])
             ->latest()
             ->paginate();
-
+        
         return view('products.index', compact('products'));
     }
 }
