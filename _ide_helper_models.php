@@ -48,7 +48,7 @@ namespace App\Models{
  * @property string $url
  * @property string $category
  * @property string $status
- * @property string|null $synced_at
+ * @property \Illuminate\Support\Carbon|null $synced_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -101,6 +101,44 @@ namespace App\Models{
 
 namespace App\Models{
 /**
+ * App\Models\User
+ *
+ * @property int $id
+ * @property string $first_name
+ * @property string $last_name
+ * @property string $email
+ * @property string $password
+ * @property string|null $remember_token
+ * @property int $admin
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Site[] $sites
+ * @method static bool|null forceDelete()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User newQuery()
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\User onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User query()
+ * @method static bool|null restore()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereAdmin($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereFirstName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereLastName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User wherePassword($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereRememberToken($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\User withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\User withoutTrashed()
+ */
+	class User extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
  * App\Models\Variant
  *
  * @property int $id
@@ -143,7 +181,7 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Product[] $Product
  * @property-read \App\Models\SyncRules $SyncRules
- * @property-read \App\User $User
+ * @property-read \App\Models\User $User
  * @method static bool|null forceDelete()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Site newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Site newQuery()

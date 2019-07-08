@@ -43,7 +43,7 @@ class UserController extends Controller
     }
 
     /**
-     * @param  \App\User  $user
+     * @param  \App\Models\User  $user
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
@@ -56,7 +56,7 @@ class UserController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \App\Http\Requests\UserRequest  $request
-     * @param  \App\User  $user
+     * @param  \App\Models\User  $user
      *
      * @return \Illuminate\Http\Response
      */
@@ -75,7 +75,7 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\User  $user
+     * @param  \App\Models\User  $user
      *
      * @return \Illuminate\Http\Response
      * @throws \Exception
