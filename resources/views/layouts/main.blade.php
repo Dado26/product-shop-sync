@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Prodact Sync</title>
+    <title>@yield('title', 'Product Sync')</title>
 
     <!-- Custom fonts for this template-->
     <link

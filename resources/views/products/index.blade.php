@@ -1,5 +1,7 @@
 @extends('layouts.main')
 
+@section('title','Product Sync - Products')
+
 @section('content')
 
     <div class="d-sm-flex align-items-center mb-4">

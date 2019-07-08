@@ -1,5 +1,7 @@
 @extends('layouts.main')
 
+@section('title','Product Sync - Sites')
+
 @section('content')
 
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
