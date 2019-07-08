@@ -41,7 +41,7 @@
                 </td>
 
                 <td class="text-center">
-                    {{-- count number of products that are associated with site--}}
+                    {{ $site->product->count() }}
                 </td>
 
                 <td class="text-center">

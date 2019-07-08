@@ -38,8 +38,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/jobs', 'SyncJobsController@index')->name('jobs.index');
 
-    Route::resource('sites', 'SitesController');
+    Route::get('products', 'ProductsController@index')->name('products.index');
 
-    Route::resource('products', 'ProductsController');
+    Route::resource('sites', 'SitesController');
 
 });
