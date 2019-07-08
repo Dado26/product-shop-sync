@@ -2,7 +2,7 @@
 
 namespace Tests\Browser;
 
-use App\User;
+use App\Models\User;
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
 
@@ -26,13 +26,30 @@ class AuthTest extends DuskTestCase
         });
     }
 
+    public function testGuestCanAccessTelescope()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->logout();
+            $browser->visit('/debug');
+            $browser->assertPathIs( '/login');
+        });
+    }
+
+    public function testAuthUserCanAccessTelescope()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1));
+            $browser->visit('/debug');
+            $browser->assertPathIs( '/debug/requests');
+        });
+    }
 
     public function testGuestCanAccessHorizon()
     {
         $this->browse(function (Browser $browser) {
             $browser->logout();
-            $browser->visit('/debug');
-            $browser->assertPathIs( '/requests');
+            $browser->visit( '/horizon');
+            $browser->assertPathIs('/login');
         });
     }
 
@@ -40,8 +57,8 @@ class AuthTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1));
-            $browser->visit('/debug');
-            $browser->assertPathIs( '/requests');
+            $browser->visit( '/horizon');
+            $browser->assertPathIs( '/horizon/dashboard');
         });
     }
 }
