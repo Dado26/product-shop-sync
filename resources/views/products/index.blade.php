@@ -80,7 +80,6 @@
                     <th class="text-center">Title</th>
                     <th class="text-center">Store</th>
                     <th class="text-center">Category</th>
-                    <th class="text-center">Specifications</th>
                     <th class="text-center">Price</th>
                     <th class="text-center">Status</th>
                     <th class="text-center">Synced at</th>
@@ -104,10 +103,6 @@
 
                         <td class="text-center">
                             {{ $product->category }}
-                        </td>
-
-                         <td class="text-center">
-                            {{ $product->Specifications }}
                         </td>
 
                         <td class="text-center">

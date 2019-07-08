@@ -80,7 +80,7 @@ class SitesController extends Controller
 
         $site->update($param['sites']);
 
-        $site->SyncRules->update($param['sync_Rules']);
+        $site->syncRules->update($param['sync_Rules']);
 
         flash('You have successfully updated site')->success();
 

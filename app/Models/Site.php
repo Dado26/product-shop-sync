@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\User;
 
 class Site extends Model
 {
@@ -12,17 +11,17 @@ class Site extends Model
 
     protected $fillable = ['name', 'url', 'email'];
 
-    public function User()
+    public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    public function SyncRules()
+    public function syncRules()
     {
         return $this->hasOne(SyncRules::class);
     }
 
-    public function Product()
+    public function products()
     {
         return $this->hasMany(Product::class);
     }
