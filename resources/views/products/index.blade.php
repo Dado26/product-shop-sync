@@ -80,7 +80,7 @@
                     <th class="text-center">Title</th>
                     <th class="text-center">Store</th>
                     <th class="text-center">Category</th>
-                    <th class="text-center">Specification</th>
+                    <th class="text-center">Specifications</th>
                     <th class="text-center">Price</th>
                     <th class="text-center">Status</th>
                     <th class="text-center">Synced at</th>
@@ -107,7 +107,7 @@
                         </td>
 
                          <td class="text-center">
-                            {{ 'Specification' }}
+                            {{ $product->Specifications }}
                         </td>
 
                         <td class="text-center">
