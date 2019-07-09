@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Site;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class CrawlerTestDataSeeder extends Seeder
@@ -13,9 +14,10 @@ class CrawlerTestDataSeeder extends Seeder
     public function run()
     {
         $site = Site::create([
-            'name'  => 'ProductSync',
-            'url'   => 'http://product-sync/',
-            'email' => 'test@mail.com',
+            'name'    => 'ProductSync',
+            'url'     => 'http://product-sync/',
+            'email'   => 'test@mail.com',
+            'user_id' => User::first()->id,
         ]);
 
         $site->syncRules()->create([

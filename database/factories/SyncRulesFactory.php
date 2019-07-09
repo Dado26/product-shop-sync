@@ -7,13 +7,13 @@ use Faker\Generator as Faker;
 
 $factory->define(SyncRules::class, function (Faker $faker) {
     return [
-        'title' => $faker->randomElement(['.title', '#title', '.title > a']),
-        'description' => $faker->randomElement(['.description', '#description', '.description > p']),
+        'title'          => $faker->randomElement(['.title', '#title', '.title > a']),
+        'description'    => $faker->randomElement(['.description', '#description', '.description > p']),
         'specifications' => $faker->randomElement(['.specifications', '#specifications', '.specifications > span']),
-        'price' => $faker->randomElement(['.price', '#price', '.price > span']),
-        'in_stock' => $faker->randomElement(['.in-stock', '.stock', '.available']),
+        'price'          => $faker->randomElement(['.price', '#price', '.price > span']),
+        'in_stock'       => $faker->randomElement(['.in-stock', '.stock', '.available']),
         'in_stock_value' => $faker->randomElement(['Available', 'In Stock']),
-        'images' => $faker->randomElement(['.product > img', '#product a > img', '.product-img']),
-        'variants' => $faker->randomElement(['.product .variant', '#product .variant', '.product > .variants > span']),
+        'images'         => $faker->randomElement(['.product > img', '#product a > img', '.product-img']),
+        'variants'       => $faker->randomElement(['.product .variant', '#product .variant', '.product > .variants > span']),
     ];
 });
