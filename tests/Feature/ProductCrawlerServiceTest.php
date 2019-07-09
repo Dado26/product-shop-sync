@@ -52,7 +52,7 @@ class ProductCrawlerServiceTest extends TestCase
     {
         $this->crawler->handle($this->url);
 
-        $expected = '<table class="tbl-technical-data table-bordered" id="product-table">
+        $expected = '<table>
                         <tr>
                             <td>Brend</td>
                             <td>MITEA</td>
@@ -104,15 +104,9 @@ class ProductCrawlerServiceTest extends TestCase
         $this->crawler->handle($this->url);
 
         $expected = [
-            [
-                'url' => 'http://www.elementa.rs/images/products/57562/original/1.jpg',
-            ],
-            [
-                'url' => 'http://www.elementa.rs/images/products/57562/original/2.jpg',
-            ],
-            [
-                'url' => 'http://www.elementa.rs/images/products/57562/original/3.jpg',
-            ],
+            'http://www.elementa.rs/images/products/57562/original/1.jpg',         
+            'http://www.elementa.rs/images/products/57562/original/2.jpg',          
+            'http://www.elementa.rs/images/products/57562/original/3.jpg',
         ];
 
         $this->assertEquals($expected, $this->crawler->getImages());

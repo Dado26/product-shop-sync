@@ -20,16 +20,18 @@ class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
 
         $this->hideSensitiveRequestDetails();
 
-        Telescope::filter(function (IncomingEntry $entry) {
-            if ($this->app->isLocal()) {
-                return true;
-            }
-
-            return $entry->isReportableException() ||
-                   $entry->isFailedJob() ||
-                   $entry->isScheduledTask() ||
-                   $entry->hasMonitoredTag();
-        });
+        if (isset($_SERVER['argv']) && $_SERVER['argv'][0] != 'vendor/bin/phpunit') {
+            Telescope::filter(function (IncomingEntry $entry) {
+                if ($this->app->isLocal()) {
+                    return true;
+                }
+    
+                return $entry->isReportableException() ||
+                       $entry->isFailedJob() ||
+                       $entry->isScheduledTask() ||
+                       $entry->hasMonitoredTag();
+            });
+        }
     }
 
     /**

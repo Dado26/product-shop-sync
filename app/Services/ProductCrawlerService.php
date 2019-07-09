@@ -7,6 +7,7 @@ use App\Models\SyncRules;
 use InvalidArgumentException;
 use Goutte\Client;
 use App\Models\Product;
+use Exception;
 
 class ProductCrawlerService
 {
@@ -17,7 +18,7 @@ class ProductCrawlerService
     private $site;
 
     private $url;
-
+    
     /**
      * @var SyncRules
      */
@@ -36,19 +37,15 @@ class ProductCrawlerService
             throw new InvalidArgumentException('Product URL cannot be empty');
         }
 
-        // get site from product url
-        // http://product-sync/test/product
-        // product-sync => Site::where('url', 'LIKE', "%$domain%")->first()
-        $domain = 'product-sync';
+        
+        $domain = parse_url($url);
+
+        $domain = $domain['host'];
+
          
         $this->site = Site::where('url', 'LIKE', "%$domain%")->first();
 
-        $this->$url;
-
-
-
-        //$this->product = Product::where('url', 'LIKE', $url)->first();
-
+        $this->url = $url;
 
         // fetch product url
         $this->crawler = $client->request('GET', $url);
@@ -66,7 +63,7 @@ class ProductCrawlerService
 
         $title = $this->crawler->filter($rule)->text();
 
-        return $title;
+        return trim($title);
     }
 
     /**
@@ -78,19 +75,21 @@ class ProductCrawlerService
 
         $description = $this->crawler->filter($rule)->text();
 
-        return $description;
+        return trim($description);
     }
 
     /**
      * @return String
      */
-    public function getSpecifications(): String
+    public function getSpecifications(): ?String
     {
         $rule = $this->rules->specifications;
 
-        $specifications = $this->crawler->filter($rule)->text();
+        if(empty($rule)) return null;
 
-        return $specifications;
+        $specifications = $this->crawler->filter($rule)->html();
+
+        return "<table>".trim($specifications)."</table>";
     }
 
     /**
@@ -98,11 +97,7 @@ class ProductCrawlerService
      */
     public function getUrl(): String
     {
-        $rule = $this->url;
-
-        $url = $this->crawler->filter($rule)->text();
-
-        return $url;
+        return $this->url;
     }
 
     /**
@@ -110,7 +105,22 @@ class ProductCrawlerService
      */
     public function getInStock(): Bool
     {
-        //
+        $rule = $this->rules->in_stock;
+
+        try {
+            $stockText = strtolower($this->crawler->filter($rule)->text());
+            $expectedStockText = strtolower($this->rules->in_stock_value);
+        } catch (Exception $e) {
+            logger()->emergency('Failed to get stock for product', [
+                'exception' => $e->getMessage(),
+                'site'      => $this->site->id,
+                'url'       => $this->url,
+            ]);
+
+            return true;
+        }
+
+        return trim($stockText) == $expectedStockText;
     }
 
     /**
@@ -118,7 +128,13 @@ class ProductCrawlerService
      */
     public function getVariants(): array
     {
-        
+        $rule = $this->rules->variants;
+
+        $variants = $this->crawler->filter($rule)->each(function ($node) {
+           return trim($node->text());
+        });
+
+        return $variants;
     }
 
     /**
@@ -126,6 +142,14 @@ class ProductCrawlerService
      */
     public function getImages(): array
     {
-        //
+        $rule = $this->rules->images;
+        //dd($images = $this->crawler->filter($rule));
+        $images = $this->crawler->filter($rule)->each(function ($node) {
+          return $node->attr('src');         
+        }); 
+
+
+
+        return $images;
     }
 }
