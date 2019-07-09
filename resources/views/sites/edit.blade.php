@@ -65,6 +65,11 @@
                     </div>
 
                     <div class="form-group">
+                        <label class="control-label">Specification</label>
+                        <input type="text" name="sync_Rules[specifications]" class="form-control" value="{{ $site->SyncRules->specifications}}">
+                    </div>
+
+                    <div class="form-group">
                         <label class="control-label">Price</label>
                         <input type="text" name="sync_Rules[price]" class="form-control" value="{{ $site->SyncRules->price }}">
                     </div>

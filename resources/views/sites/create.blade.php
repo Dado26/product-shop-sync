@@ -66,6 +66,11 @@
                 </div>
 
                 <div class="form-group">
+                    <label class="control-label">Specification</label>
+                    {!! Form::input('text', 'sync_Rules[specifications]', null, ['class'=>'form-control']) !!}
+                </div>
+
+                <div class="form-group">
                     <label class="control-label">Price</label>
                     {!! Form::input('text', 'sync_Rules[price]', null, ['class'=>'form-control']) !!}
                 </div>
