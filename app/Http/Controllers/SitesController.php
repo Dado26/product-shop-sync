@@ -98,6 +98,7 @@ class SitesController extends Controller
     public function destroy(Site $site)
     {
         $site->delete();
+
         flash('You have successfully deleted site')->success();
 
         return redirect()->back();
