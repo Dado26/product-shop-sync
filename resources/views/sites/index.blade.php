@@ -43,7 +43,7 @@
                 </td>
 
                 <td class="text-center">
-                    {{ $site->product->count() }}
+                    {{ $site->products->count() }}
                 </td>
 
                 <td class="text-center">
