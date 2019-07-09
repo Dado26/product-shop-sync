@@ -37,11 +37,11 @@
                                 Napravljena specijalno za uništavanje letećih štetnih insekata.
                             </div>
 
-                            <div class="product-desc border h4 mt-3">Cena: 1599 din</div>
+                            <div class="product-price border h4 mt-3">Cena: 1599 din</div>
 
                             <div class="product-stock border h4">In stock</div>
 
-                            <div class="product-img border mt-3">
+                            <div class="product-images border mt-3">
                                 <div class="h4">list of images</div>
                                 <img itemprop="image" src="http://www.elementa.rs/images/products/57562/original/1.jpg" alt="Lampa za insekte 1x6W" width="200">
                                 <img itemprop="image" src="http://www.elementa.rs/images/products/57562/original/2.jpg" alt="Lampa za insekte 1x6W" width="200">
