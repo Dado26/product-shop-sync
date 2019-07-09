@@ -20,15 +20,13 @@ class ProductCrawlerServiceTest extends TestCase
     private $url;
 
     /**
-     * ProductCrawlerServiceTest constructor.
-     *
-     * @param  \App\Services\ProductCrawlerService  $crawler
+     * ProductCrawlerServiceTest setup
      */
-    public function __construct(ProductCrawlerService $crawler)
+    protected function setUp(): void
     {
-        parent::__construct();
+        parent::setUp();
 
-        $this->crawler = $crawler;
+        $this->crawler = new ProductCrawlerService();
         $this->url     = route('test.product');
     }
 
@@ -45,6 +43,7 @@ class ProductCrawlerServiceTest extends TestCase
 
         $this->assertEquals(
             'Napravljena specijalno za uništavanje letećih štetnih insekata.',
+            //'Napravljena specijalno za uništavanje letećih štetnih insekata.',
             $this->crawler->getDescription()
         );
     }

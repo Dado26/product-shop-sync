@@ -15,7 +15,7 @@ class SitesController extends Controller
      */
     public function index()
     {
-        $sites = Site::with('product')->latest()->paginate(10);
+        $sites = Site::with('products')->latest()->paginate(10);
 
         return view('sites.index', compact('sites'));
     }

@@ -43,6 +43,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('products', 'ProductsController@index')->name('products.index');
 
     Route::resource('sites', 'SitesController');
-
-    Route::view('/test/product', 'test/product')->name('test.product');
 });
+
+// test routes
+Route::view('/test/product', 'test/product')->name('test.product');
