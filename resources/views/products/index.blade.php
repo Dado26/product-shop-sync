@@ -42,7 +42,7 @@
 
                 <div class="col-2 w-100">
 
-                    <a href="{{ route('sites.create') }}" class="d-none d-sm-inline-block btn btn-primary shadow-sm float-right">
+                    <a href="" class="d-none d-sm-inline-block btn btn-primary shadow-sm float-right">
                         <i class="fas fa-plus"></i> import
                     </a>
 
