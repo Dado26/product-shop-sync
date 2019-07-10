@@ -75,7 +75,12 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="control-label">In Stock</label>
+                        <label class="control-label">Price decimals</label>
+                        <input type="text" name="sync_Rules[price_decimals]" class="form-control" value="{{ $site->SyncRules->price_decimals }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label">In stock</label>
                         <input type="text" name="sync_Rules[in_stock]" class="form-control" value="{{  $site->SyncRules->in_stock}}">
                     </div>
 

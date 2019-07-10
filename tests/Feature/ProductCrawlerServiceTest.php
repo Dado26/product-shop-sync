@@ -6,6 +6,7 @@ use App\Services\ProductCrawlerService;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Models\Site;
 
 class ProductCrawlerServiceTest extends TestCase
 {
@@ -110,5 +111,21 @@ class ProductCrawlerServiceTest extends TestCase
         ];
 
         $this->assertEquals($expected, $this->crawler->getImages());
+    }
+
+    public function test_crawler_should_return_site_that_matched_with_product_url()
+    {
+        $this->crawler->handle($this->url);
+
+        $expectedSite = Site::where('name', 'ProductSync')->first();
+
+        $this->assertEquals($expectedSite->id, $this->crawler->getSite()->id);
+    }
+
+    public function test_crawler_should_return_product_price()
+    {
+        $this->crawler->handle($this->url);
+
+        $this->assertEquals(1599.00, $this->crawler->getPrice());
     }
 }

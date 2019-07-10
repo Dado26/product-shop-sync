@@ -8,49 +8,59 @@
         <h1 class="h4 mb-0 text-gray-800">Products</h1>
     </div>
 
+     @include('flash::message')
+
     <div class="card">
+    <form action="{{ route('product.import') }}" method="POST" class="form-horizontal">
+       {!! csrf_field() !!}
 
         <div class="card-body shadow">
 
             <div class="row">
 
-                <div class="col-6">
+             
 
-                    <form class="d-none d-sm-inline-block form-inline navbar-search w-100">
+                <div class="col-6">
+                @include('partials.errors')
+                     
+                    <div class="d-none d-sm-inline-block form-inline navbar-search w-100">
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text">URL:</span>
                             </div>
-                            <input type="text" class="form-control border" placeholder="https://shop.com/product/73625" aria-label="Search" aria-describedby="basic-addon2">
+                            <input type="text" name='url' class="form-control border" placeholder="https://shop.com/product/73625" aria-label="Search" aria-describedby="basic-addon2">
                         </div>
-                    </form>
+                    </div>
 
                 </div>
 
                 <div class="col-4 w-100">
 
-                    <select class="form-control" name="category" id="id_label_multiple" multiple="" data-select2-id="id_label_multiple" tabindex="-1" aria-hidden="true">
-                        <optgroup label="Alaskan/Hawaiian Time Zone" data-select2-id="81">
-                            <option value="CA" data-select2-id="85">California</option>
-                            <option value="NV" data-select2-id="86">Nevada</option>
-                            <option value="OR" data-select2-id="87">Oregon</option>
-                            <option value="WA" data-select2-id="88">Washington</option>
-                        </optgroup>
+                    <select class="form-control" name="category">
+                        <option value="CA" data-select2-id="85">California</option>
+                        <option value="NV" data-select2-id="86">Nevada</option>
+                        <option value="OR" data-select2-id="87">Oregon</option>
+                        <option value="WA" data-select2-id="88">Washington</option>
                     </select>
 
                 </div>
 
                 <div class="col-2 w-100">
 
-                    <a href="" class="d-none d-sm-inline-block btn btn-primary shadow-sm float-right">
+                    <button type="submit" class="d-none d-sm-inline-block btn btn-primary shadow-sm float-right">
                         <i class="fas fa-plus"></i> import
-                    </a>
-
+                    </button>
+   
                 </div>
+
+            
+
 
             </div>
 
         </div>
+
+     </form>
 
     </div>
 

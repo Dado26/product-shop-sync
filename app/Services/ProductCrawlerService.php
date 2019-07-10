@@ -33,7 +33,7 @@ class ProductCrawlerService
     /**
      * @param  string  $url
      */
-    public function handle(string $url)
+    public function handle(string $url): void
     {
         $client = new Client();
 
@@ -54,9 +54,9 @@ class ProductCrawlerService
     }
 
     /**
-     * @return String
+     * @return string
      */
-    public function getTitle(): String
+    public function getTitle(): string
     {
         $rule = $this->rules->title;
 
@@ -66,9 +66,9 @@ class ProductCrawlerService
     }
 
     /**
-     * @return String
+     * @return string
      */
-    public function getDescription(): String
+    public function getDescription(): string
     {
         $rule = $this->rules->description;
 
@@ -78,9 +78,9 @@ class ProductCrawlerService
     }
 
     /**
-     * @return String
+     * @return string
      */
-    public function getSpecifications(): ?String
+    public function getSpecifications(): ?string
     {
         $rule = $this->rules->specifications;
 
@@ -92,9 +92,9 @@ class ProductCrawlerService
     }
 
     /**
-     * @return String
+     * @return string
      */
-    public function getUrl(): String
+    public function getUrl(): string
     {
         return $this->url;
     }
@@ -102,7 +102,7 @@ class ProductCrawlerService
     /**
      * @return bool
      */
-    public function getInStock(): Bool
+    public function getInStock(): bool
     {
         $rule = $this->rules->in_stock;
 
@@ -148,5 +148,28 @@ class ProductCrawlerService
         });
 
         return $images;
+    }
+
+    /**
+     * @return Site
+     */
+    public function getSite(): Site
+    {
+        return $this->site;
+    }
+
+    /**
+     * @return float
+     */
+    public function getPrice(): float
+    {
+        $rule = $this->rules->price;
+
+        $price = $this->crawler->filter($rule)->text();
+        $price = preg_replace("/[^0-9]/", '', $price);
+
+        $divide = '1'.str_repeat('0', $this->rules->price_decimals);
+
+        return $price / $divide;
     }
 }

@@ -74,6 +74,12 @@
                     <label class="control-label">Price</label>
                     {!! Form::input('text', 'sync_Rules[price]', null, ['class'=>'form-control']) !!}
                 </div>
+
+                <div class="form-group">
+                    <label class="control-label">Price decimals</label>
+                    {!! Form::input('text', 'sync_Rules[price_decimals]', null, ['class'=>'form-control']) !!}
+                </div>
+
                 <div class="form-group">
                     <label class="control-label">In stock</label>
                     {!! Form::input('text', 'sync_Rules[in_stock]', null, ['class'=>'form-control']) !!}

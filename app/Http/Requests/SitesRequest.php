@@ -33,6 +33,7 @@ class SitesRequest extends FormRequest
             'sync_Rules.in_stock'       => 'required',
             'sync_Rules.in_stock_value' => 'required',
             'sync_Rules.images'         => 'required',
+            'sync_Rules.price_decimals' => 'required|integer|min:0|max:2'
         ];
     }
 
@@ -45,6 +46,7 @@ class SitesRequest extends FormRequest
             'sync_Rules.title'          => 'title',
             'sync_Rules.description'    => 'description',
             'sync_Rules.price'          => 'price',
+            'sync_Rules.price_decimals' => 'price decimals',
             'sync_Rules.in_stock'       => 'in stock',
             'sync_Rules.in_stock_value' => 'in stock value',
             'sync_Rules.images'         => 'images',

@@ -24,6 +24,7 @@ class CrawlerTestDataSeeder extends Seeder
             'title'          => '#product-title',
             'description'    => '.product-description',
             'price'          => '.product-price',
+            'price_decimals' => 2,
             'in_stock'       => '.product-stock',
             'in_stock_value' => 'In stock',
             'images'         => '.product-images > img',

@@ -27,6 +27,7 @@ class CreateSyncRulesTable extends Migration
             $table->string('description', 100);
             $table->string('specifications', 60)->nullable();
             $table->string('price', 100);
+            $table->unsignedTinyInteger('price_decimals');
             $table->string('in_stock', 100);
             $table->string('in_stock_value', 100);
             $table->string('images', 100);

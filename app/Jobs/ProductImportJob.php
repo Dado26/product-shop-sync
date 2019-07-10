@@ -8,10 +8,19 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Symfony\Component\DomCrawler\Crawler;
+use App\Models\ProductImage;
+use App\Models\Variant;
+use App\Models\Product;
 
 class ProductImportJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+    /**
+     * Queue on which we are importing products
+     */
+    public const QUEUE_NAME = 'import-products';
 
     /**
      * @var String
@@ -33,6 +42,8 @@ class ProductImportJob implements ShouldQueue
     {
         $this->url = $url;
         $this->category = $category;
+
+        $this->onQueue(self::QUEUE_NAME);
     }
 
     /**
@@ -46,8 +57,33 @@ class ProductImportJob implements ShouldQueue
 
         $crawler->handle($this->url);
 
-        // get stuff
-
         // create product, variants, images
+       $product = Product::create([
+            'site_id' => $crawler->getSite()->id,
+            'title' => $crawler->getTitle(),
+            'description'=> $crawler->getDescription(),
+            'url' => $crawler->getUrl(),
+            'category' => $this->category,
+            'specifications' => $crawler->getSpecifications(),
+            'status' => Product::STATUS_AVAILABLE,
+        ]);
+
+
+        foreach($crawler->getVariants() as $variant){
+            Variant::create(
+                ['name' => $variant,
+                'price' => $crawler->getPrice(),
+                'product_id' => $product->id,
+                ]                    
+            );
+        }
+
+        foreach($crawler->getImages() as $image){
+            ProductImage::create(
+                ['url' => $image,
+                'product_id' => $product->id,
+                ]                    
+            );
+        }      
     }
 }
