@@ -6,24 +6,28 @@ use App\Models\Site;
 use App\Models\SyncRules;
 use InvalidArgumentException;
 use Goutte\Client;
-use App\Models\Product;
 use Exception;
 
 class ProductCrawlerService
 {
-    
     /**
      * @var Site
      */
     private $site;
 
+    /**
+     * @var String
+     */
     private $url;
-    
+
     /**
      * @var SyncRules
      */
     private $rules;
 
+    /**
+     * @var Client
+     */
     private $crawler;
 
     /**
@@ -37,21 +41,16 @@ class ProductCrawlerService
             throw new InvalidArgumentException('Product URL cannot be empty');
         }
 
-        
-        $domain = parse_url($url);
+        $this->url = $url;
 
+        $domain = parse_url($url);
         $domain = $domain['host'];
 
-         
-        $this->site = Site::where('url', 'LIKE', "%$domain%")->first();
-
-        $this->url = $url;
+        $this->site  = Site::where('url', 'LIKE', "%$domain%")->firstOrFail();
+        $this->rules = $this->site->syncRules;
 
         // fetch product url
         $this->crawler = $client->request('GET', $url);
-
-        // get sync rules from site
-        $this->rules = $this->site->syncRules;
     }
 
     /**
@@ -85,7 +84,7 @@ class ProductCrawlerService
     {
         $rule = $this->rules->specifications;
 
-        if(empty($rule)) return null;
+        if (empty($rule))  return null;
 
         $specifications = $this->crawler->filter($rule)->html();
 
@@ -108,7 +107,7 @@ class ProductCrawlerService
         $rule = $this->rules->in_stock;
 
         try {
-            $stockText = strtolower($this->crawler->filter($rule)->text());
+            $stockText         = strtolower($this->crawler->filter($rule)->text());
             $expectedStockText = strtolower($this->rules->in_stock_value);
         } catch (Exception $e) {
             logger()->emergency('Failed to get stock for product', [
@@ -131,7 +130,7 @@ class ProductCrawlerService
         $rule = $this->rules->variants;
 
         $variants = $this->crawler->filter($rule)->each(function ($node) {
-           return trim($node->text());
+            return trim($node->text());
         });
 
         return $variants;
@@ -143,12 +142,10 @@ class ProductCrawlerService
     public function getImages(): array
     {
         $rule = $this->rules->images;
-        //dd($images = $this->crawler->filter($rule));
+
         $images = $this->crawler->filter($rule)->each(function ($node) {
-          return $node->attr('src');         
-        }); 
-
-
+            return $node->attr('src');
+        });
 
         return $images;
     }

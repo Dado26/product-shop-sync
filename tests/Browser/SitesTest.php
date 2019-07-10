@@ -149,6 +149,7 @@ class SitesTest extends DuskTestCase
             $browser->type('sites[email]', 'some-random@email.com');
             $browser->type('sync_Rules[title]', '.title');
             $browser->type('sync_Rules[description]', '.description');
+            $browser->type('sync_Rules[specifications]', '.specs');
             $browser->type('sync_Rules[price]', '#product-price');
             $browser->type('sync_Rules[in_stock]', '#product-stock');
             $browser->type('sync_Rules[in_stock_value]', 'Available');
@@ -164,6 +165,7 @@ class SitesTest extends DuskTestCase
             $browser->assertInputValue('sites[email]', 'some-random@email.com');
             $browser->assertInputValue('sync_Rules[title]', '.title');
             $browser->assertInputValue('sync_Rules[description]', '.description');
+            $browser->assertInputValue('sync_Rules[specifications]', '.specs');
             $browser->assertInputValue('sync_Rules[price]', '#product-price');
             $browser->assertInputValue('sync_Rules[in_stock]', '#product-stock');
             $browser->assertInputValue('sync_Rules[in_stock_value]', 'Available');
