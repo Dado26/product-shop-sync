@@ -16,12 +16,14 @@
 
         <div class="card-body shadow">
 
+           @include('partials.errors')
+
             <div class="row">
 
-             
+              
 
                 <div class="col-6">
-                @include('partials.errors')
+               
                      
                     <div class="d-none d-sm-inline-block form-inline navbar-search w-100">
                         <div class="input-group">
@@ -64,7 +66,6 @@
 
     </div>
 
-    @include('flash::message')
 
     <div class="card shadow mt-5">
         <div class="card-body">

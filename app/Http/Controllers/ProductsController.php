@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Jobs\ProductImportJob;
+use App\Http\Requests\ProductImportRequest;
+
 
 class ProductsController extends Controller
 {
@@ -35,14 +37,8 @@ class ProductsController extends Controller
         return view('products.index', compact('products'));
     }
 
-    public function import(request $request){
-
-
-
-        $param = $request->validate([
-            'url' => 'required|url',
-            'category' => 'required'
-        ]);
+    public function import(ProductImportRequest $request){
+       
         
        ProductImportJob::dispatch($param['url'], $param['category']);
 
