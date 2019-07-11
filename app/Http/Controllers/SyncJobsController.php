@@ -13,9 +13,6 @@ class SyncJobsController extends Controller
      */
     public function index()
     {
-        $queuedJobs = DB::table('jobs')->count();
-        $jobsFails = DB::table('failed_jobs')->count();
-
-        return view('jobs.index', compact('queuedJobs', 'jobsFails'));
+        return view('jobs.index');
     }
 }
