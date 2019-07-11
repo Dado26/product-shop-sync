@@ -24,7 +24,8 @@ class CreateProductImagesTable extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->unsignedInteger('product_id');
-            $table->string('url');
+            $table->string('url')->nullable();
+            $table->string('source')->nullable();
 
             $table->index(["product_id"], 'fk_product_images_products1_idx');
             $table->nullableTimestamps();

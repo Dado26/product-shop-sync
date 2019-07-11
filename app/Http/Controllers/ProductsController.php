@@ -40,7 +40,7 @@ class ProductsController extends Controller
     public function import(ProductImportRequest $request){
        
         
-       ProductImportJob::dispatch($param['url'], $param['category']);
+       ProductImportJob::dispatch($request->url, $request->category);
 
        flash('You have successfully imported product')->success();
 

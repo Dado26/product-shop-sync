@@ -2,16 +2,17 @@
 
 namespace App\Jobs;
 
-use App\Services\ProductCrawlerService;
+use App\Models\Product;
+use App\Models\Variant;
+use App\Models\ProductImage;
 use Illuminate\Bus\Queueable;
+use JD\Cloudder\Facades\Cloudder;
 use Illuminate\Queue\SerializesModels;
+use App\Services\ProductCrawlerService;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Symfony\Component\DomCrawler\Crawler;
-use App\Models\ProductImage;
-use App\Models\Variant;
-use App\Models\Product;
+use PHPUnit\Runner\Exception;
 
 class ProductImportJob implements ShouldQueue
 {
@@ -78,12 +79,28 @@ class ProductImportJob implements ShouldQueue
             );
         }
 
+
         foreach($crawler->getImages() as $image){
-            ProductImage::create(
-                ['url' => $image,
-                'product_id' => $product->id,
+            $productImage = ProductImage::create(
+                [
+                    'url' => null,
+                    'source' => $image,
+                    'product_id' => $product->id,
                 ]                    
             );
-        }      
+
+            try {
+              $cloudinaryImage = Cloudder::upload($image, "intercool/products/{$product->id}/{$productImage->id}");
+            }
+            catch(Exception $e){
+                $productImage->delete();
+
+                logger()->notice('Failed to upload image to cloudinary', ['error' => $e->getMessage()]);
+            }
+            
+            $result = $cloudinaryImage->getResult();
+
+            $productImage->update(['url' => $result['secure_url']]);
+        }
     }
 }
