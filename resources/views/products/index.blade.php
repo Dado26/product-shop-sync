@@ -134,9 +134,14 @@
 
                         <td class="text-center">
                             <div class="users-list-actions">
-                                <button type="button" data-toggle="modal" data-target="#confirmButton" class="btn btn-primary d-none d-sm-inline-block btn-sm">
-                                    <i class="fas fa-sync-alt"></i> Sync
-                                </button>
+                                
+                            {!! Form::open(['route'=>['product.sync', $product->id],'method'=>'PUT','class'=>'pull-right delete']) !!}
+                            <button type="submit" data-toggle="modal" data-target="#confirmButton" class="btn btn-primary d-none d-sm-inline-block btn-sm">
+                                <i class="fas fa-sync-alt"></i> Sync
+                            </button>
+                            {!! Form::close() !!}
+                                    
+                                
                             </div>
                         </td>
                     </tr>

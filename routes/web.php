@@ -42,6 +42,9 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::post('product/import', 'ProductsController@import')->name('product.import');
 
+    // Route::put('product/{product}/update', 'ProductsController@update')->name('product.sync');
+
+
     Route::resource('sites', 'SitesController');
  
 });

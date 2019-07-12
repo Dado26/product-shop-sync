@@ -3,20 +3,29 @@
 namespace App\Jobs;
 
 use App\Models\Product;
+use App\Models\ProductImage;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
+use App\Services\ChangeDetectorService;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use App\Models\ProductImage;
 
 class ProductSyncJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    
+    /**
+     * Delete the job if its models no longer exist.
+     *
+     * @var bool
+     */
+    public $deleteWhenMissingModels = true;
 
     /**
      * @var \App\Models\Product
      */
+
     private $product;
 
     /**
@@ -43,58 +52,49 @@ class ProductSyncJob implements ShouldQueue
         } catch (InvalidArgumentException $e) {
             $this->product->update([
                 'status' => Product::STATUS_UNAVAILABLE,
-            ]
-            );
+            ]);
             $this->fail('Failed to find required data, maybe it was removed');
         }
     
+        // update product
+        $this->product->update([
+            'site_id' => $crawler->getSite()->id,
+            'title' => $crawler->getTitle(),
+            'description'=> $crawler->getDescription(),
+            'url' => $crawler->getUrl(),
+            'category' => $this->category,
+            'specifications' => $crawler->getSpecifications(),
+            'status' => Product::STATUS_AVAILABLE,
+            'synced_at' => now(),
+        ]);
+
         
-            $this->product->update([
-                'site_id' => $crawler->getSite()->id,
-                'title' => $crawler->getTitle(),
-                'description'=> $crawler->getDescription(),
-                'url' => $crawler->getUrl(),
-                'category' => $this->category,
-                'specifications' => $crawler->getSpecifications(),
-                'status' => Product::STATUS_AVAILABLE,
+        // update variants
+        $oldVariant = Variant::where($this->product->id, 'product_id')->get();
+
+        $newVariant = $crawler->getVariants();
+
+        $results = ChangeDetectorService::getIntersection($oldVariant, $newVariant);
+
+        foreach($results as $result){
+            $this->product->variants()->where('name', $result)->update([
+                'price' => $crawler->getPrice(),
             ]);
-    
-    
-            foreach($crawler->getVariants() as $variant){
-                
-                Variant::where($this->product->id, 'product_id')->update(
-                    ['name' => $variant,
-                    'price' => $crawler->getPrice(),
-                    'product_id' => $this->product->id,
-                    ]                    
-                );
-            }
-
-
-
-            foreach($crawler->getImages() as $image){
-                $productImage = ProductImage::where($this->product->id, 'product_id')->update(
-                    [
-                        'url' => ,
-                        'source' => $image,
-                        'product_id' => $this->product->id,
-                    ]                    
-                );
-
-                try {
-                    $cloudinaryImage = Cloudder::upload($image, "intercool/products/{$product->id}/{$productImage->id}");
-                  }
-                  catch(Exception $e){
-                      $productImage->delete();
-      
-                      logger()->notice('Failed to upload image to cloudinary', ['error' => $e->getMessage()]);
-                  }
-                  
-                  $result = $cloudinaryImage->getResult();
-      
-                  $productImage->update(['url' => $result['secure_url']]);   
-    
-    
+        }
         
+        // create new missing variants
+        $results = ChangeDetectorService::getArrayWithoutItemsFromFirstArray($oldVariant, $newVariant);
+
+        foreach($results as $result){
+            $this->product->variants()->create([
+                'name' => $result,
+                'price' => $crawler->getPrice(),
+            ]);
+        }
+
+        // delete removed variants
+        $results = ChangeDetectorService::getArrayWithoutItemsFromSecondArray($oldVariant, $newVariant);
+
+        $this->product->variants()->whereIn('name', $results)->delete();
     }
 }
