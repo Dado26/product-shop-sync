@@ -10,7 +10,7 @@ use Laravel\Dusk\Browser;
 
 class SearchTest extends DuskTestCase
 {
-    public function testSearchById()
+    public function test_search_by_id()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1));
@@ -22,7 +22,7 @@ class SearchTest extends DuskTestCase
         });
     }
 
-    public function testSearchByTitle()
+    public function test_search_by_title()
     {
         $this->browse(function (Browser $browser) {
             Product::first()->update(['title' => 'Headphones']);

@@ -11,7 +11,7 @@ class SitesTest extends DuskTestCase
     /**
      * Test if Page loads
      */
-    public function testIfPageLoads()
+    public function test_if_page_loads()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1));
@@ -23,7 +23,7 @@ class SitesTest extends DuskTestCase
     /**
      * Test validation errors when creating new site
      */
-    public function testValidationErrorsWhenCreatingSite()
+    public function test_validation_errors_when_creating_site()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1));
@@ -45,7 +45,7 @@ class SitesTest extends DuskTestCase
     /**
      * Test if url format is valid
      */
-    public function testIfUrlFormatIsValid()
+    public function test_if_url_format_is_valid()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1));
@@ -69,7 +69,7 @@ class SitesTest extends DuskTestCase
     /**
      * Test if email address is valid
      */
-    public function testIfEmailAddressIsValid()
+    public function test_if_email_address_is_valid()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1));
@@ -93,7 +93,7 @@ class SitesTest extends DuskTestCase
     /**
      * Test if url format is valid when edited
      */
-    public function testIfUrlFormatIsValidWhenEdited()
+    public function test_if_url_format_is_valid_when_edited()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1));
@@ -110,7 +110,7 @@ class SitesTest extends DuskTestCase
     /**
      * Test if email address is valid when edited
      */
-    public function testIfEmailAddressIsValidWhenEdited()
+    public function test_if_email_address_is_valid_when_edited()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1));
@@ -125,7 +125,7 @@ class SitesTest extends DuskTestCase
     /**
      * Test if message pops up when edited
      */
-    public function testIfMessagePopsUpWhenEdited()
+    public function test_if_message_pops_up_when_edited()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1));
@@ -139,7 +139,7 @@ class SitesTest extends DuskTestCase
     /**
      * Test if all data was updated on save
      */
-    public function testIfAllDataWasUpdatedOnSave()
+    public function test_if_all_data_was_updated_on_save()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1));

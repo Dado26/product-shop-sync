@@ -8,7 +8,7 @@ use Laravel\Dusk\Browser;
 
 class AuthTest extends DuskTestCase
 {
-    public function testGuestCantAccessAuthPages()
+    public function test_guest_cant_access_auth_pages()
     {
         $this->browse(function (Browser $browser) {
             $browser->logout();
@@ -17,7 +17,7 @@ class AuthTest extends DuskTestCase
         });
     }
 
-    public function testAuthUserCantAccessLogin()
+    public function test_auth_user_cant_access_login()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1));
@@ -26,7 +26,7 @@ class AuthTest extends DuskTestCase
         });
     }
 
-    public function testGuestCanAccessTelescope()
+    public function test_guest_can_access_telescope()
     {
         $this->browse(function (Browser $browser) {
             $browser->logout();
@@ -35,7 +35,7 @@ class AuthTest extends DuskTestCase
         });
     }
 
-    public function testAuthUserCanAccessTelescope()
+    public function test_auth_user_can_access_telescope()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1));
@@ -44,7 +44,7 @@ class AuthTest extends DuskTestCase
         });
     }
 
-    public function testGuestCanAccessHorizon()
+    public function test_guest_can_access_horizon()
     {
         $this->browse(function (Browser $browser) {
             $browser->logout();
@@ -53,7 +53,7 @@ class AuthTest extends DuskTestCase
         });
     }
 
-    public function testAuthUserCanAccessHorizon()
+    public function test_auth_user_can_access_horizon()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1));

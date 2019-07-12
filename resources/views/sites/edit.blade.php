@@ -61,7 +61,7 @@
 
                     <div class="form-group">
                         <label class="col-sm-3 control-label">Description</label>
-                        <textarea rows="5" cols="80" name="sync_Rules[description]"class="form-control">{{ $site->SyncRules->description}}</textarea>
+                        <input type="text" name="sync_Rules[description]" class="form-control" value="{{ $site->SyncRules->description}}">
                     </div>
 
                     <div class="form-group">

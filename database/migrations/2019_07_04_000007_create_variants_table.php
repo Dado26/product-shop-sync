@@ -24,7 +24,7 @@ class CreateVariantsTable extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->unsignedInteger('product_id');
-            $table->string('name', 120);
+            $table->string('name', 120)->nullable();
             $table->decimal('price', 9, 2);
 
             $table->index(["product_id"], 'fk_variants_products1_idx');

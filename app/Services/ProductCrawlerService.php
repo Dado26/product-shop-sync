@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Helpers\PriceExtractor;
 use App\Models\Site;
 use App\Models\SyncRules;
 use InvalidArgumentException;
@@ -72,7 +73,7 @@ class ProductCrawlerService
     {
         $rule = $this->rules->description;
 
-        $description = $this->crawler->filter($rule)->text();
+        $description = $this->crawler->filter($rule)->html();
 
         return trim($description);
     }
@@ -84,7 +85,9 @@ class ProductCrawlerService
     {
         $rule = $this->rules->specifications;
 
-        if (empty($rule))  return null;
+        if (empty($rule)) {
+            return null;
+        }
 
         $specifications = $this->crawler->filter($rule)->html();
 
@@ -129,6 +132,12 @@ class ProductCrawlerService
     {
         $rule = $this->rules->variants;
 
+        if (empty($rule)) {
+            // when there is no rule for variants
+            // we want to create one without name
+            return [null];
+        }
+
         $variants = $this->crawler->filter($rule)->each(function ($node) {
             return trim($node->text());
         });
@@ -165,11 +174,9 @@ class ProductCrawlerService
     {
         $rule = $this->rules->price;
 
-        $price = $this->crawler->filter($rule)->text();
-        $price = preg_replace("/[^0-9]/", '', $price);
+        $price = $this->crawler->filter($rule)->html();
+        $decimals = $this->rules->price_decimals;
 
-        $divide = '1'.str_repeat('0', $this->rules->price_decimals);
-
-        return $price / $divide;
+        return PriceExtractor::handle($price, $decimals);
     }
 }

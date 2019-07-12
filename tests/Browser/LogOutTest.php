@@ -8,7 +8,7 @@ use Laravel\Dusk\Browser;
 
 class LogOutTest extends DuskTestCase
 {
-    public function testLogOut()
+    public function test_log_out()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1));

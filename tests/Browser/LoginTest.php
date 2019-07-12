@@ -7,7 +7,7 @@ use Laravel\Dusk\Browser;
 
 class LoginTest extends DuskTestCase
 {
-    public function testLoginUserThatDoesNotExist()
+    public function test_login_user_that_does_not_exist()
     {
         $this->browse(function (Browser $browser) {
             $browser->visit('/login');
@@ -19,7 +19,7 @@ class LoginTest extends DuskTestCase
         });
     }
 
-    public function testLoginUserThatExists()
+    public function test_login_user_that_exists()
     {
         $this->browse(function (Browser $browser) {
             $browser->visit('/login');

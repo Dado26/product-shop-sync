@@ -8,7 +8,7 @@ use Laravel\Dusk\Browser;
 
 class UsersTest extends DuskTestCase
 {
-    public function testCreateUserWithEmptyFields()
+    public function test_create_user_with_empty_fields()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1));
@@ -22,7 +22,7 @@ class UsersTest extends DuskTestCase
         });
     }
 
-    public function testCreateUserWithPasswordMismatch()
+    public function test_create_user_with_password_mismatch()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1));
@@ -38,7 +38,7 @@ class UsersTest extends DuskTestCase
         });
     }
 
-    public function testEditUserWithShortPassword()
+    public function test_edit_user_with_short_password()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1));
@@ -51,7 +51,7 @@ class UsersTest extends DuskTestCase
         });
     }
 
-    public function testEditUserWithPasswordNotMatch()
+    public function test_edit_user_with_password_not_match()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1));
@@ -64,7 +64,7 @@ class UsersTest extends DuskTestCase
         });
     }
 
-    public function testCreateNewUser()
+    public function test_create_new_user()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1));
@@ -80,7 +80,7 @@ class UsersTest extends DuskTestCase
         });
     }
 
-    public function testEditUser()
+    public function test_edit_user()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1));

@@ -49,8 +49,6 @@ class SitesController extends Controller
 
         flash('You have successfully created new site')->success();
 
-        //flash('Ups something went wrong')->error();
-
         return redirect()->route('sites.index');
     }
 

@@ -1,5 +1,6 @@
 <?php
 use App\Jobs\ProductImportJob;
+use App\Jobs\ProductSyncJob;
 
 return [
 
@@ -143,7 +144,7 @@ return [
         'production' => [
             'supervisor-1' => [
                 'connection' => 'redis',
-                'queue' => [ProductImportJob::QUEUE_NAME],
+                'queue' => [ProductImportJob::QUEUE_NAME, ProductSyncJob::QUEUE_NAME],
                 'balance' => 'auto',
                 'processes' => 10,
                 'tries' => 3,
@@ -153,7 +154,7 @@ return [
         'local' => [
             'supervisor-1' => [
                 'connection' => 'redis',
-                'queue' => [ProductImportJob::QUEUE_NAME],
+                'queue' => [ProductImportJob::QUEUE_NAME, ProductSyncJob::QUEUE_NAME],
                 'balance' => 'auto',
                 'processes' => 10,
                 'tries' => 3,

@@ -23,14 +23,14 @@ class CreateSyncRulesTable extends Migration
         Schema::create($this->tableName, function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('site_id');
-            $table->string('title', 100);
-            $table->string('description', 100);
-            $table->string('specifications', 60)->nullable();
-            $table->string('price', 100);
+            $table->string('title');
+            $table->string('description');
+            $table->string('specifications')->nullable();
+            $table->string('price');
             $table->unsignedTinyInteger('price_decimals');
-            $table->string('in_stock', 100);
-            $table->string('in_stock_value', 100);
-            $table->string('images', 100);
+            $table->string('in_stock');
+            $table->string('in_stock_value', 120);
+            $table->string('images');
             $table->string('variants', 100)->nullable();
 
             $table->unique(["site_id"], 'fk_sync_rules_sites1_idx');
