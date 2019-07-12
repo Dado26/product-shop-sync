@@ -67,6 +67,7 @@ class ProductImportJob implements ShouldQueue
             'category'       => $this->category,
             'specifications' => $crawler->getSpecifications(),
             'status'         => Product::STATUS_AVAILABLE,
+            'synced_at'      => now(),
         ]);
 
         foreach ($crawler->getVariants() as $variant) {
