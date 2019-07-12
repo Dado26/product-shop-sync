@@ -20,6 +20,6 @@ class UsersTableSeeder extends Seeder
             'admin' => true,
         ]);
 
-        factory(User::class, 10)->create();
+        factory(User::class, 4)->create();
     }
 }
