@@ -20,11 +20,11 @@
 
             <div class="row">
 
-              
+
 
                 <div class="col-6">
-               
-                     
+
+
                     <div class="d-none d-sm-inline-block form-inline navbar-search w-100">
                         <div class="input-group">
                             <div class="input-group-prepend">
@@ -52,10 +52,10 @@
                     <button type="submit" class="d-none d-sm-inline-block btn btn-primary shadow-sm float-right">
                         <i class="fas fa-plus"></i> import
                     </button>
-   
+
                 </div>
 
-            
+
 
 
             </div>
@@ -125,11 +125,7 @@
                         </td>
 
                         <td class="text-center">
-                            @if ($product->synced_at !== null)
-                                {{ $product->synced_at }}
-                            @else
-                                <span class="text-danger">Queued</span>
-                            @endif
+                            {{ $product->synced_at }}
                         </td>
 
                         <td class="text-center">
