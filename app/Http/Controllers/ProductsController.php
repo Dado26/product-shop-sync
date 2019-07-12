@@ -42,7 +42,7 @@ class ProductsController extends Controller
         
        ProductImportJob::dispatch($request->url, $request->category);
 
-       flash('You have successfully imported product')->success();
+       flash('Your product was queued successfully, it will be processed soon.')->success();
 
        return redirect()->back();
 

@@ -56,7 +56,11 @@ class ProductImportJob implements ShouldQueue
     {
         $crawler = new ProductCrawlerService();
 
-        $crawler->handle($this->url);
+        try {
+            $crawler->handle($this->url);
+        } catch (InvalidArgumentException $e) {
+            $this->fail('Failed to find required data, maybe it was removed');
+        }
 
         // create product, variants, images
        $product = Product::create([

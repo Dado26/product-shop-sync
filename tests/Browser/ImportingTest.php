@@ -6,7 +6,7 @@ use App\Models\User;
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
 use App\Models\Product;
-use Illuminate\Support\Facades\DB;
+
 
 class ImportingTest extends DuskTestCase
 {
@@ -42,7 +42,7 @@ class ImportingTest extends DuskTestCase
             $browser->type('url','http://product-sync/test/');
             $browser->press('import');
             $browser->assertPathIs('/products');
-            $browser->assertSee('You have successfully imported product');
+            $browser->assertSee('Your product was queued successfully, it will be processed soon.');
         });
     
     }
