@@ -41,7 +41,7 @@ class ProductImportJob implements ShouldQueue
      */
     public function __construct(String $url, String $category)
     {
-        $this->url = $url;
+        $this->url      = $url;
         $this->category = $category;
 
         $this->onQueue(self::QUEUE_NAME);
@@ -63,48 +63,51 @@ class ProductImportJob implements ShouldQueue
         }
 
         // create product, variants, images
-       $product = Product::create([
-            'site_id' => $crawler->getSite()->id,
-            'title' => $crawler->getTitle(),
-            'description'=> $crawler->getDescription(),
-            'url' => $crawler->getUrl(),
-            'category' => $this->category,
+        $product = Product::create([
+            'site_id'        => $crawler->getSite()->id,
+            'title'          => $crawler->getTitle(),
+            'description'    => $crawler->getDescription(),
+            'url'            => $crawler->getUrl(),
+            'category'       => $this->category,
             'specifications' => $crawler->getSpecifications(),
-            'status' => Product::STATUS_AVAILABLE,
+            'status'         => Product::STATUS_AVAILABLE,
+            'synced_at'      => now(),
         ]);
 
-
-        foreach($crawler->getVariants() as $variant){
+        foreach ($crawler->getVariants() as $variant) {
             Variant::create(
-                ['name' => $variant,
-                'price' => $crawler->getPrice(),
-                'product_id' => $product->id,
-                ]                    
+                [
+                    'name'       => $variant,
+                    'price'      => $crawler->getPrice(),
+                    'product_id' => $product->id,
+                ]
             );
         }
 
-
-        foreach($crawler->getImages() as $image){
-            $productImage = ProductImage::create(
+        foreach ($crawler->getImages() as $imageUrl) {
+            $image = ProductImage::create(
                 [
-                    'url' => null,
-                    'source' => $image,
+                    'url'        => null,
+                    'source'     => $imageUrl,
                     'product_id' => $product->id,
-                ]                    
+                ]
             );
 
             try {
-              $cloudinaryImage = Cloudder::upload($image, "intercool/products/{$product->id}/{$productImage->id}");
-            }
-            catch(Exception $e){
-                $productImage->delete();
+                $cloudinaryImage = Cloudder::upload(
+                    $imageUrl,
+                    "intercool/products/{$product->id}/{$image->id}",
+                    ['crop' => 'fit', 'width' => 700, 'height' => 700, 'format' => 'jpg', 'quality' => 'auto:good']
+                );
+            } catch (Exception $e) {
+                $image->delete();
 
                 logger()->notice('Failed to upload image to cloudinary', ['error' => $e->getMessage()]);
             }
-            
+
             $result = $cloudinaryImage->getResult();
 
-            $productImage->update(['url' => $result['secure_url']]);
+            $image->update(['url' => $result['secure_url']]);
         }
     }
 }
