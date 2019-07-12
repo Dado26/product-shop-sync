@@ -3,10 +3,12 @@
 namespace App\Jobs;
 
 use App\Models\Product;
+use App\Models\Variant;
 use App\Models\ProductImage;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use App\Services\ChangeDetectorService;
+use App\Services\ProductCrawlerService;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -62,7 +64,6 @@ class ProductSyncJob implements ShouldQueue
             'title' => $crawler->getTitle(),
             'description'=> $crawler->getDescription(),
             'url' => $crawler->getUrl(),
-            'category' => $this->category,
             'specifications' => $crawler->getSpecifications(),
             'status' => Product::STATUS_AVAILABLE,
             'synced_at' => now(),
@@ -70,7 +71,7 @@ class ProductSyncJob implements ShouldQueue
 
         
         // update variants
-        $oldVariant = Variant::where($this->product->id, 'product_id')->get();
+        $oldVariant = Variant::where('product_id',$this->product->id)->get()->pluck('name')->toArray();
 
         $newVariant = $crawler->getVariants();
 

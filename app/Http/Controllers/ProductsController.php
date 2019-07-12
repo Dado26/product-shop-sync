@@ -6,7 +6,8 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Jobs\ProductImportJob;
 use App\Http\Requests\ProductImportRequest;
-
+use App\Jobs\ProductSyncJob;
+use PHPUnit\Framework\MockObject\Stub\Exception;
 
 class ProductsController extends Controller
 {
@@ -46,5 +47,24 @@ class ProductsController extends Controller
 
        return redirect()->back();
 
+    }
+
+    public function sync(Product $product){
+
+        try{
+                ProductSyncJob::dispatchNow($product);
+
+                flash('Your product is being synchronized')->success();
+
+                return redirect()->back();
+
+        }catch(InvalidArgumentException $e){
+
+                logger()->notice('Failed to find required product data, maybe it was removed');
+                
+        }
+       
+
+       return redirect()->back();
     }
 }

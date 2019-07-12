@@ -124,8 +124,8 @@
                             {{ $product->status }}
                         </td>
 
-                        <td class="text-center">
-                            {{ $product->synced_at }}
+                        <td class="text-center cursor-help" title="{{ $product->synced_at }}">
+                            {{ $product->synced_at->diffForHumans() }}
                         </td>
 
                         <td class="text-center">
