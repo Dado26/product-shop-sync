@@ -14,7 +14,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 class ProductSyncJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-    
+
     /**
      * Delete the job if its models no longer exist.
      *
@@ -25,8 +25,7 @@ class ProductSyncJob implements ShouldQueue
     /**
      * @var \App\Models\Product
      */
-
-    private $product;
+    public $product;
 
     /**
      * Create a new job instance.
@@ -50,10 +49,11 @@ class ProductSyncJob implements ShouldQueue
         try {
             $crawler->handle($this->product->url);
         } catch (InvalidArgumentException $e) {
-            $this->product->update([
-                'status' => Product::STATUS_UNAVAILABLE,
-            ]);
-            $this->fail('Failed to find required data, maybe it was removed');
+            logger()->notice('Failed to find required product data, maybe it was removed', ['productUrl' => $this->product->url]);
+            
+            $this->product->update(['status' => Product::STATUS_UNAVAILABLE]);
+            
+            $this->delete();
         }
     
         // update product

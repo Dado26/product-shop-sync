@@ -6,9 +6,20 @@ use Tests\TestCase;
 use App\Models\Site;
 use App\Models\Product;
 use App\Jobs\ProductImportJob;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ProductImportJobTest extends TestCase
 {
+    use RefreshDatabase;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->seed('UsersTableSeeder');
+        $this->seed('CrawlerTestDataSeeder');
+    }
+
     public function test_product_import_by_url_and_category()
     {
         $productUrl = route('test.product');
@@ -47,7 +58,7 @@ class ProductImportJobTest extends TestCase
         foreach([1, 2, 3] as $imageName) {
             $this->assertDatabaseHas('product_images', [
                 'product_id' => $product->id,
-                'url' => "http://www.elementa.rs/images/products/57562/original/{$imageName}.jpg",
+                'source' => "http://www.elementa.rs/images/products/57562/original/{$imageName}.jpg",
             ]);    
         }
     }

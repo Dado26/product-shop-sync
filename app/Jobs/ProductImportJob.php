@@ -59,7 +59,9 @@ class ProductImportJob implements ShouldQueue
         try {
             $crawler->handle($this->url);
         } catch (InvalidArgumentException $e) {
-            $this->fail('Failed to find required data, maybe it was removed');
+            logger()->notice('Failed to find required product data, maybe it was removed', ['productUrl' => $this->url]);
+            
+            $this->delete();
         }
 
         // create product, variants, images

@@ -4,12 +4,13 @@ namespace Tests\Feature;
 
 use App\Services\ProductCrawlerService;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Models\Site;
 
 class ProductCrawlerServiceTest extends TestCase
 {
+    use RefreshDatabase;
+
     /**
      * @var \App\Services\ProductCrawlerService
      */
@@ -29,6 +30,9 @@ class ProductCrawlerServiceTest extends TestCase
 
         $this->crawler = new ProductCrawlerService();
         $this->url     = route('test.product');
+        
+        $this->seed('UsersTableSeeder');
+        $this->seed('CrawlerTestDataSeeder');
     }
 
     public function test_crawler_should_return_products_title()
@@ -115,9 +119,9 @@ class ProductCrawlerServiceTest extends TestCase
 
     public function test_crawler_should_return_site_that_matched_with_product_url()
     {
-        $this->crawler->handle($this->url);
-
         $expectedSite = Site::where('name', 'ProductSync')->first();
+
+        $this->crawler->handle($this->url);
 
         $this->assertEquals($expectedSite->id, $this->crawler->getSite()->id);
     }
