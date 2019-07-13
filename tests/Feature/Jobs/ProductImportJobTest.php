@@ -28,7 +28,6 @@ class ProductImportJobTest extends TestCase
         ProductImportJob::dispatchNow($productUrl, $category);
 
         $product = Product::latest()->first();
-        // dd($product->toArray());
 
         // check if all product data was imported
         $this->assertDatabaseHas('products', [
@@ -51,7 +50,7 @@ class ProductImportJobTest extends TestCase
                 'product_id' => $product->id,
                 'name' => $variantName,
                 'price' => 1599,
-            ]);    
+            ]);
         }
 
         // check if all images are imported
@@ -59,7 +58,7 @@ class ProductImportJobTest extends TestCase
             $this->assertDatabaseHas('product_images', [
                 'product_id' => $product->id,
                 'source' => "http://www.elementa.rs/images/products/57562/original/{$imageName}.jpg",
-            ]);    
+            ]);
         }
     }
 }

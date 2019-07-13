@@ -147,7 +147,7 @@ return [
                 'queue' => [ProductImportJob::QUEUE_NAME, ProductSyncJob::QUEUE_NAME],
                 'balance' => 'auto',
                 'processes' => 10,
-                'tries' => 3,
+                'tries' => 2,
             ],
         ],
 
@@ -157,7 +157,7 @@ return [
                 'queue' => [ProductImportJob::QUEUE_NAME, ProductSyncJob::QUEUE_NAME],
                 'balance' => 'auto',
                 'processes' => 10,
-                'tries' => 3,
+                'tries' => 2,
             ],
         ],
     ],

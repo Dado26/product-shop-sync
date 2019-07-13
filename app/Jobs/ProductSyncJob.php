@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Models\Product;
+use App\Models\Variant;
 use App\Services\ProductCrawlerService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
@@ -11,6 +12,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use InvalidArgumentException;
+use PHPUnit\Runner\Exception;
 
 class ProductSyncJob implements ShouldQueue
 {
@@ -34,6 +36,21 @@ class ProductSyncJob implements ShouldQueue
     public $product;
 
     /**
+     * @var int
+     */
+    public $tries = 2;
+
+    /**
+     * @var int
+     */
+    public $timeout = 40;
+
+    /**
+     * @var \App\Services\ProductCrawlerService
+     */
+    private $crawler;
+
+    /**
      * Create a new job instance.
      *
      * @param  \App\Models\Product  $product
@@ -41,6 +58,7 @@ class ProductSyncJob implements ShouldQueue
     public function __construct(Product $product)
     {
         $this->product = $product;
+        $this->crawler = new ProductCrawlerService();
 
         $this->onQueue(self::QUEUE_NAME);
     }
@@ -52,40 +70,48 @@ class ProductSyncJob implements ShouldQueue
      */
     public function handle()
     {
-        $crawler = new ProductCrawlerService();
+        $this->crawler->handle($this->product->url);
+
 
         try {
-            $crawler->handle($this->product->url);
+            $this->updateProduct();
+            $this->syncVariants();
         } catch (InvalidArgumentException $e) {
-            logger()->notice('Failed to find required product data, maybe it was removed', ['productUrl' => $this->product->url]);
+            logger()->notice('Product not found, maybe it was removed', [
+                'productId'  => $this->product->id,
+                'productUrl' => $this->product->url,
+            ]);
 
             $this->product->update(['status' => Product::STATUS_UNAVAILABLE]);
 
             $this->delete();
         }
+    }
 
-        // update product
+    private function updateProduct(): void
+    {
         $this->product->update([
-            'site_id'        => $crawler->getSite()->id,
-            'title'          => $crawler->getTitle(),
-            'description'    => $crawler->getDescription(),
-            'url'            => $crawler->getUrl(),
-            'specifications' => $crawler->getSpecifications(),
+            'site_id'        => $this->crawler->getSite()->id,
+            'title'          => $this->crawler->getTitle(),
+            'description'    => $this->crawler->getDescription(),
+            'url'            => $this->crawler->getUrl(),
+            'specifications' => $this->crawler->getSpecifications(),
             'status'         => Product::STATUS_AVAILABLE,
             'synced_at'      => now(),
         ]);
+    }
 
-
-        // update variants
+    private function syncVariants(): void
+    {
         $oldVariant = Variant::where($this->product->id, 'product_id')->get();
 
-        $newVariant = $crawler->getVariants();
+        $newVariant = $this->crawler->getVariants();
 
         $results = ChangeDetectorService::getIntersection($oldVariant, $newVariant);
 
         foreach ($results as $result) {
             $this->product->variants()->where('name', $result)->update([
-                'price' => $crawler->getPrice(),
+                'price' => $this->crawler->getPrice(),
             ]);
         }
 
@@ -95,7 +121,7 @@ class ProductSyncJob implements ShouldQueue
         foreach ($results as $result) {
             $this->product->variants()->create([
                 'name'  => $result,
-                'price' => $crawler->getPrice(),
+                'price' => $this->crawler->getPrice(),
             ]);
         }
 
@@ -103,5 +129,22 @@ class ProductSyncJob implements ShouldQueue
         $results = ChangeDetectorService::getArrayWithoutItemsFromSecondArray($oldVariant, $newVariant);
 
         $this->product->variants()->whereIn('name', $results)->delete();
+    }
+
+    /**
+     * The job failed to process.
+     *
+     * @param  Exception  $e
+     *
+     * @return void
+     */
+    public function failed(Exception $e)
+    {
+        logger()->warning('Failed to sync product', [
+            'message'   => $e->getMessage(),
+            'exception' => "{$e->getFile()}:{$e->getLine()}",
+        ]);
+
+        $this->delay(now()->addHour());
     }
 }

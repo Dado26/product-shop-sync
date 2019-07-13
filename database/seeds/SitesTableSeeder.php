@@ -13,7 +13,7 @@ class SitesTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(Site::class, 10)->create([
+        factory(Site::class, 6)->create([
             'user_id' => User::first()->id,
         ]);
     }

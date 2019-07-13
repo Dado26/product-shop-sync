@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Helpers\PriceExtractor;
 use App\Models\Site;
 use App\Models\SyncRules;
-use InvalidArgumentException;
 use Goutte\Client;
 use Exception;
 
@@ -39,7 +38,7 @@ class ProductCrawlerService
         $client = new Client();
 
         if (empty($url)) {
-            throw new InvalidArgumentException('Product URL cannot be empty');
+            throw new Exception('Product URL cannot be empty');
         }
 
         $this->url = $url;
@@ -168,9 +167,9 @@ class ProductCrawlerService
     }
 
     /**
-     * @return float
+     * @return string
      */
-    public function getPrice(): float
+    public function getPrice(): string
     {
         $rule = $this->rules->price;
 
