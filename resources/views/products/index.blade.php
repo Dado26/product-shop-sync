@@ -10,17 +10,15 @@
 
      @include('flash::message')
 
+    @include('partials.errors')
+
     <div class="card">
     <form action="{{ route('product.import') }}" method="POST" class="form-horizontal">
        {!! csrf_field() !!}
 
         <div class="card-body shadow">
 
-           @include('partials.errors')
-
             <div class="row">
-
-
 
                 <div class="col-6">
 
@@ -54,8 +52,6 @@
                     </button>
 
                 </div>
-
-
 
 
             </div>
@@ -130,14 +126,14 @@
 
                         <td class="text-center">
                             <div class="users-list-actions">
-                                
+
                             {!! Form::open(['route'=>['product.sync', $product->id],'method'=>'PUT','class'=>'pull-right delete']) !!}
                             <button type="submit" data-toggle="modal" data-target="#confirmButton" class="btn btn-primary d-none d-sm-inline-block btn-sm">
                                 <i class="fas fa-sync-alt"></i> Sync
                             </button>
                             {!! Form::close() !!}
-                                    
-                                
+
+
                             </div>
                         </td>
                     </tr>

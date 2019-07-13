@@ -93,14 +93,14 @@ class ProductImportJob implements ShouldQueue
 
             DB::commit();
         } catch (InvalidArgumentException $e) {
-            logger()->notice('Product not found, maybe it was removed', [
+            logger()->warning('Product data not found, please check site rules.', [
                 'url'       => $this->url,
                 'exception' => $e->getMessage(),
             ]);
 
             $this->delete();
         } catch (Throwable $e) {
-            logger()->warning('Failed to import product from url', [
+            logger()->error('Failed to import product from url', [
                 'message'   => $e->getMessage(),
                 'exception' => "{$e->getFile()}:{$e->getLine()}",
             ]);
@@ -115,7 +115,7 @@ class ProductImportJob implements ShouldQueue
     private function createProduct()
     {
         return Product::create([
-            'site_id111'     => $this->crawler->getSite()->id,
+            'site_id'        => $this->crawler->getSite()->id,
             'title'          => $this->crawler->getTitle(),
             'description'    => $this->crawler->getDescription(),
             'url'            => $this->crawler->getUrl(),

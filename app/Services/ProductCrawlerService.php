@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Helpers\PriceExtractor;
+use App\Helpers\SiteUrlParser;
 use App\Models\Site;
 use App\Models\SyncRules;
 use Goutte\Client;
@@ -43,10 +44,7 @@ class ProductCrawlerService
 
         $this->url = $url;
 
-        $domain = parse_url($url);
-        $domain = $domain['host'];
-
-        $this->site  = Site::where('url', 'LIKE', "%$domain%")->firstOrFail();
+        $this->site  = SiteUrlParser::getSite($url);
         $this->rules = $this->site->syncRules;
 
         // fetch product url

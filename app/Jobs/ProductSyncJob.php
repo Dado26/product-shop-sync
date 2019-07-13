@@ -95,7 +95,7 @@ class ProductSyncJob implements ShouldQueue
 
             $this->delete();
         } catch (Throwable $e) {
-            logger()->warning('Failed to sync product', [
+            logger()->error('Failed to sync product', [
                 'message'   => $e->getMessage(),
                 'exception' => "{$e->getFile()}:{$e->getLine()}",
             ]);
