@@ -17,6 +17,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use PHPUnit\Runner\Exception;
+use Throwable;
 
 class ProductImportJob implements ShouldQueue
 {
@@ -62,7 +63,7 @@ class ProductImportJob implements ShouldQueue
     {
         $this->url      = $url;
         $this->category = $category;
-        $this->crawler = new ProductCrawlerService();
+        $this->crawler  = new ProductCrawlerService();
 
         $this->onQueue(self::QUEUE_NAME);
     }
@@ -80,18 +81,31 @@ class ProductImportJob implements ShouldQueue
             logger()->warning('Site was not found in our database', ['productUrl' => $this->url]);
 
             $this->delete();
+            return;
         }
 
         try {
             DB::beginTransaction();
+
             $product = $this->createProduct();
             $this->createVariants($product);
             $this->createAndUploadImages($product);
+
             DB::commit();
         } catch (InvalidArgumentException $e) {
-            logger()->notice('Product not found, maybe it was removed', ['productUrl' => $this->url]);
+            logger()->notice('Product not found, maybe it was removed', [
+                'url'       => $this->url,
+                'exception' => $e->getMessage(),
+            ]);
 
             $this->delete();
+        } catch (Throwable $e) {
+            logger()->warning('Failed to import product from url', [
+                'message'   => $e->getMessage(),
+                'exception' => "{$e->getFile()}:{$e->getLine()}",
+            ]);
+
+            $this->fail();
         }
     }
 
@@ -166,17 +180,10 @@ class ProductImportJob implements ShouldQueue
     /**
      * The job failed to process.
      *
-     * @param  Exception  $e
-     *
      * @return void
      */
-    public function failed(Exception $e)
+    public function failed()
     {
-        logger()->warning('Failed to import product from url', [
-            'message'   => $e->getMessage(),
-            'exception' => "{$e->getFile()}:{$e->getLine()}",
-        ]);
-
         DB::rollBack();
     }
 }

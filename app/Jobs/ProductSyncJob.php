@@ -6,13 +6,14 @@ use App\Models\Product;
 use App\Models\Variant;
 use App\Services\ProductCrawlerService;
 use Illuminate\Bus\Queueable;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Queue\SerializesModels;
 use App\Services\ChangeDetectorService;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use InvalidArgumentException;
-use PHPUnit\Runner\Exception;
+use Throwable;
 
 class ProductSyncJob implements ShouldQueue
 {
@@ -70,21 +71,36 @@ class ProductSyncJob implements ShouldQueue
      */
     public function handle()
     {
-        $this->crawler->handle($this->product->url);
+        try {
+            $this->crawler->handle($this->product->url);
+        } catch (ModelNotFoundException $e) {
+            logger()->warning('Site was not found in our database', ['productUrl' => $this->product->url]);
 
+            $this->fail();
+            return;
+        }
 
         try {
             $this->updateProduct();
             $this->syncVariants();
         } catch (InvalidArgumentException $e) {
-            logger()->notice('Product not found, maybe it was removed', [
-                'productId'  => $this->product->id,
-                'productUrl' => $this->product->url,
-            ]);
-
             $this->product->update(['status' => Product::STATUS_UNAVAILABLE]);
 
+            logger()->notice('Product not found, maybe it was removed', [
+                'id'        => $this->product->id,
+                'url'       => $this->product->url,
+                'newStatus' => Product::STATUS_UNAVAILABLE,
+                'exception' => $e->getMessage(),
+            ]);
+
             $this->delete();
+        } catch (Throwable $e) {
+            logger()->warning('Failed to sync product', [
+                'message'   => $e->getMessage(),
+                'exception' => "{$e->getFile()}:{$e->getLine()}",
+            ]);
+
+            $this->delay(now()->addHour());
         }
     }
 
@@ -134,17 +150,12 @@ class ProductSyncJob implements ShouldQueue
     /**
      * The job failed to process.
      *
-     * @param  Exception  $e
+     * @param $exception
      *
      * @return void
      */
-    public function failed(Exception $e)
+    public function failed(Throwable $exception)
     {
-        logger()->warning('Failed to sync product', [
-            'message'   => $e->getMessage(),
-            'exception' => "{$e->getFile()}:{$e->getLine()}",
-        ]);
-
-        $this->delay(now()->addHour());
+        //
     }
 }
