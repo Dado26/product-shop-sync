@@ -33,7 +33,7 @@ class SitesRequest extends FormRequest
             'sync_Rules.in_stock'       => 'required',
             'sync_Rules.in_stock_value' => 'required',
             'sync_Rules.images'         => 'required',
-            'sync_Rules.price_decimals' => 'required|integer|min:0|max:2'
+            'sync_Rules.price_decimals' => 'required|integer|min:0|max:2',
         ];
     }
 

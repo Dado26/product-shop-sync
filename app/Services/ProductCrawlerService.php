@@ -32,7 +32,7 @@ class ProductCrawlerService
     private $crawler;
 
     /**
-     * @param  string  $url
+     * @param string $url
      */
     public function handle(string $url): void
     {
@@ -88,7 +88,7 @@ class ProductCrawlerService
 
         $specifications = $this->crawler->filter($rule)->html();
 
-        return "<table>".trim($specifications)."</table>";
+        return '<table>' . trim($specifications) . '</table>';
     }
 
     /**
@@ -171,7 +171,7 @@ class ProductCrawlerService
     {
         $rule = $this->rules->price;
 
-        $price = $this->crawler->filter($rule)->html();
+        $price    = $this->crawler->filter($rule)->html();
         $decimals = $this->rules->price_decimals;
 
         return PriceExtractor::handle($price, $decimals);

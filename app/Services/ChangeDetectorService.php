@@ -15,7 +15,6 @@ class ChangeDetectorService
         $col2 = collect($array2);
 
         return $col->diff($col2)->values()->toArray();
-
     }
 
     public static function getArrayWithoutItemsFromFirstArray(array $array1, array $array2): array

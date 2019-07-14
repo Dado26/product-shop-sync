@@ -12,7 +12,7 @@ class ProductsController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      *
      * @return \Illuminate\Http\Response
      */
@@ -43,6 +43,5 @@ class ProductsController extends Controller
         flash('Your product was queued successfully, it will be processed soon.')->success();
 
         return redirect()->back();
-
     }
 }

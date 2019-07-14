@@ -56,8 +56,8 @@ class ProductImportJob implements ShouldQueue
     /**
      * Create a new job instance.
      *
-     * @param  String  $url
-     * @param  String  $category
+     * @param String $url
+     * @param String $category
      */
     public function __construct(String $url, String $category)
     {
