@@ -5,17 +5,25 @@ namespace App\Jobs;
 use App\Models\Product;
 use App\Models\Variant;
 use App\Models\ProductImage;
+use App\Services\ProductCrawlerService;
 use Illuminate\Bus\Queueable;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Queue\SerializesModels;
 use App\Services\ChangeDetectorService;
-use App\Services\ProductCrawlerService;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use InvalidArgumentException;
+use Throwable;
 
 class ProductSyncJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+    /**
+     * Queue on which we are importing products
+     */
+    public const QUEUE_NAME = 'products-sync';
 
     /**
      * Delete the job if its models no longer exist.
@@ -30,13 +38,31 @@ class ProductSyncJob implements ShouldQueue
     public $product;
 
     /**
+     * @var int
+     */
+    public $tries = 2;
+
+    /**
+     * @var int
+     */
+    public $timeout = 40;
+
+    /**
+     * @var \App\Services\ProductCrawlerService
+     */
+    private $crawler;
+
+    /**
      * Create a new job instance.
      *
-     * @param  \App\Models\Product  $product
+     * @param \App\Models\Product $product
      */
     public function __construct(Product $product)
     {
         $this->product = $product;
+        $this->crawler = new ProductCrawlerService();
+
+        $this->onQueue(self::QUEUE_NAME);
     }
 
     /**
@@ -46,50 +72,72 @@ class ProductSyncJob implements ShouldQueue
      */
     public function handle()
     {
-        $crawler = new ProductCrawlerService();
+        try {
+            $this->crawler->handle($this->product->url);
+        } catch (ModelNotFoundException $e) {
+            logger()->warning('Site was not found in our database', ['productUrl' => $this->product->url]);
+
+            $this->fail();
+            return;
+        }
 
         try {
-            $crawler->handle($this->product->url);
+            $this->updateProduct();
+            $this->syncVariants();
         } catch (InvalidArgumentException $e) {
-            logger()->notice('Failed to find required product data, maybe it was removed', ['productUrl' => $this->product->url]);
-            
             $this->product->update(['status' => Product::STATUS_UNAVAILABLE]);
-            
+
+            logger()->notice('Product not found, maybe it was removed', [
+                'id'        => $this->product->id,
+                'url'       => $this->product->url,
+                'newStatus' => Product::STATUS_UNAVAILABLE,
+                'exception' => $e->getMessage(),
+            ]);
+
             $this->delete();
+        } catch (Throwable $e) {
+            logger()->error('Failed to sync product', [
+                'message'   => $e->getMessage(),
+                'exception' => "{$e->getFile()}:{$e->getLine()}",
+            ]);
+
+            $this->delay(now()->addHour());
         }
-    
-        // update product
+    }
+
+    private function updateProduct(): void
+    {
         $this->product->update([
-            'site_id' => $crawler->getSite()->id,
-            'title' => $crawler->getTitle(),
-            'description'=> $crawler->getDescription(),
-            'url' => $crawler->getUrl(),
-            'specifications' => $crawler->getSpecifications(),
-            'status' => Product::STATUS_AVAILABLE,
-            'synced_at' => now(),
+            'site_id'        => $this->crawler->getSite()->id,
+            'title'          => $this->crawler->getTitle(),
+            'description'    => $this->crawler->getDescription(),
+            'url'            => $this->crawler->getUrl(),
+            'specifications' => $this->crawler->getSpecifications(),
+            'status'         => Product::STATUS_AVAILABLE,
+            'synced_at'      => now(),
         ]);
 
         
         // update variants
         $oldVariant = Variant::where('product_id',$this->product->id)->get()->pluck('name')->toArray();
 
-        $newVariant = $crawler->getVariants();
+        $newVariant = $this->crawler->getVariants();
 
         $results = ChangeDetectorService::getIntersection($oldVariant, $newVariant);
 
-        foreach($results as $result){
+        foreach ($results as $result) {
             $this->product->variants()->where('name', $result)->update([
-                'price' => $crawler->getPrice(),
+                'price' => $this->crawler->getPrice(),
             ]);
         }
-        
+
         // create new missing variants
         $results = ChangeDetectorService::getArrayWithoutItemsFromFirstArray($oldVariant, $newVariant);
 
-        foreach($results as $result){
+        foreach ($results as $result) {
             $this->product->variants()->create([
-                'name' => $result,
-                'price' => $crawler->getPrice(),
+                'name'  => $result,
+                'price' => $this->crawler->getPrice(),
             ]);
         }
 
@@ -97,5 +145,17 @@ class ProductSyncJob implements ShouldQueue
         $results = ChangeDetectorService::getArrayWithoutItemsFromSecondArray($oldVariant, $newVariant);
 
         $this->product->variants()->whereIn('name', $results)->delete();
+    }
+
+    /**
+     * The job failed to process.
+     *
+     * @param $exception
+     *
+     * @return void
+     */
+    public function failed(Throwable $exception)
+    {
+        //
     }
 }

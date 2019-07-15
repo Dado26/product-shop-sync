@@ -46,7 +46,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 
     Route::resource('sites', 'SitesController');
- 
+
 });
 
 // test routes

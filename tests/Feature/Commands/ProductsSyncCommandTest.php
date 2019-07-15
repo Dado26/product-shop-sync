@@ -13,10 +13,10 @@ class ProductsSyncCommandTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function testThatCommandDispatchesProductsThatHaveBeenSyncedMoreThan24HoursAgo()
+    public function test_that_command_dispatches_products_that_have_been_synced_more_than_24_hours_ago()
     {
         Queue::fake();
-        
+
         // prepare data
         $site = factory(Site::class)->create();
 

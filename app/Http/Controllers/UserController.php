@@ -26,7 +26,7 @@ class UserController extends Controller
     }
 
     /**
-     * @param  \App\Http\Requests\UserRequest  $request
+     * @param \App\Http\Requests\UserRequest $request
      *
      * @return \Illuminate\Http\RedirectResponse
      */
@@ -43,7 +43,7 @@ class UserController extends Controller
     }
 
     /**
-     * @param  \App\Models\User  $user
+     * @param \App\Models\User $user
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
@@ -55,8 +55,8 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UserRequest  $request
-     * @param  \App\Models\User  $user
+     * @param \App\Http\Requests\UserRequest $request
+     * @param \App\Models\User               $user
      *
      * @return \Illuminate\Http\Response
      */
@@ -75,9 +75,10 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\User  $user
+     * @param \App\Models\User $user
      *
      * @return \Illuminate\Http\Response
+     *
      * @throws \Exception
      */
     public function destroy(User $user)

@@ -5,7 +5,11 @@ namespace App\Jobs;
 use App\Models\Product;
 use App\Models\Variant;
 use App\Models\ProductImage;
+use DB;
 use Illuminate\Bus\Queueable;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Str;
+use InvalidArgumentException;
 use JD\Cloudder\Facades\Cloudder;
 use Illuminate\Queue\SerializesModels;
 use App\Services\ProductCrawlerService;
@@ -13,6 +17,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use PHPUnit\Runner\Exception;
+use Throwable;
 
 class ProductImportJob implements ShouldQueue
 {
@@ -21,7 +26,7 @@ class ProductImportJob implements ShouldQueue
     /**
      * Queue on which we are importing products
      */
-    public const QUEUE_NAME = 'import-products';
+    public const QUEUE_NAME = 'products-import';
 
     /**
      * @var String
@@ -34,15 +39,31 @@ class ProductImportJob implements ShouldQueue
     private $category;
 
     /**
+     * @var \App\Services\ProductCrawlerService
+     */
+    private $crawler;
+
+    /**
+     * @var int
+     */
+    public $tries = 1;
+
+    /**
+     * @var int
+     */
+    public $timeout = 40;
+
+    /**
      * Create a new job instance.
      *
-     * @param  String  $url
-     * @param  String  $category
+     * @param String $url
+     * @param String $category
      */
     public function __construct(String $url, String $category)
     {
         $this->url      = $url;
         $this->category = $category;
+        $this->crawler  = new ProductCrawlerService();
 
         $this->onQueue(self::QUEUE_NAME);
     }
@@ -54,46 +75,86 @@ class ProductImportJob implements ShouldQueue
      */
     public function handle()
     {
-        $crawler = new ProductCrawlerService();
-
         try {
-            $crawler->handle($this->url);
-        } catch (InvalidArgumentException $e) {
-            logger()->notice('Failed to find required product data, maybe it was removed', ['productUrl' => $this->url]);
-            
+            $this->crawler->handle($this->url);
+        } catch (ModelNotFoundException $e) {
+            logger()->warning('Site was not found in our database', ['productUrl' => $this->url]);
+
             $this->delete();
+            return;
         }
 
-        // create product, variants, images
-        $product = Product::create([
-            'site_id'        => $crawler->getSite()->id,
-            'title'          => $crawler->getTitle(),
-            'description'    => $crawler->getDescription(),
-            'url'            => $crawler->getUrl(),
+        try {
+            DB::beginTransaction();
+
+            $product = $this->createProduct();
+            $this->createVariants($product);
+            $this->createAndUploadImages($product);
+
+            DB::commit();
+        } catch (InvalidArgumentException $e) {
+            logger()->warning('Product data not found, please check site rules.', [
+                'url'       => $this->url,
+                'exception' => $e->getMessage(),
+            ]);
+
+            $this->delete();
+        } catch (Throwable $e) {
+            logger()->error('Failed to import product from url', [
+                'message'   => $e->getMessage(),
+                'exception' => "{$e->getFile()}:{$e->getLine()}",
+            ]);
+
+            $this->fail();
+        }
+    }
+
+    /**
+     * @return \App\Models\Product|\Illuminate\Database\Eloquent\Model
+     */
+    private function createProduct()
+    {
+        return Product::create([
+            'site_id'        => $this->crawler->getSite()->id,
+            'title'          => $this->crawler->getTitle(),
+            'description'    => $this->crawler->getDescription(),
+            'url'            => $this->crawler->getUrl(),
             'category'       => $this->category,
-            'specifications' => $crawler->getSpecifications(),
+            'specifications' => $this->crawler->getSpecifications(),
             'status'         => Product::STATUS_AVAILABLE,
             'synced_at'      => now(),
         ]);
+    }
 
-        foreach ($crawler->getVariants() as $variant) {
-            Variant::create(
-                [
-                    'name'       => $variant,
-                    'price'      => $crawler->getPrice(),
-                    'product_id' => $product->id,
-                ]
-            );
+    /**
+     * @param $product
+     */
+    private function createVariants($product): void
+    {
+        foreach ($this->crawler->getVariants() as $variant) {
+            Variant::create([
+                'name'       => $variant,
+                'price'      => $this->crawler->getPrice(),
+                'product_id' => $product->id,
+            ]);
         }
+    }
 
-        foreach ($crawler->getImages() as $imageUrl) {
-            $image = ProductImage::create(
-                [
-                    'url'        => null,
-                    'source'     => $imageUrl,
-                    'product_id' => $product->id,
-                ]
-            );
+    /**
+     * @param $product
+     *
+     * @throws \Exception
+     */
+    private function createAndUploadImages($product): void
+    {
+        foreach ($this->crawler->getImages() as $imageUrl) {
+            $imageUrl = Str::startsWith($imageUrl, '//') ? "https:{$imageUrl}" : $imageUrl;
+
+            $image = ProductImage::create([
+                'url'        => null,
+                'source'     => $imageUrl,
+                'product_id' => $product->id,
+            ]);
 
             try {
                 $cloudinaryImage = Cloudder::upload(
@@ -104,12 +165,25 @@ class ProductImportJob implements ShouldQueue
             } catch (Exception $e) {
                 $image->delete();
 
-                logger()->notice('Failed to upload image to cloudinary', ['error' => $e->getMessage()]);
+                logger()->notice('Failed to upload image to cloudinary', [
+                    'error'      => $e->getMessage(),
+                    'productUrl' => $this->crawler->getUrl(),
+                ]);
             }
 
             $result = $cloudinaryImage->getResult();
 
             $image->update(['url' => $result['secure_url']]);
         }
+    }
+
+    /**
+     * The job failed to process.
+     *
+     * @return void
+     */
+    public function failed()
+    {
+        DB::rollBack();
     }
 }

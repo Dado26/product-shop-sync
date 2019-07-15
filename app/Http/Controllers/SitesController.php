@@ -33,7 +33,7 @@ class SitesController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\SitesRequest  $request
+     * @param \App\Http\Requests\SitesRequest $request
      *
      * @return \Illuminate\Http\Response
      */
@@ -49,15 +49,13 @@ class SitesController extends Controller
 
         flash('You have successfully created new site')->success();
 
-        //flash('Ups something went wrong')->error();
-
         return redirect()->route('sites.index');
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Site  $site
+     * @param \App\Models\Site $site
      *
      * @return \Illuminate\Http\Response
      */
@@ -69,8 +67,8 @@ class SitesController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\SitesRequest  $request
-     * @param  \App\Models\Site  $site
+     * @param \App\Http\Requests\SitesRequest $request
+     * @param \App\Models\Site                $site
      *
      * @return \Illuminate\Http\Response
      */
@@ -90,9 +88,10 @@ class SitesController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Site  $site
+     * @param \App\Models\Site $site
      *
      * @return \Illuminate\Http\Response
+     *
      * @throws \Exception
      */
     public function destroy(Site $site)

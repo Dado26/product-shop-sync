@@ -10,7 +10,7 @@ use App\Models\Product;
 
 class ImportingTest extends DuskTestCase
 {
-    public function testImportedUrlThatWasAlreadyImported()
+    public function test_imported_url_that_was_already_imported()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1));
@@ -19,10 +19,10 @@ class ImportingTest extends DuskTestCase
             $browser->press('import');
             $browser->assertPathIs('/products');
             $browser->assertSee('This product was already imported');
-    });
+        });
     }
 
-    public function testImportedWithoutUrl()
+    public function test_imported_without_url()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1));
@@ -31,21 +31,17 @@ class ImportingTest extends DuskTestCase
             $browser->assertPathIs('/products');
             $browser->assertSee('The url field is required.');
         });
-    
     }
 
-    public function testWhenImportedSuceesfully()
+    public function test_when_imported_successfully()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1));
             $browser->visit('/products');
-            $browser->type('url','http://product-sync/test/');
+            $browser->type('url', 'http://product-sync/test/');
             $browser->press('import');
             $browser->assertPathIs('/products');
             $browser->assertSee('Your product was queued successfully, it will be processed soon.');
         });
-    
     }
-
-
 }

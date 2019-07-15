@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\SiteExistsRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ProductImportRequest extends FormRequest
@@ -24,14 +25,23 @@ class ProductImportRequest extends FormRequest
     public function rules()
     {
         return [
-            'url' => 'required|url|unique:products,url',
-            
-            'category' => 'required'
+            'url'      => [
+                'required',
+                'url',
+                'unique:products,url',
+                new SiteExistsRule,
+            ],
+            'category' => 'required',
         ];
     }
-    public function messages(){
-        return [ 
-            'url.unique' => 'This product was already imported'
+
+    /**
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'url.unique' => 'This product was already imported',
         ];
     }
 }
