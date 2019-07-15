@@ -43,6 +43,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::put('product/{product}/sync', 'ProductsController@sync')->name('product.sync');
 
     Route::resource('sites', 'SitesController');
+
+    Route::view('/products/show', 'products/show');
+
 });
 
 // test routes
