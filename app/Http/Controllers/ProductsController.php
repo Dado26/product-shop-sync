@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\Variant;
 use App\Jobs\ProductSyncJob;
 use Illuminate\Http\Request;
 use InvalidArgumentException;
 use App\Jobs\ProductImportJob;
 use App\Http\Requests\ProductImportRequest;
+use App\Models\ProductImage;
 
 class ProductsController extends Controller
 {
@@ -62,7 +64,12 @@ class ProductsController extends Controller
         return redirect()->back();
     }
 
-    public function show(Product $product){
+    public function show(Product $product)
+    {
+        $variants =  Variant::where('product_id', $product->id)->get();
 
+        $images   = ProductImage::where('product_id', $product->id)->get();
+
+        return view('products.show', compact('product', 'variants', 'images'));
     }
 }

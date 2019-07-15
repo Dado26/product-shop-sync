@@ -140,7 +140,7 @@
 
                          <td class="text-center">
                          <div class="text-center cursor-help">
-                            <a class="btn btn-success d-none d-sm-inline-block btn-sm">show</a>
+                            <a href="{{ route('product.show', $product->id) }}" class="btn btn-success d-none d-sm-inline-block btn-sm">show</a>
                             </div>
                         </td>
 
