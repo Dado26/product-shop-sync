@@ -19,9 +19,7 @@ Route::group(['middleware' => 'guest'], function () {
     Route::post('login', 'AuthController@LoginAttempt')->middleware('throttle:10,1')->name('login');
 });
 
-
 Route::group(['middleware' => 'auth'], function () {
-
     Route::get('logout', 'AuthController@LogOut')->name('logOut');
 
     Route::get('/users', 'UserController@index')->name('users.index');
@@ -44,9 +42,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::put('product/{product}/sync', 'ProductsController@sync')->name('product.sync');
 
-
     Route::resource('sites', 'SitesController');
-
 });
 
 // test routes

@@ -7,7 +7,6 @@ use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
 use App\Models\Product;
 
-
 class ImportingTest extends DuskTestCase
 {
     public function test_imported_url_that_was_already_imported()

@@ -47,22 +47,18 @@ class ProductsController extends Controller
         return redirect()->back();
     }
 
-    public function sync(Product $product){
+    public function sync(Product $product)
+    {
+        try {
+            ProductSyncJob::dispatchNow($product);
 
-        try{
-                ProductSyncJob::dispatchNow($product);
+            flash('Your product is being synchronized')->success();
 
-                flash('Your product is being synchronized')->success();
-
-                return redirect()->back();
-
-        }catch(InvalidArgumentException $e){
-
-                logger()->notice('Failed to find required product data, maybe it was removed');
-                
+            return redirect()->back();
+        } catch (InvalidArgumentException $e) {
+            logger()->notice('Failed to find required product data, maybe it was removed');
         }
-       
 
-       return redirect()->back();
+        return redirect()->back();
     }
 }
