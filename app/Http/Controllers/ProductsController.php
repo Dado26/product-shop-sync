@@ -5,11 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\Variant;
 use App\Jobs\ProductSyncJob;
+use App\Models\ProductImage;
 use Illuminate\Http\Request;
 use InvalidArgumentException;
 use App\Jobs\ProductImportJob;
 use App\Http\Requests\ProductImportRequest;
-use App\Models\ProductImage;
+use App\Models\ShopCategory;
 
 class ProductsController extends Controller
 {
@@ -24,7 +25,9 @@ class ProductsController extends Controller
     {
         $search = $request->input('search');
 
-        $searchWords = explode(' ', $search);
+        $searchWords   = explode(' ', $search);
+
+        $categories    = ShopCategory::with('languageCategoryDescriptions')->get();
 
         $products = Product::query()
                            ->where(function ($query) use ($searchWords) {
@@ -37,7 +40,7 @@ class ProductsController extends Controller
                            ->latest()
                            ->paginate();
 
-        return view('products.index', compact('products'));
+        return view('products.index', compact('products', 'categories'));
     }
 
     public function import(ProductImportRequest $request)
