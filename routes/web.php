@@ -40,7 +40,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::post('product/import', 'ProductsController@import')->name('product.import');
 
-    Route::get('/product/{product}/show', 'products/show')->name('product.show');
+   // Route::get('product/{product}/show', 'ProductsController@show')->name('product.show');
 
     Route::put('product/{product}/sync', 'ProductsController@sync')->name('product.sync');
 
