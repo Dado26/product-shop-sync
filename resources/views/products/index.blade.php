@@ -91,6 +91,7 @@
                     <th class="text-center">Status</th>
                     <th class="text-center">Synced at</th>
                     <th class="text-center">Sync</th>
+                    <th class="text-center">Show</th>
                 </tr>
 
                 @foreach($products as $product)
@@ -133,9 +134,16 @@
                             </button>
                             {!! Form::close() !!}
 
+                            </div>
 
+                        </td>
+
+                         <td class="text-center">
+                         <div class="text-center cursor-help">
+                            <a href="{{ route('product.show', $product->id) }}" class="btn btn-success d-none d-sm-inline-block btn-sm">show</a>
                             </div>
                         </td>
+
                     </tr>
 
                 @endforeach
