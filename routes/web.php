@@ -47,6 +47,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('sites', 'SitesController');
 
+    Route::view('/products/show', 'products/show');
+
 });
 
 // test routes
