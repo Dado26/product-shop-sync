@@ -37,10 +37,11 @@
                 <div class="col-4 w-100">
 
                     <select class="form-control" name="category">
-                        <option value="CA" data-select2-id="85">California</option>
-                        <option value="NV" data-select2-id="86">Nevada</option>
-                        <option value="OR" data-select2-id="87">Oregon</option>
-                        <option value="WA" data-select2-id="88">Washington</option>
+                        @foreach($categories as $category )
+                        <option value="{{ $category->category_id }}" data-select2-id="{{ $category->category_id }}">
+                            {{ $category->languageCategoryDescriptions[0]->name }}
+                        </option>
+                        @endforeach
                     </select>
 
                 </div>
