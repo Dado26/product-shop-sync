@@ -17,14 +17,12 @@
             </div>
 
             <div class="card-body">
-          
+
                 <div class="form-group">
                     <label class="control-label">Name</label>
-                    
                     <span class="form-control">{{ $product->site->name }}</span>
-                    
                 </div>
-                
+
 
                 <div class="form-group">
                     <label class="control-label">Title</label>
@@ -43,27 +41,27 @@
 
                 <div class="form-group">
                     <label class="control-label">Category</label>
-          <div class="form-control">{{ $product->category }}</div>
+                    <div class="form-control">{{ $product->category }}</div>
                 </div>
 
                 <div class="form-group">
                     <label class="control-label">Specification</label>
-          <div class="form-control">{{ $product->specification }}</div>
+                    <div class="form-control">{{ $product->specification }}</div>
                 </div>
 
                 <div class="form-group">
                     <label class="control-label">Status</label>
-          <div class="form-control">{{ $product->status }}</div>
+                    <div class="form-control">{{ $product->status }}</div>
                 </div>
 
                 <div class="form-group">
                     <label class="control-label">Synced at</label>
-          <div class="form-control">{{ $product->synced_at }}</div>
+                    <div class="form-control">{{ $product->synced_at }}</div>
                 </div>
 
                 <div class="form-group">
                     <label class="control-label">Created at</label>
-          <div class="form-control">{{ $product->created_at }}</div>
+                    <div class="form-control">{{ $product->created_at }}</div>
                 </div>
 
             </div>
@@ -81,19 +79,22 @@
             </div>
 
             <div class="card-body">
-           
-                <div class="form-group">
-                    <label class="control-label">Name</label>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Price</th>
+                        </tr>
+                    </thead>
                     @foreach($variants as $variant)
-                    <div class="form-control">{{ $variant->name }}</div>
+                        <tr class="align-td">
+                            <td>{{ $loop->iteration }}</td>
+                            <td>{{ $variant->name }}</td>
+                            <td>{{ number_format($variant->price, 2) }} din</td>
+                        </tr>
                     @endforeach
-                </div>
-
-                <div class="form-group">
-                    <label class="control-label">Price</label>
-                    <div class="form-control">{{ number_format($product->variants->average('price'), 2) }} din</div>
-                </div>
-           
+                </table>
             </div>
 
         </div>
