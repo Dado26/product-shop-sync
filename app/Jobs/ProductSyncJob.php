@@ -4,7 +4,6 @@ namespace App\Jobs;
 
 use App\Models\Product;
 use App\Models\Variant;
-use App\Models\ProductImage;
 use App\Services\ProductCrawlerService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -117,9 +116,8 @@ class ProductSyncJob implements ShouldQueue
             'synced_at'      => now(),
         ]);
 
-        
         // update variants
-        $oldVariant = Variant::where('product_id',$this->product->id)->get()->pluck('name')->toArray();
+        $oldVariant = Variant::where('product_id', $this->product->id)->get()->pluck('name')->toArray();
 
         $newVariant = $this->crawler->getVariants();
 

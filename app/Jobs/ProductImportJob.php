@@ -34,9 +34,9 @@ class ProductImportJob implements ShouldQueue
     private $url;
 
     /**
-     * @var String
+     * @var int
      */
-    private $category;
+    private $categoryId;
 
     /**
      * @var \App\Services\ProductCrawlerService
@@ -57,13 +57,13 @@ class ProductImportJob implements ShouldQueue
      * Create a new job instance.
      *
      * @param String $url
-     * @param String $category
+     * @param int    $categoryId
      */
-    public function __construct(String $url, String $category)
+    public function __construct(String $url, int $categoryId)
     {
-        $this->url      = $url;
-        $this->category = $category;
-        $this->crawler  = new ProductCrawlerService();
+        $this->url        = $url;
+        $this->categoryId = $categoryId;
+        $this->crawler    = new ProductCrawlerService();
 
         $this->onQueue(self::QUEUE_NAME);
     }
@@ -119,7 +119,6 @@ class ProductImportJob implements ShouldQueue
             'title'          => $this->crawler->getTitle(),
             'description'    => $this->crawler->getDescription(),
             'url'            => $this->crawler->getUrl(),
-            'category'       => $this->category,
             'specifications' => $this->crawler->getSpecifications(),
             'status'         => Product::STATUS_AVAILABLE,
             'synced_at'      => now(),

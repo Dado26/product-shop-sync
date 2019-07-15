@@ -40,11 +40,6 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="control-label">Category</label>
-                    <div class="form-control">{{ $product->category }}</div>
-                </div>
-
-                <div class="form-group">
                     <label class="control-label">Specification</label>
                     <div class="form-control">{{ $product->specification }}</div>
                 </div>

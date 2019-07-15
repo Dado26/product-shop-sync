@@ -27,7 +27,6 @@ class CreateProductsTable extends Migration
             $table->string('title', 180);
             $table->text('description')->nullable();
             $table->string('url');
-            $table->string('category', 60);
             $table->text('specifications')->nullable();
             $table->string('status', 20);
             $table->timestamp('synced_at')->nullable();

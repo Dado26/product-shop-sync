@@ -99,10 +99,10 @@ class SitesTest extends DuskTestCase
             $browser->loginAs(User::find(1));
             $browser->visit('/sites');
             $browser->clickLink('Edit');
-            $browser->visit('/sites/20/edit');
+            $browser->visit('/sites/5/edit');
             $browser->type('sites[url]', 'url');
             $browser->press('Save');
-            $browser->assertPathIs('/sites/20/edit');
+            $browser->assertPathIs('/sites/5/edit');
             $browser->assertSee('The url format is invalid.');
         });
     }
@@ -114,10 +114,10 @@ class SitesTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1));
-            $browser->visit('/sites/20/edit');
+            $browser->visit('/sites/5/edit');
             $browser->type('sites[email]', 'zryan');
             $browser->press('Save');
-            $browser->assertPathIs('/sites/20/edit');
+            $browser->assertPathIs('/sites/5/edit');
             $browser->assertSee('The email must be a valid email address.');
         });
     }
@@ -129,7 +129,7 @@ class SitesTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1));
-            $browser->visit('/sites/10/edit');
+            $browser->visit('/sites/6/edit');
             $browser->press('Save');
             $browser->assertPathIs('/sites');
             $browser->assertSee('You have successfully updated site');
@@ -143,7 +143,7 @@ class SitesTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1));
-            $browser->visit('/sites/10/edit');
+            $browser->visit('/sites/6/edit');
             $browser->type('sites[name]', 'Voja');
             $browser->type('sites[url]', 'https://sirka.com/');
             $browser->type('sites[email]', 'some-random@email.com');
@@ -159,7 +159,7 @@ class SitesTest extends DuskTestCase
             $browser->assertPathIs('/sites');
 
             // check if data was save successfully
-            $browser->visit('/sites/10/edit');
+            $browser->visit('/sites/6/edit');
             $browser->assertInputValue('sites[name]', 'Voja');
             $browser->assertInputValue('sites[url]', 'https://sirka.com/');
             $browser->assertInputValue('sites[email]', 'some-random@email.com');
