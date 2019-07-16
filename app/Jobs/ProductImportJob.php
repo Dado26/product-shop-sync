@@ -92,6 +92,8 @@ class ProductImportJob implements ShouldQueue
             $this->createAndUploadImages($product);
 
             DB::commit();
+
+            TransferProductJob::dispatch($product);
         } catch (InvalidArgumentException $e) {
             logger()->warning('Product data not found, please check site rules.', [
                 'url'       => $this->url,

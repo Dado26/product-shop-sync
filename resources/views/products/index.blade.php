@@ -38,7 +38,7 @@
 
                     <select class="form-control" name="category">
                         @foreach($categories as $category )
-                        <option value="{{ $category->category_id }}" data-select2-id="{{ $category->category_id }}">
+                        <option value="{{ $category->category_id }}">
                             {{ $category->languageCategoryDescriptions[0]->name }}
                         </option>
                         @endforeach

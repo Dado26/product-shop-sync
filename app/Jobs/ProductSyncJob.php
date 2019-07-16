@@ -83,6 +83,7 @@ class ProductSyncJob implements ShouldQueue
         try {
             $this->updateProduct();
             $this->syncVariants();
+            TransferUpdateJob::dispatch($this->product);
         } catch (InvalidArgumentException $e) {
             $this->product->update(['status' => Product::STATUS_UNAVAILABLE]);
 
