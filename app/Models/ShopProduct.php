@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
-class ShopProduct extends Model
+class ShopProduct extends ShopModel
 {
     protected $table = 'product';
 
-    protected $fillable = ['model', 'image', 'price', 'location', 'status'];
+    protected $primaryKey = 'product_id';
 
-    protected $connection = 'shop';
+    public function categories()
+    {
+        return $this->belongsToMany(ShopCategory::class, 'product_to_category', 'product_id', 'category_id');
+    }
 }

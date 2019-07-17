@@ -93,7 +93,7 @@ class ProductImportJob implements ShouldQueue
 
             DB::commit();
 
-            TransferProductJob::dispatch($product);
+            TransferProductJob::dispatch($product, $this->categoryId);
         } catch (InvalidArgumentException $e) {
             logger()->warning('Product data not found, please check site rules.', [
                 'url'       => $this->url,
@@ -126,6 +126,10 @@ class ProductImportJob implements ShouldQueue
             'synced_at'      => now(),
         ]);
     }
+
+    /**
+     * @return void
+     */
 
     /**
      * @param $product

@@ -12,7 +12,7 @@ class Product extends Model
     public const STATUS_AVAILABLE   = 'available';
     public const STATUS_UNAVAILABLE = 'unavailable';
 
-    protected $fillable = ['title', 'description', 'status', 'url', 'site_id', 'specifications', 'synced_at', 'product_shop_id'];
+    protected $fillable = ['title', 'description', 'status', 'url', 'site_id', 'specifications', 'synced_at', 'shop_product_id'];
 
     protected $dates = ['synced_at'];
 

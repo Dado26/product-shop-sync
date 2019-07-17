@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
-class ShopCategoryDescription extends Model
+class ShopCategoryDescription extends ShopModel
 {
     protected $table      = 'category_description';
+
     protected $connection = 'shop';
+
+    protected $primaryKey = 'category_id';
 
     public function shopCategory()
     {

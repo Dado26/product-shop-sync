@@ -22,9 +22,12 @@ class TransferProductJob implements ShouldQueue
      */
     public $product;
 
-    public function __construct(Product $product)
+    public $categoryId;
+
+    public function __construct(Product $product, $categoryId)
     {
-        $this->product = $product;
+        $this->product    = $product;
+        $this->categoryId = $categoryId;
     }
 
     /**
@@ -37,31 +40,56 @@ class TransferProductJob implements ShouldQueue
         $product        = $this->product;
         $price          = $product->variants->average('price');
 
-        if ($product->status == 'available') {
-            return $status = 1;
-        } else {
-            return $status = 0;
-        }
+        $ShopProduct =  ShopProduct::create([
+            'model'           => $product->title,
+            'price'           => $price,
+            'location'        => $product->url,
+            'status'          => ($product->status == 'available') ? 1 : 0,
+            'date_available'  => now(),
+            'sku'             => '',
+            'upc'             => '',
+            'ean'             => '',
+            'jan'             => '',
+            'isbn'            => '',
+            'mpn'             => '',
+            'stock_status_id' => 1,
+            'manufacturer_id' => 0,
+            'shipping'        => 1,
+            'points'          => 0,
+            'tax_class_id'    => 0,
+            'weight'          => 0.00000000,
+            'weight_class_id' => 1,
+            'length_class_id' => 1,
+            'height'          => 0.00000000,
+            'width'           => 0.00000000,
+            'length'          => 0.00000000,
+            'subtract'        => 1,
+            'minimum'         => 1,
+            'quantity'        => 1,
+            'sort_order'      => 1,
+            'viewed'          => 0,
+            'date_added'      => now(),
+            'date_modified'   => now(),
+        ]);
 
-        $ShopProduct =  ShopProduct::create(
-            [
-                'model'    => $product->title,
-                'image'    => $price,
-                'location' => $price->url,
-                'status'   => $status,
-            ]
-        );
         $product->update(
             [
                 'shop_product_id' => $ShopProduct->product_id,
             ]
             );
 
+        $ShopProduct->categories()->attach($this->categoryId);
+
         ShopProductDescription::create(
             [
-                'description' => $product->description,
-                'name'        => $product->title,
-                'product_id'  => $ShopProduct->product_id,
+                'description'      => $product->description,
+                'name'             => $product->title,
+                'product_id'       => $ShopProduct->product_id,
+                'language_id'      => 2,
+                'tag'              => '',
+                'meta_title'       => $product->title,
+                'meta_description' => '',
+                'meta_keyword'     => '',
             ]
               );
     }

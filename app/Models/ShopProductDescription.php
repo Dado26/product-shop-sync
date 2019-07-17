@@ -2,12 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
-class ShopProductDescription extends Model
+class ShopProductDescription extends ShopModel
 {
     protected $table = 'product_description';
 
-    protected $fillable   = ['description', 'name', 'product_id'];
-    protected $connection = 'shop';
+    protected $primaryKey = 'product_id';
 }
