@@ -23,7 +23,7 @@ class ProductImportJobTest extends TestCase
     public function test_product_import_by_url_and_category()
     {
         $productUrl = route('test.product');
-        $category = 'Electronics';
+        $category   = 1;
 
         ProductImportJob::dispatchNow($productUrl, $category);
 
@@ -31,12 +31,11 @@ class ProductImportJobTest extends TestCase
 
         // check if all product data was imported
         $this->assertDatabaseHas('products', [
-            'title' => 'Lampa za insekte',
+            'title'       => 'Lampa za insekte',
             'description' => 'Napravljena specijalno za uništavanje letećih štetnih insekata.',
-            'category' => $category,
-            'status' => Product::STATUS_AVAILABLE,
-            'url' => $productUrl,
-            'site_id' => Site::where('name', 'ProductSync')->first()->id,
+            'status'      => Product::STATUS_AVAILABLE,
+            'url'         => $productUrl,
+            'site_id'     => Site::where('name', 'ProductSync')->first()->id,
         ]);
 
         $this->assertEquals(
@@ -45,19 +44,19 @@ class ProductImportJobTest extends TestCase
         );
 
         // check if all variants were imported
-        foreach(['Blue', 'White', 'Black'] as $variantName) {
+        foreach (['Blue', 'White', 'Black'] as $variantName) {
             $this->assertDatabaseHas('variants', [
                 'product_id' => $product->id,
-                'name' => $variantName,
-                'price' => 1599,
+                'name'       => $variantName,
+                'price'      => '1599.00',
             ]);
         }
 
         // check if all images are imported
-        foreach([1, 2, 3] as $imageName) {
+        foreach ([1, 2, 3] as $imageName) {
             $this->assertDatabaseHas('product_images', [
                 'product_id' => $product->id,
-                'source' => "http://www.elementa.rs/images/products/57562/original/{$imageName}.jpg",
+                'source'     => "http://www.elementa.rs/images/products/57562/original/{$imageName}.jpg",
             ]);
         }
     }

@@ -24,7 +24,7 @@ class CreateProductsTable extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->unsignedInteger('site_id');
-            $table->integer('shop_product_id')->nullable();
+            $table->unsignedInteger('shop_product_id')->nullable();
             $table->string('title', 180);
             $table->text('description')->nullable();
             $table->string('url');

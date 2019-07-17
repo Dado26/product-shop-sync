@@ -20,7 +20,7 @@ class SyncTest extends DuskTestCase
 
         factory(Variant::class)->create([
             'product_id' => $product->id,
-            'price'      => 1590,
+            'price'      => 1595,
         ]);
 
         $this->browse(function (Browser $browser) {
@@ -29,7 +29,7 @@ class SyncTest extends DuskTestCase
             $browser->click('.users-list-actions:first-child button');
             $browser->assertPathIs('/products');
             $browser->assertSee('Your product is being synchronized');
-            $browser->assertSee('1,595.00 din');
+            $browser->assertSee('1,599.00 din');
         });
     }
 }

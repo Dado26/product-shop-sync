@@ -38,6 +38,22 @@ class ImportingTest extends DuskTestCase
             $browser->loginAs(User::find(1));
             $browser->visit('/products');
             $browser->type('url', 'http://product-sync/test/');
+
+            $browser->waitUsing(1, 100, function() use ($browser) {
+                // we don't want to creat categories in shop database
+                // so we will create and select it with javascript
+                return $browser->script("
+                    var option = document.createElement('option');
+                    option.text = 'Test';
+                    option.value = 1;
+                    
+                    var select = document.querySelector('select[name=category]');
+                    
+                    select.appendChild(option);
+                    select.selectedIndex = 0;
+                ");
+            });
+
             $browser->press('import');
             $browser->assertPathIs('/products');
             $browser->assertSee('Your product was queued successfully, it will be processed soon.');
