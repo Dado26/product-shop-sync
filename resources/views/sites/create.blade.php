@@ -43,6 +43,44 @@
 
         </div>
 
+        <div class="card shadow mb-4">
+
+            <div class="card-header">
+                Test Rules
+            </div>
+
+            <div class="card-body">
+
+                <div class="d-flex form-inline navbar-search mb-2">
+                    <div class="input-group w-75">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">URL:</span>
+                        </div>
+                        <input type="text" name='url' class="form-control border" placeholder="https://shop.com/product/73625">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary shadow-sm w-auto ml-3">
+                        Check Rules
+                    </button>
+                </div>
+
+                <hr>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Name</label>
+                            <div class="form-control">Test</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
     </div>
 
     <div class="col-lg-6 members-position">

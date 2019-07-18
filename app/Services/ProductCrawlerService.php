@@ -34,7 +34,7 @@ class ProductCrawlerService
     /**
      * @param string $url
      */
-    public function handle(string $url): void
+    public function handle(string $url, array $rules = []): void
     {
         $client = new Client();
 
@@ -44,8 +44,12 @@ class ProductCrawlerService
 
         $this->url = $url;
 
-        $this->site  = SiteUrlParser::getSite($url);
-        $this->rules = $this->site->syncRules;
+        if (empty($rules)) {
+            $this->site  = SiteUrlParser::getSite($url);
+            $this->rules = $this->site->syncRules;
+        } else {
+            $this->rules = (object) $rules;
+        }
 
         // fetch product url
         $this->crawler = $client->request('GET', $url);
