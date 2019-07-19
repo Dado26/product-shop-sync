@@ -45,9 +45,22 @@ class ProductsController extends Controller
 
     public function import(ProductImportRequest $request)
     {
-        ProductImportJob::dispatch($request->url, $request->category);
+        if ($request->batch == false) {
+            ProductImportJob::dispatch($request->url, $request->category);
 
-        flash('Your product was queued successfully, it will be processed soon.')->success();
+            flash('Your product was queued successfully, it will be processed soon.')->success();
+        } else {
+            $urls = explode('\n', $request->urls);
+
+            $jobs = [];
+
+            foreach ($urls as $url) {
+                $jobs[] = new ProductImportJob($url, $request->category);
+            }
+            Queue::bulk($jobs);
+
+            flash('Your products were queued successfully, they will be processed soon.')->success();
+        }
 
         return redirect()->back();
     }
