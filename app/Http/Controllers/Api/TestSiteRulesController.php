@@ -13,7 +13,12 @@ class TestSiteRulesController extends Controller
     {
         $crawler = new ProductCrawlerService;
 
-        $crawler->handle($request->url, $request->rules);
+        $params = $request->validate([
+            'url'   => 'required|url',
+            'rules' => 'required|array',
+        ]);
+
+        $crawler->handle($params['url'], $params['rules']);
 
         $values = [
             'title'          => 'getTitle',
