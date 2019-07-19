@@ -11,4 +11,4 @@
 |
 */
 
-Route::get('/sites/test-rules', 'Api\TestSiteRulesController@get');
+Route::post('/sites/test-rules', 'Api\TestSiteRulesController@get');

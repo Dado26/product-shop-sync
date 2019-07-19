@@ -23,7 +23,7 @@ class TestSiteRulesControllerTest extends TestCase
             ],
         ];
 
-        $response = $this->getJson('api/sites/test-rules?' . http_build_query($params));
+        $response = $this->postJson('api/sites/test-rules', $params);
 
         $response->assertJson([
             'title'         => 'Lampa za insekte',
@@ -61,7 +61,7 @@ class TestSiteRulesControllerTest extends TestCase
             ],
         ];
 
-        $response = $this->getJson('api/sites/test-rules?' . http_build_query($params));
+        $response = $this->postJson('api/sites/test-rules', $params);
 
         $response->assertJson([
             'title'         => null,

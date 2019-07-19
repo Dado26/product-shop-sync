@@ -8,6 +8,8 @@ require('./bootstrap');
 
 require('./theme');
 
+require('./page/sites');
+
 // window.Vue = require('vue');
 
 /**

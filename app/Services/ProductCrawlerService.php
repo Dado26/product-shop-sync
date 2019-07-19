@@ -116,7 +116,6 @@ class ProductCrawlerService
         } catch (Exception $e) {
             logger()->emergency('Failed to get stock for product', [
                 'exception' => $e->getMessage(),
-                'site'      => $this->site->id,
                 'url'       => $this->url,
             ]);
 

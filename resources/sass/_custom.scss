@@ -4,8 +4,27 @@
     }
 }
 
-.link-border {
+#test-rules .specifications {
+    table {
+        width: 100%;
+    }
+
+    td {
+        padding: 5px;
+        border: 1px solid #d1d3e2;
+    }
+}
+
+.custom-border {
     border: 1px solid #d1d3e2;
+}
+
+.invalid-rule {
+    color: #e74a3b;
+
+    div {
+        border-color: #e74a3b;
+    }
 }
 
 /* Dropdown Menu On Page Products */

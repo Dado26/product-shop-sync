@@ -36,7 +36,7 @@
 
                 <div class="form-group">
                     <label class="control-label">URL</label>
-                    <a href="{{ $product->url }}" target="_blank" class="btn btn-link text-left link-border">{{ $product->url }}</a>
+                    <a href="{{ $product->url }}" target="_blank" class="btn btn-link text-left custom-border d-block">{{ $product->url }}</a>
                 </div>
 
                 <div class="form-group">
