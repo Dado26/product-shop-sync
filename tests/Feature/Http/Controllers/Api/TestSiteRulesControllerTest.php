@@ -49,7 +49,7 @@ class TestSiteRulesControllerTest extends TestCase
         $params = [
             'url'   => 'http://product-sync/test/product',
             'rules' => [
-                'title'          => '#invalid', // INVALID
+                'title'          => '#product-title',
                 'description'    => '.invalid-description', // INVALID
                 'specifications' => '#invalid-specs', // IINVALID
                 'price'          => '.product-price',
@@ -64,7 +64,7 @@ class TestSiteRulesControllerTest extends TestCase
         $response = $this->postJson('api/sites/test-rules', $params);
 
         $response->assertJson([
-            'title'         => null,
+            'title'         => 'Lampa za insekte',
             'description'   => null,
             'specification' => null,
             'price'         => '1599.00',

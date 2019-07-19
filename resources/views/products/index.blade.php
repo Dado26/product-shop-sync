@@ -20,10 +20,9 @@
 
             <div class="row">
 
-                <div class="col-6">
+                <div class="col-7">
 
-
-                    <div class="d-none d-sm-inline-block form-inline navbar-search w-100">
+                    <div class="navbar-search w-100" id="single-url">
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text">URL:</span>
@@ -32,9 +31,20 @@
                         </div>
                     </div>
 
+                    <div class="navbar-search w-100" id="batch-urls" style="display: none">
+                        <div class="input-group">
+                            <textarea name="urls" 
+                                      class="form-control border w-100" 
+                                      rows="5"
+                                      placeholder="https://shop.com/product/73625
+https://shop.com/product/564658
+https://shop.com/product/957778"></textarea>
+                        </div>
+                    </div>
+
                 </div>
 
-                <div class="col-4 w-100">
+                <div class="col-3 w-100">
 
                     <select class="form-control" name="category">
                         @foreach($categories as $category )
@@ -48,12 +58,13 @@
 
                 <div class="col-2 w-100">
 
-                    <button type="submit" class="d-none d-sm-inline-block btn btn-primary shadow-sm float-right">
+                    <button type="submit" class="d-none d-sm-inline-block btn btn-primary shadow-sm">
                         <i class="fas fa-plus"></i> import
                     </button>
+                    <div class="btn btn-link cursor-pointer" id="toggle-batch">batch</div>
 
+                    <input type="hidden" name="batch" value="false">
                 </div>
-
 
             </div>
 
@@ -163,6 +174,15 @@
     <script>
         $("select[name=category]").select2({
             placeholder: "Select Category",
+        });
+
+        $('#toggle-batch').click(function() {
+            $('#single-url,#batch-urls').toggle();
+            
+            // by this we can know if batch was used
+            $('input[name=batch]').val(
+                $('input[name=batch]').val() == 'false'
+            );
         });
     </script>
 @endsection
