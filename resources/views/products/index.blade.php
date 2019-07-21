@@ -27,18 +27,18 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text">URL:</span>
                             </div>
-                            <input type="text" name='url' class="form-control border" placeholder="https://shop.com/product/73625" aria-label="Search" aria-describedby="basic-addon2">
+                            <input type="text" name="url" value="{{ old('url') }}" class="form-control border" placeholder="https://shop.com/product/73625" aria-label="Search" aria-describedby="basic-addon2">
                         </div>
                     </div>
 
                     <div class="navbar-search w-100" id="batch-urls" style="display: none">
                         <div class="input-group">
-                            <textarea name="urls" 
-                                      class="form-control border w-100" 
+                            <textarea name="urls"
+                                      class="form-control border w-100"
                                       rows="5"
                                       placeholder="https://shop.com/product/73625
 https://shop.com/product/564658
-https://shop.com/product/957778"></textarea>
+https://shop.com/product/957778">{{ old('urls') }}</textarea>
                         </div>
                     </div>
 
@@ -61,9 +61,9 @@ https://shop.com/product/957778"></textarea>
                     <button type="submit" class="d-none d-sm-inline-block btn btn-primary shadow-sm">
                         <i class="fas fa-plus"></i> import
                     </button>
-                    <div class="btn btn-link cursor-pointer" id="toggle-batch">batch</div>
+                    <button type="button" class="btn btn-link" id="toggle-batch">batch</button>
 
-                    <input type="hidden" name="batch" value="false">
+                    <input type="hidden" name="batch" value="0">
                 </div>
 
             </div>
@@ -176,13 +176,22 @@ https://shop.com/product/957778"></textarea>
             placeholder: "Select Category",
         });
 
+        // toggle batch/single feature
         $('#toggle-batch').click(function() {
             $('#single-url,#batch-urls').toggle();
-            
+
             // by this we can know if batch was used
-            $('input[name=batch]').val(
-                $('input[name=batch]').val() == 'false'
-            );
+            var isBatch = $('input[name=batch]').val() == 1 ? 0 : 1;
+
+            $(this).text(isBatch ? 'single' : 'batch');
+
+            $('input[name=batch]').val(isBatch);
         });
+
+        // show batch if it's populated on init, this means
+        // that the validation has failed when batch was selected
+        if ($('textarea[name=urls]').val().length > 0) {
+            $('#toggle-batch').click();
+        }
     </script>
 @endsection

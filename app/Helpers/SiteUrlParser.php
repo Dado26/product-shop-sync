@@ -25,4 +25,18 @@ class SiteUrlParser
 
         return $site->firstOrFail();
     }
+
+    /**
+     * @param $urls
+     *
+     * @return array
+     */
+    public static function splitUrlsByNewLine($urls): array
+    {
+        $urlsArray = explode(PHP_EOL, $urls);
+
+        return collect($urlsArray)->map(function ($url) {
+            return trim(preg_replace('/\s+/', ' ', $url));
+        })->toArray();
+    }
 }

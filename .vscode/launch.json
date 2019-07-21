@@ -1,0 +1,19 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "product-sync xdebug",
+            "type": "php",
+            "request": "launch",
+            "port": 9005,
+            // server -> local
+            "pathMappings": {
+                "/home/vagrant/sites/product-sync": "${workspaceRoot}",
+                "/home/vagrant/sites/product-sync/public": "${workspaceRoot}/public"
+            }
+        }
+    ]
+}

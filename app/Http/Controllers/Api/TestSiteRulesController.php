@@ -23,9 +23,9 @@ class TestSiteRulesController extends Controller
         $values = [
             'title'          => 'getTitle',
             'description'    => 'getDescription',
-            'specification'  => 'getSpecifications',
+            'specifications' => 'getSpecifications',
             'price'          => 'getPrice',
-            'in_stock_value' => 'getInStock',
+            'in_stock_value' => 'getInStockValue',
             'images'         => 'getImages',
             'variants'       => 'getVariants',
         ];

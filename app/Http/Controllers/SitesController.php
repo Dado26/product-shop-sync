@@ -5,15 +5,18 @@ namespace App\Http\Controllers;
 use App\Models\SyncRules;
 use App\Http\Requests\SitesRequest;
 use App\Models\Site;
+use Illuminate\Http\Request;
 
 class SitesController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
+     * @param  \App\Http\Controllers\Request  $request
+     *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $sites = Site::with('products')->latest()->paginate(10);
 

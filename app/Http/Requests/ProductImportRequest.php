@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\UniqueProductUrlBatchRule;
+use App\Rules\SiteExistsBatchRule;
 use App\Rules\SiteExistsRule;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -24,15 +26,24 @@ class ProductImportRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'url'      => [
+        $rules = ['category' => 'required'];
+
+        if (request()->batch) {
+            $rules['urls'] = [
+                'required',
+                new SiteExistsBatchRule,
+                new UniqueProductUrlBatchRule,
+            ];
+        } else {
+            $rules['url'] = [
                 'required',
                 'url',
                 'unique:products,url',
                 new SiteExistsRule,
-            ],
-            'category' => 'required',
-        ];
+            ];
+        }
+
+        return $rules;
     }
 
     /**

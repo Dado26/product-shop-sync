@@ -2,8 +2,10 @@ import axios from "axios";
 
 $(document).ready(function() {
     $('#check-rules-btn').click(function(){
-        /* const params = {
-            url: document.querySelector('input[name=url]').value,
+        if (document.querySelector('#test-url').value == '') return;
+
+        const params = {
+            url: document.querySelector('#test-url').value,
             rules: {
                 title: document.querySelector('input[name="sync_Rules[title]"]').value,
                 description: document.querySelector('input[name="sync_Rules[description]"]').value,
@@ -15,25 +17,32 @@ $(document).ready(function() {
                 images: document.querySelector('input[name="sync_Rules[images]"]').value,
                 variants: document.querySelector('input[name="sync_Rules[variants]"]').value,
             },
-        }; */
-
-        const params = {
-            url: 'http://product-sync/test/product',
-            rules: {
-                title: '#product-title',
-                description: '.product-description',
-                specifications: '#product-specs',
-                price: '.product-price',
-                in_stock: '.product-stock',
-                in_stock_value: 'In stock',
-                price_decimals: '2',
-                images: '.product-images > img',
-                variants: '.variants > .color',
-            },
         };
 
+        // const params = {
+        //     url: 'http://product-sync/test/product',
+        //     rules: {
+        //         title: '#product-title',
+        //         description: '.product-description',
+        //         specifications: '#product-specs',
+        //         price: '.product-price',
+        //         in_stock: '.product-stock',
+        //         price_decimals: '2',
+        //         images: '.product-images > img',
+        //         variants: '.variants > .color',
+        //     },
+        // };
+
+        // show spinner & hide results
+        $('.spinner').parent().show();
+        $('#test-rules .results-container').hide();
+
+        // make ajax request
         axios.post('/api/sites/test-rules', params)
             .then(function(response) {
+                // show results on success
+                $('#test-rules .results-container').show();
+
                 // TITLE
                 if (response.data.title !== null) {
                     document.querySelector('#test-rules .form-group.title').classList.remove('invalid-rule');
@@ -51,9 +60,9 @@ $(document).ready(function() {
 
                 if (response.data.specifications !== null) {
                     document.querySelector('#test-rules .form-group.specifications').classList.remove('invalid-rule');
-                    document.querySelector('#test-rules .form-group.specifications div').innerHTML = response.data.specification;
+                    document.querySelector('#test-rules .form-group.specifications div').innerHTML = response.data.specifications;
                 } else {
-                    document.querySelector('#test-rules .form-group.specifications div').classList.add('invalid-rule');
+                    document.querySelector('#test-rules .form-group.specifications').classList.add('invalid-rule');
                 }
 
                 if (response.data.price !== null) {
@@ -71,7 +80,7 @@ $(document).ready(function() {
                 }
 
                 // IMAGES
-                if (response.data.images !== null) {
+                if (response.data.images.length > 0) {
                     var productImages = document.querySelector('#test-rules .images-container');
                     productImages.innerHTML = '';
                     response.data.images.forEach(function (image) {
@@ -81,16 +90,16 @@ $(document).ready(function() {
                         productImages.appendChild(img);
                     });
                 } else {
-                    document.querySelector('#test-rules .form-group.images .images-container').classList.add('invalid-rule');
+                    document.querySelector('#test-rules .form-group.images').classList.add('invalid-rule');
                 }
 
                 // VARIANTS
-                if (response.data.variants !== null) {
+                if (response.data.variants.length > 0) {
                     var productVariants = document.querySelector('#test-rules .variants-container');
                     productVariants.innerHTML = '';
 
                     var list = document.createElement("ol");
-                        list.setAttribute('class', 'd-block rounded custom-border');
+                    list.setAttribute('class', 'd-block');
 
                     response.data.variants.forEach(function (variant) {
                         var item = document.createElement("li");
@@ -100,15 +109,19 @@ $(document).ready(function() {
 
                     productVariants.appendChild(list);
                 } else {
-                    document.querySelector('#test-rules .form-group.variants .variants-container').classList.add('invalid-rule');
+                    document.querySelector('#test-rules .form-group.variants').classList.add('invalid-rule');
                 }
-
             })
             .catch(function(error) {
+                // hide results on server error
+                $('#test-rules .results-container').hide();
 
+                alert('Whoops, something went wrong...');
+                console.error(error);
             })
             .finally(function() {
-
+                // always hide spinner after request has finished
+                $('.spinner').parent().hide();
             });
     });
 });

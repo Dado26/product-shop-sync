@@ -4,14 +4,36 @@
     }
 }
 
-#test-rules .specifications {
-    table {
-        width: 100%;
+#test-rules {
+    hr {
+        margin: 25px 0;
     }
+    .variants {
+        &.invalid-rule .variants-container {
+            border-color: #e74a3b !important;
+        }
+        .variants-container {
+            width: 100%;
+            padding: 10px;
+            min-height: 38px;
+            border: 1px solid #d1d3e2;
+            border-radius: 0.35rem;
 
-    td {
-        padding: 5px;
-        border: 1px solid #d1d3e2;
+            ol {
+                padding-left: 30px;
+                margin: 0;
+            }
+        }
+    }
+    .specifications {
+        table {
+            width: 100%;
+        }
+
+        td {
+            padding: 5px;
+            border: 1px solid #d1d3e2;
+        }
     }
 }
 

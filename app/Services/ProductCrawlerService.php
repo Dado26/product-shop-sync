@@ -8,6 +8,7 @@ use App\Models\Site;
 use App\Models\SyncRules;
 use Goutte\Client;
 use Exception;
+use Throwable;
 
 class ProductCrawlerService
 {
@@ -108,12 +109,10 @@ class ProductCrawlerService
      */
     public function getInStock(): bool
     {
-        $rule = $this->rules->in_stock;
-
         try {
-            $stockText         = strtolower($this->crawler->filter($rule)->text());
+            $stockText         = strtolower($this->getInStockValue());
             $expectedStockText = strtolower($this->rules->in_stock_value);
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             logger()->emergency('Failed to get stock for product', [
                 'exception' => $e->getMessage(),
                 'url'       => $this->url,
@@ -123,6 +122,18 @@ class ProductCrawlerService
         }
 
         return trim($stockText) == $expectedStockText;
+    }
+
+    /**
+     * @return string
+     */
+    public function getInStockValue(): string
+    {
+        $rule = $this->rules->in_stock;
+
+        $value = $this->crawler->filter($rule)->text();
+
+        return trim($value);
     }
 
     /**

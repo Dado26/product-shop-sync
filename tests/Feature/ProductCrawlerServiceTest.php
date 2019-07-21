@@ -30,33 +30,28 @@ class ProductCrawlerServiceTest extends TestCase
 
         $this->crawler = new ProductCrawlerService();
         $this->url     = route('test.product');
-        
+
         $this->seed('UsersTableSeeder');
         $this->seed('CrawlerTestDataSeeder');
+
+        $this->crawler->handle($this->url);
     }
 
     public function test_crawler_should_return_products_title()
     {
-        $this->crawler->handle($this->url);
-
         $this->assertEquals('Lampa za insekte', $this->crawler->getTitle());
     }
 
     public function test_crawler_should_return_products_description()
     {
-        $this->crawler->handle($this->url);
-
         $this->assertEquals(
             'Napravljena specijalno za uništavanje letećih štetnih insekata.',
-            //'Napravljena specijalno za uništavanje letećih štetnih insekata.',
             $this->crawler->getDescription()
         );
     }
 
     public function test_crawler_should_return_specifications()
     {
-        $this->crawler->handle($this->url);
-
         $expected = '<table>
                         <tr>
                             <td>Brend</td>
@@ -78,39 +73,29 @@ class ProductCrawlerServiceTest extends TestCase
 
     public function test_crawler_should_return_products_url()
     {
-        $this->crawler->handle($this->url);
-
         $this->assertEquals($this->url, $this->crawler->getUrl());
     }
 
     public function test_crawler_should_return_that_the_product_is_in_stock()
     {
-        $this->crawler->handle($this->url);
-
         $this->assertTrue($this->crawler->getInStock());
     }
 
-    public function test_crawler_should_return_if_the_product_is_in_stock()
+    public function test_crawler_should_return_in_stock_value()
     {
-        $this->crawler->handle($this->url);
-
-        $this->assertTrue($this->crawler->getInStock());
+        $this->assertEquals('In stock', $this->crawler->getInStockValue());
     }
 
     public function test_crawler_should_return_product_variants()
     {
-        $this->crawler->handle($this->url);
-
         $this->assertEquals(['Blue', 'White', 'Black'], $this->crawler->getVariants());
     }
 
     public function test_crawler_should_return_product_images()
     {
-        $this->crawler->handle($this->url);
-
         $expected = [
-            'http://www.elementa.rs/images/products/57562/original/1.jpg',         
-            'http://www.elementa.rs/images/products/57562/original/2.jpg',          
+            'http://www.elementa.rs/images/products/57562/original/1.jpg',
+            'http://www.elementa.rs/images/products/57562/original/2.jpg',
             'http://www.elementa.rs/images/products/57562/original/3.jpg',
         ];
 
@@ -121,15 +106,11 @@ class ProductCrawlerServiceTest extends TestCase
     {
         $expectedSite = Site::where('name', 'ProductSync')->first();
 
-        $this->crawler->handle($this->url);
-
         $this->assertEquals($expectedSite->id, $this->crawler->getSite()->id);
     }
 
     public function test_crawler_should_return_product_price()
     {
-        $this->crawler->handle($this->url);
-
         $this->assertEquals(1599.00, $this->crawler->getPrice());
     }
 }

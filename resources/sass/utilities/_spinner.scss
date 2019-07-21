@@ -1,0 +1,18 @@
+.spinner {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    border: 6px solid rgba($primary, .3);
+    border-radius: 50%;
+    border-top-color: $primary;
+    border-right-color: $primary;
+    animation: spin 0.7s linear infinite;
+    -webkit-animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+    to { -webkit-transform: rotate(360deg); }
+}
+@-webkit-keyframes spin {
+    to { -webkit-transform: rotate(360deg); }
+}

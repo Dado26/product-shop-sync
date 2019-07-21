@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\SiteUrlParser;
 use App\Models\Product;
 use App\Models\Variant;
 use App\Jobs\ProductSyncJob;
@@ -11,6 +12,7 @@ use InvalidArgumentException;
 use App\Jobs\ProductImportJob;
 use App\Http\Requests\ProductImportRequest;
 use App\Models\ShopCategory;
+use Queue;
 
 class ProductsController extends Controller
 {
@@ -45,21 +47,21 @@ class ProductsController extends Controller
 
     public function import(ProductImportRequest $request)
     {
-        if ($request->batch == false) {
-            ProductImportJob::dispatch($request->url, $request->category);
-
-            flash('Your product was queued successfully, it will be processed soon.')->success();
-        } else {
-            $urls = explode('\n', $request->urls);
-
+        if ($request->batch) {
+            $urls = SiteUrlParser::splitUrlsByNewLine($request->urls);
             $jobs = [];
 
             foreach ($urls as $url) {
                 $jobs[] = new ProductImportJob($url, $request->category);
             }
+
             Queue::bulk($jobs);
 
             flash('Your products were queued successfully, they will be processed soon.')->success();
+        } else {
+            ProductImportJob::dispatch($request->url, $request->category);
+
+            flash('Your product was queued successfully, it will be processed soon.')->success();
         }
 
         return redirect()->back();
