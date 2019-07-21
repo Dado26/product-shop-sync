@@ -12,19 +12,16 @@
     </div>
 
     <div class="row">
-
         <div class="col-md-6 members-position">
-
             @include('partials.errors')
 
+            <!-- SITE -->
             <div class="card shadow mb-4">
-
                 <div class="card-header">
                     General
                 </div>
 
                 <div class="card-body">
-
                     <div class="form-group">
                         <label class="control-label">Name</label>
                         <input type="text" name="sites[name]" class="form-control" value="{{$site->name}}">
@@ -39,21 +36,19 @@
                         <label class="control-label">Email</label>
                         <input type="text" name="sites[email]" class="form-control" value="{{$site->email}}">
                     </div>
-
                 </div>
             </div>
+
+            @include('sites.test_rules')
         </div>
 
         <div class="col-lg-6 members-position">
-
             <div class="card shadow mb-4">
-
                 <div class="card-header">
                     Scrape rules
                 </div>
 
                 <div class="card-body">
-
                     <div class="form-group">
                         <label class="control-label">Title</label>
                         <input type="text" name="sync_Rules[title]" class="form-control" value="{{ $site->SyncRules->title}}">
@@ -98,13 +93,9 @@
                         <label class="control-label">Variants</label>
                         <input type="text" name="sync_Rules[variants]" class="form-control" value="{{ $site->SyncRules->variants }}">
                     </div>
-
                 </div>
-
             </div>
-
         </div>
-
     </div>
 
     <div class="d-flex justify-content-between mb-5">
@@ -120,7 +111,6 @@
             </button>
         </div>
     </div>
-
 </form>
 
 <!-- /.content -->

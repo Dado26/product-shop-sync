@@ -37,6 +37,6 @@ class SiteUrlParser
 
         return collect($urlsArray)->map(function ($url) {
             return trim(preg_replace('/\s+/', ' ', $url));
-        })->toArray();
+        })->unique()->filter()->values()->toArray();
     }
 }
