@@ -3,8 +3,10 @@
 namespace App\Jobs;
 
 use App\Models\Product;
+use App\Models\ShopOption;
 use App\Models\ShopProduct;
 use Illuminate\Bus\Queueable;
+use Illuminate\Support\Facades\DB;
 use App\Models\ShopProductDescription;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -27,6 +29,7 @@ class TransferProductJob implements ShouldQueue
     public function __construct(Product $product, $categoryId)
     {
         $this->product    = $product;
+
         $this->categoryId = $categoryId;
     }
 
@@ -38,7 +41,7 @@ class TransferProductJob implements ShouldQueue
     public function handle()
     {
         $product        = $this->product;
-        $price          = $product->variants->average('price');
+        $price          = $product->variants->min('price');
 
         $ShopProduct =  ShopProduct::create([
             'model'           => $product->title,
@@ -92,5 +95,63 @@ class TransferProductJob implements ShouldQueue
                 'meta_keyword'     => '',
             ]
               );
+
+        $shopOption = ShopOption::create(
+            [
+                'type'       => 'select',
+                'sort_order' => 0,
+            ]
+           );
+
+        DB::connection('shop')->table('option_description')->insert([
+            'option_id'   => $shopOption->option_id,
+            'language_id' => 2,
+            'name'        => 'Choose variant',
+        ]);
+
+        foreach ($product->variants as $variant) {
+            DB::connection('shop')->table('option_value')->insert([
+                'option_id'  => $shopOption->option_id,
+                'image'      => '',
+                'sort_order' => 0,
+            ]);
+            $option_value = DB::connection('shop')->table('option_value')->where('option_id', $shopOption->option_id)->first();
+
+            DB::connection('shop')->table('option_value_description')->insert([
+                'option_value_id' => $option_value->option_value_id,
+                'language_id'     => 2,
+                'option_id'       => $shopOption->option_id,
+                'name'            => $variant->name,
+            ]);
+
+            $product_option =  DB::connection('shop')->table('product_option')->insertGetID([
+                'product_id' => $ShopProduct->product_id,
+                'option_id'  => $shopOption->option_id,
+                'value'      => '',
+                'required'   => 1,
+            ]);
+
+            DB::connection('shop')->table('product_option_value')->insert([
+                'product_option_id' => $product_option,
+                'product_id'        => $ShopProduct->product_id,
+                'option_id'         => $shopOption->option_id,
+                'option_value_id'   => $option_value->option_value_id,
+                'quantity'          => 1,
+                'subtract'          => 1,
+                'price'             => $variant->price - $price,
+                'price_prefix'      => '+',
+                'points_prefix'     => '+',
+                'points'            => 0,
+                'weight'            => 0.00000000,
+                'weight_prefix'     => '+',
+            ]);
+        }
+        foreach ($product->productImages as $image) {
+            DB::connection('shop')->table('product_image')->insert([
+                'product_id' => $ShopProduct->product_id,
+                'image'      => $image->url,
+                'sort_order' => 0,
+            ]);
+        }
     }
 }

@@ -88,6 +88,7 @@ class ProductImportJob implements ShouldQueue
             DB::beginTransaction();
 
             $product = $this->createProduct();
+
             $this->createVariants($product);
             $this->createAndUploadImages($product);
 
@@ -134,7 +135,7 @@ class ProductImportJob implements ShouldQueue
     /**
      * @param $product
      */
-    private function createVariants($product): void
+    private function createVariants($product)
     {
         foreach ($this->crawler->getVariants() as $variant) {
             Variant::create([
