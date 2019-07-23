@@ -49,6 +49,7 @@ class TransferProductJob implements ShouldQueue
             'location'        => $product->url,
             'status'          => ($product->status == 'available') ? 1 : 0,
             'date_available'  => now(),
+            'image'           => $product->productImages()->first()->url,
             'sku'             => '',
             'upc'             => '',
             'ean'             => '',
@@ -102,6 +103,7 @@ class TransferProductJob implements ShouldQueue
                 'sort_order' => 0,
             ]
            );
+        // dump($shopOption->toArray());
 
         DB::connection('shop')->table('option_description')->insert([
             'option_id'   => $shopOption->option_id,
@@ -109,34 +111,41 @@ class TransferProductJob implements ShouldQueue
             'name'        => 'Choose variant',
         ]);
 
+        $product_option =  DB::connection('shop')->table('product_option')->insertGetID([
+            'product_id' => $ShopProduct->product_id,
+            'option_id'  => $shopOption->option_id,
+            'value'      => '',
+            'required'   => 1,
+        ]);
+
         foreach ($product->variants as $variant) {
-            DB::connection('shop')->table('option_value')->insert([
-                'option_id'  => $shopOption->option_id,
-                'image'      => '',
-                'sort_order' => 0,
-            ]);
-            $option_value = DB::connection('shop')->table('option_value')->where('option_id', $shopOption->option_id)->first();
+            $variantSame =DB::connection('shop')->table('option_value_description')->where('name', $variant->name)->first();
 
-            DB::connection('shop')->table('option_value_description')->insert([
-                'option_value_id' => $option_value->option_value_id,
-                'language_id'     => 2,
-                'option_id'       => $shopOption->option_id,
-                'name'            => $variant->name,
-            ]);
+            if (optional($variantSame)->name !== $variant->name) {
+                $option_value =  DB::connection('shop')->table('option_value')->insertGetId([
+                    'option_id'  => $shopOption->option_id,
+                    'image'      => '',
+                    'sort_order' => 0,
+                ]);
 
-            $product_option =  DB::connection('shop')->table('product_option')->insertGetID([
-                'product_id' => $ShopProduct->product_id,
-                'option_id'  => $shopOption->option_id,
-                'value'      => '',
-                'required'   => 1,
-            ]);
+                //$option_value = DB::connection('shop')->table('option_value')->where('option_id', $shopOption->option_id)->first();
+
+                DB::connection('shop')->table('option_value_description')->insert([
+                    'option_value_id' => $option_value,
+                    'language_id'     => 2,
+                    'option_id'       => $shopOption->option_id,
+                    'name'            => $variant->name,
+                ]);
+            } else {
+                $option_value = $variantSame->option_value_id;
+            }
 
             DB::connection('shop')->table('product_option_value')->insert([
                 'product_option_id' => $product_option,
                 'product_id'        => $ShopProduct->product_id,
                 'option_id'         => $shopOption->option_id,
-                'option_value_id'   => $option_value->option_value_id,
-                'quantity'          => 1,
+                'option_value_id'   => $option_value,
+                'quantity'          => 100000,
                 'subtract'          => 1,
                 'price'             => $variant->price - $price,
                 'price_prefix'      => '+',
@@ -146,6 +155,7 @@ class TransferProductJob implements ShouldQueue
                 'weight_prefix'     => '+',
             ]);
         }
+
         foreach ($product->productImages as $image) {
             DB::connection('shop')->table('product_image')->insert([
                 'product_id' => $ShopProduct->product_id,
@@ -153,5 +163,8 @@ class TransferProductJob implements ShouldQueue
                 'sort_order' => 0,
             ]);
         }
+        DB::connection('shop')->table('product_to_store')->insert([
+            'product_id' => $ShopProduct->product_id,
+        ]);
     }
 }
