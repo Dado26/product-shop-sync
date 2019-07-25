@@ -8,12 +8,14 @@ class CreateProductsTable extends Migration
 {
     /**
      * Schema table name to migrate
+     *
      * @var string
      */
     public $tableName = 'products';
 
     /**
      * Run the migrations.
+     *
      * @table products
      *
      * @return void
@@ -31,11 +33,11 @@ class CreateProductsTable extends Migration
             $table->text('specifications')->nullable();
             $table->string('status', 20);
             $table->timestamp('synced_at')->nullable();
+            $table->timestamp('queued_at')->nullable();
 
-            $table->index(["site_id"], 'fk_products_sites1_idx');
+            $table->index(['site_id'], 'fk_products_sites1_idx');
             $table->softDeletes();
             $table->nullableTimestamps();
-
 
             $table->foreign('site_id', 'fk_products_sites1_idx')
                 ->references('id')->on('sites')
@@ -49,8 +51,8 @@ class CreateProductsTable extends Migration
      *
      * @return void
      */
-     public function down()
-     {
-       Schema::dropIfExists($this->tableName);
-     }
+    public function down()
+    {
+        Schema::dropIfExists($this->tableName);
+    }
 }

@@ -29,6 +29,7 @@ class TransferUpdateProductJob implements ShouldQueue
 
     /**
      * Execute the job.
+     *Product::STATUS_AVAILABLE)
      *
      * @return void
      */
@@ -36,7 +37,14 @@ class TransferUpdateProductJob implements ShouldQueue
     {
         $ShopProduct =  ShopProduct::where('product_id', $this->product->shop_product_id)->first();
 
-        $price       = $this->product->variants->average('price');
+        $price = $this->product->variants->average('price');
+
+        if ($ShopProduct->status == 0 && $ShopProduct == null) {
+            $this->product->update([
+                'status' => ($ShopProduct->status == 0) ? Product::STATUS_ARCHIVED : Product::STATUS_DELETED,
+            ]);
+            return;
+        }
 
         $ShopProduct->update(
             [

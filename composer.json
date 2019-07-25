@@ -18,7 +18,8 @@
         "laravel/telescope": "^2.0",
         "laravel/tinker": "^1.0",
         "laravelcollective/html": "^5.8.0",
-        "predis/predis": "^1.1"
+        "predis/predis": "^1.1",
+        "robo-finance/laravel-redis-queue-clear": "^1.0"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.6",

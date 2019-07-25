@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "54afe9dd0710a09dfa67b17273403fd8",
+    "content-hash": "3d4530f5859b5fc5caf449fb7cfeb07c",
     "packages": [
         {
             "name": "cakephp/chronos",
@@ -2257,6 +2257,43 @@
                 "uuid"
             ],
             "time": "2018-07-19T23:38:55+00:00"
+        },
+        {
+            "name": "robo-finance/laravel-redis-queue-clear",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/RoboFinance/laravel-redis-queue-clear.git",
+                "reference": "9470d4fa751b7d3fc18299e72d702396f23c9058"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/RoboFinance/laravel-redis-queue-clear/zipball/9470d4fa751b7d3fc18299e72d702396f23c9058",
+                "reference": "9470d4fa751b7d3fc18299e72d702396f23c9058",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/horizon": "*"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "RoboFinance\\LaravelRedisQueueClearService\\LaravelRedisQueueClearServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "RoboFinance\\LaravelRedisQueueClearService\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Remove all jobs from specified queue",
+            "time": "2019-07-04T02:52:59+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
