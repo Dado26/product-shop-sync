@@ -7,8 +7,8 @@ use App\Models\Site;
 class SiteUrlParser
 {
     /**
-     * @param  string  $url
-     * @param  bool  $withoutException
+     * @param string $url
+     * @param bool   $withoutException
      *
      * @return \App\Models\Site|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model
      */

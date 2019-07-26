@@ -14,10 +14,11 @@ class CrawlerTestDataSeeder extends Seeder
     public function run()
     {
         $site = Site::create([
-            'name'    => 'ProductSync',
-            'url'     => 'http://product-sync/',
-            'email'   => 'test@mail.com',
-            'user_id' => User::first()->id,
+            'name'               => 'ProductSync',
+            'url'                => 'http://product-sync/',
+            'email'              => 'test@mail.com',
+            'user_id'            => User::first()->id,
+            'price_modification' => rand(-10, 10),
         ]);
 
         $site->syncRules()->create([

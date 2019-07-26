@@ -2,22 +2,24 @@
 
 namespace App\Jobs;
 
+use DB;
+use Throwable;
 use App\Models\Product;
 use App\Models\Variant;
-use App\Models\ProductImage;
-use DB;
-use Illuminate\Bus\Queueable;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Str;
+use App\Models\ProductImage;
+use Illuminate\Bus\Queueable;
 use InvalidArgumentException;
+use PHPUnit\Runner\Exception;
+use App\Helpers\SiteUrlParser;
 use JD\Cloudder\Facades\Cloudder;
 use Illuminate\Queue\SerializesModels;
 use App\Services\ProductCrawlerService;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use PHPUnit\Runner\Exception;
-use Throwable;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Helpers\PriceCalculator;
 
 class ProductImportJob implements ShouldQueue
 {
@@ -137,10 +139,16 @@ class ProductImportJob implements ShouldQueue
      */
     private function createVariants($product)
     {
+        $site              = SiteUrlParser::getSite($this->url);
+        $percentagePrice   = $site->price_modification;
+
         foreach ($this->crawler->getVariants() as $variant) {
+            $price             = $this->crawler->getPrice();
+            $priceModified     = PriceCalculator::modifyByPercent($price, $percentagePrice);
+
             Variant::create([
                 'name'       => $variant,
-                'price'      => $this->crawler->getPrice(),
+                'price'      => $priceModified,
                 'product_id' => $product->id,
             ]);
         }

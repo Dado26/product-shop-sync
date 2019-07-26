@@ -9,7 +9,7 @@ class Site extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['name', 'url', 'email'];
+    protected $fillable = ['name', 'url', 'email', 'price_modification'];
 
     public function user()
     {

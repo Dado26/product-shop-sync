@@ -27,6 +27,7 @@ class CreateSitesTable extends Migration
             $table->string('name', 120);
             $table->string('url', 120);
             $table->string('email', 120)->nullable();
+            $table->decimal('price_modification', 5, 2)->nullable();
 
             $table->index(["user_id"], 'fk_sites_users_idx');
             $table->softDeletes();

@@ -14,10 +14,11 @@ class RealSitesDataSeeder extends Seeder
     public function run()
     {
         $site = Site::create([
-            'name'    => 'Elementa',
-            'url'     => 'https://www.elementa.rs',
-            'email'   => 'vstruhar@gmail.com',
-            'user_id' => User::first()->id,
+            'name'               => 'Elementa',
+            'url'                => 'https://www.elementa.rs',
+            'email'              => 'vstruhar@gmail.com',
+            'user_id'            => User::first()->id,
+            'price_modification' => rand(-10, 10),
         ]);
 
         $site->syncRules()->create([
