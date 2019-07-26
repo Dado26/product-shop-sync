@@ -8,6 +8,7 @@ use App\Models\Variant;
 use App\Models\ShopProduct;
 use Illuminate\Bus\Queueable;
 use InvalidArgumentException;
+use App\Helpers\PriceCalculator;
 use Illuminate\Queue\SerializesModels;
 use App\Services\ChangeDetectorService;
 use App\Services\ProductCrawlerService;
@@ -129,9 +130,13 @@ class ProductSyncJob implements ShouldQueue
 
         $results = ChangeDetectorService::getIntersection($oldVariant, $newVariant);
 
+        $percentagePrice   = $this->product->site->price_modification;
+
         foreach ($results as $result) {
+            $price             = $this->crawler->getPrice();
+            $priceModified     = PriceCalculator::modifyByPercent($price, $percentagePrice);
             $this->product->variants()->where('name', $result)->update([
-                'price' => $this->crawler->getPrice(),
+                'price' => $priceModified,
             ]);
         }
 
@@ -139,9 +144,11 @@ class ProductSyncJob implements ShouldQueue
         $results = ChangeDetectorService::getArrayWithoutItemsFromFirstArray($oldVariant, $newVariant);
 
         foreach ($results as $result) {
+            $price             = $this->crawler->getPrice();
+            $priceModified     = PriceCalculator::modifyByPercent($price, $percentagePrice);
             $this->product->variants()->create([
                 'name'  => $result,
-                'price' => $this->crawler->getPrice(),
+                'price' => $priceModified,
             ]);
         }
 

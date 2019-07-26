@@ -15,6 +15,8 @@ class TransferUpdateProductJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    const QUEUE_NAME = 'transfer-update-product';
+
     /**
      * Create a new job instance.
      *
