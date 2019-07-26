@@ -39,7 +39,7 @@ class TransferUpdateProductJob implements ShouldQueue
 
         $price = $this->product->variants->average('price');
 
-        if ($ShopProduct->status == 0 && $ShopProduct == null) {
+        if ($ShopProduct->status == 0 || $ShopProduct == null) {
             $this->product->update([
                 'status' => ($ShopProduct->status == 0) ? Product::STATUS_ARCHIVED : Product::STATUS_DELETED,
             ]);
