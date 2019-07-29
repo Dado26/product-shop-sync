@@ -2,18 +2,20 @@
 
 namespace App\Jobs;
 
+use Throwable;
 use App\Models\Product;
 use App\Models\Variant;
-use App\Services\ProductCrawlerService;
+use App\Models\ShopProduct;
 use Illuminate\Bus\Queueable;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use InvalidArgumentException;
+use App\Helpers\PriceCalculator;
 use Illuminate\Queue\SerializesModels;
 use App\Services\ChangeDetectorService;
+use App\Services\ProductCrawlerService;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use InvalidArgumentException;
-use Throwable;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ProductSyncJob implements ShouldQueue
 {
@@ -87,6 +89,10 @@ class ProductSyncJob implements ShouldQueue
         } catch (InvalidArgumentException $e) {
             $this->product->update(['status' => Product::STATUS_UNAVAILABLE]);
 
+            ShopProduct::where('product_id', $this->product->shop_product_id)->update([
+                'status' => 0,
+            ]);
+
             logger()->notice('Product not found, maybe it was removed', [
                 'id'        => $this->product->id,
                 'url'       => $this->product->url,
@@ -124,9 +130,13 @@ class ProductSyncJob implements ShouldQueue
 
         $results = ChangeDetectorService::getIntersection($oldVariant, $newVariant);
 
+        $percentagePrice   = $this->product->site->price_modification;
+
         foreach ($results as $result) {
+            $price             = $this->crawler->getPrice();
+            $priceModified     = PriceCalculator::modifyByPercent($price, $percentagePrice);
             $this->product->variants()->where('name', $result)->update([
-                'price' => $this->crawler->getPrice(),
+                'price' => $priceModified,
             ]);
         }
 
@@ -134,9 +144,11 @@ class ProductSyncJob implements ShouldQueue
         $results = ChangeDetectorService::getArrayWithoutItemsFromFirstArray($oldVariant, $newVariant);
 
         foreach ($results as $result) {
+            $price             = $this->crawler->getPrice();
+            $priceModified     = PriceCalculator::modifyByPercent($price, $percentagePrice);
             $this->product->variants()->create([
                 'name'  => $result,
-                'price' => $this->crawler->getPrice(),
+                'price' => $priceModified,
             ]);
         }
 

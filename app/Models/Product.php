@@ -11,8 +11,10 @@ class Product extends Model
 
     public const STATUS_AVAILABLE   = 'available';
     public const STATUS_UNAVAILABLE = 'unavailable';
+    public const STATUS_ARCHIVED    = 'archived';
+    public const STATUS_DELETED     = 'deleted';
 
-    protected $fillable = ['title', 'description', 'status', 'url', 'site_id', 'specifications', 'synced_at', 'shop_product_id'];
+    protected $fillable = ['title', 'description', 'status', 'url', 'site_id', 'specifications', 'synced_at', 'queued_at', 'shop_product_id'];
 
     protected $dates = ['synced_at'];
 
@@ -29,5 +31,10 @@ class Product extends Model
     public function site()
     {
         return $this->belongsTo(Site::class);
+    }
+
+    public function scopeAvailable($query)
+    {
+        return $query->where('status', $this::STATUS_AVAILABLE);
     }
 }

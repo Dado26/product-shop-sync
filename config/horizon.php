@@ -1,9 +1,10 @@
 <?php
 use App\Jobs\ProductImportJob;
 use App\Jobs\ProductSyncJob;
+use App\Jobs\TransferProductJob;
+use App\Jobs\TransferUpdateProductJob;
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Horizon Domain
@@ -96,8 +97,8 @@ return [
     */
 
     'trim' => [
-        'recent' => 180,
-        'failed' => 10080,
+        'recent'    => 180,
+        'failed'    => 10080,
         'monitored' => 10080,
     ],
 
@@ -144,20 +145,30 @@ return [
         'production' => [
             'supervisor-1' => [
                 'connection' => 'redis',
-                'queue' => [ProductImportJob::QUEUE_NAME, ProductSyncJob::QUEUE_NAME],
-                'balance' => 'auto',
-                'processes' => 10,
-                'tries' => 2,
+                'queue'      => [
+                    ProductImportJob::QUEUE_NAME,
+                    ProductSyncJob::QUEUE_NAME,
+                    TransferProductJob::QUEUE_NAME,
+                    TransferUpdateProductJob::QUEUE_NAME,
+                ],
+                'balance'    => 'auto',
+                'processes'  => 10,
+                'tries'      => 2,
             ],
         ],
 
         'local' => [
             'supervisor-1' => [
                 'connection' => 'redis',
-                'queue' => [ProductImportJob::QUEUE_NAME, ProductSyncJob::QUEUE_NAME],
-                'balance' => 'auto',
-                'processes' => 10,
-                'tries' => 2,
+                'queue'      => [
+                    ProductImportJob::QUEUE_NAME,
+                    ProductSyncJob::QUEUE_NAME,
+                    TransferProductJob::QUEUE_NAME,
+                    TransferUpdateProductJob::QUEUE_NAME,
+                ],
+                'balance'    => 'auto',
+                'processes'  => 10,
+                'tries'      => 2,
             ],
         ],
     ],

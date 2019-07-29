@@ -31,6 +31,7 @@ class CreateProductsTable extends Migration
             $table->text('specifications')->nullable();
             $table->string('status', 20);
             $table->timestamp('synced_at')->nullable();
+            $table->timestamp('queued_at')->nullable();
 
             $table->index(["site_id"], 'fk_products_sites1_idx');
             $table->softDeletes();

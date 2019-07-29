@@ -53,6 +53,7 @@ class SitesTest extends DuskTestCase
             $browser->type('sites[name]', 'Voja');
             $browser->type('sites[url]', 'url');
             $browser->type('sites[email]', 'vojke@mail.com');
+            $browser->type('sites[price_modification]', 10);
             $browser->type('sync_Rules[title]', 'Title');
             $browser->type('sync_Rules[description]', 'Description');
             $browser->type('sync_Rules[price]', '1');
@@ -77,6 +78,7 @@ class SitesTest extends DuskTestCase
             $browser->type('sites[name]', 'Voja');
             $browser->type('sites[url]', 'https://sirka.com/');
             $browser->type('sites[email]', 'vojkemail.com');
+            $browser->type('sites[price_modification]', 10);
             $browser->type('sync_Rules[title]', '.title');
             $browser->type('sync_Rules[description]', '.description');
             $browser->type('sync_Rules[price]', '1');
@@ -147,6 +149,7 @@ class SitesTest extends DuskTestCase
             $browser->type('sites[name]', 'Voja');
             $browser->type('sites[url]', 'https://sirka.com/');
             $browser->type('sites[email]', 'some-random@email.com');
+            $browser->type('sites[price_modification]', -10);
             $browser->type('sync_Rules[title]', '.title');
             $browser->type('sync_Rules[description]', '.description');
             $browser->type('sync_Rules[specifications]', '.specs');
@@ -163,6 +166,7 @@ class SitesTest extends DuskTestCase
             $browser->assertInputValue('sites[name]', 'Voja');
             $browser->assertInputValue('sites[url]', 'https://sirka.com/');
             $browser->assertInputValue('sites[email]', 'some-random@email.com');
+            $browser->assertInputValue('sites[price_modification]', -10);
             $browser->assertInputValue('sync_Rules[title]', '.title');
             $browser->assertInputValue('sync_Rules[description]', '.description');
             $browser->assertInputValue('sync_Rules[specifications]', '.specs');

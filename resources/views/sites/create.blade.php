@@ -35,6 +35,10 @@
                     <label class="control-label">Email</label>
                     {!! Form::input('text', 'sites[email]', null, ['class'=>'form-control']) !!}
                 </div>
+                <div class="form-group">
+                    <label class="control-label">Price Modification</label>
+                    {!! Form::input('number', 'sites[price_modification]', null, ['class'=>'form-control']) !!}
+                </div>
             </div>
         </div>
 
