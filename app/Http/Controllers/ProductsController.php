@@ -49,11 +49,10 @@ class ProductsController extends Controller
     {
         if ($request->batch) {
             $urls = SiteUrlParser::splitUrlsByNewLine($request->urls);
-            $jobs = [];
 
-            foreach ($urls as $url) {
-                $jobs[] = new ProductImportJob($url, $request->category);
-            }
+            $jobs = collect($urls)->map(function ($url) use ($request) {
+                return new ProductImportJob($url, $request->category);
+            })->toArray();
 
             Queue::bulk($jobs);
 

@@ -37,7 +37,7 @@
                                 Napravljena specijalno za uništavanje letećih štetnih insekata.
                             </div>
 
-                            <div class="product-price border h4 mt-3">Cena: 1599.00 din</div>
+                            <div class="product-price border h4 mt-3">Cena: 1899.00 din</div>
 
                             <div class="product-stock border h4">In stock</div>
 
