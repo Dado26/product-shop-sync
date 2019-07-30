@@ -43,6 +43,11 @@ class ProductsController extends Controller
         return view('products.index', compact('products', 'categories'));
     }
 
+    /**
+     * @param  \App\Http\Requests\ProductImportRequest  $request
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function import(ProductImportRequest $request)
     {
         if ($request->batch) {
@@ -56,7 +61,7 @@ class ProductsController extends Controller
 
             flash('Your products were queued successfully, they will be processed soon.')->success();
         } else {
-            ProductImportJob::dispatch($request->url, $request->category);
+            ProductImportJob::dispatch($request->url, $request->category)->onQueue(ProductImportJob::QUEUE_NAME);
 
             flash('Your product was queued successfully, it will be processed soon.')->success();
         }
@@ -64,6 +69,11 @@ class ProductsController extends Controller
         return redirect()->back();
     }
 
+    /**
+     * @param  \App\Models\Product  $product
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function sync(Product $product)
     {
         try {
@@ -79,6 +89,11 @@ class ProductsController extends Controller
         return redirect()->back();
     }
 
+    /**
+     * @param  \App\Models\Product  $product
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function show(Product $product)
     {
         $variants =$product->variants()->get();

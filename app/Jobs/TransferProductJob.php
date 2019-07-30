@@ -20,18 +20,24 @@ class TransferProductJob implements ShouldQueue
     const QUEUE_NAME = 'transfer-product';
 
     /**
-     * Create a new job instance.
-     *
-     * @return void
+     * @var \App\Models\Product
      */
     public $product;
 
+    /**
+     * @var int
+     */
     public $categoryId;
 
+    /**
+     * TransferProductJob constructor.
+     *
+     * @param  \App\Models\Product  $product
+     * @param $categoryId
+     */
     public function __construct(Product $product, $categoryId)
     {
-        $this->product = $product;
-
+        $this->product    = $product;
         $this->categoryId = $categoryId;
     }
 
@@ -42,10 +48,12 @@ class TransferProductJob implements ShouldQueue
      */
     public function handle()
     {
+        DB::beginTransaction();
+
         $product = $this->product;
         $price   = $product->variants->min('price');
 
-        $ShopProduct = ShopProduct::create([
+        $shopProduct = ShopProduct::create([
             'model'           => $product->title,
             'price'           => $price,
             'location'        => $product->url,
@@ -78,52 +86,50 @@ class TransferProductJob implements ShouldQueue
             'date_modified'   => now(),
         ]);
 
-        $product->update(
-            [
-                'shop_product_id' => $ShopProduct->product_id,
-            ]
-        );
+        $product->update(['shop_product_id' => $shopProduct->product_id]);
 
-        $ShopProduct->categories()->attach($this->categoryId);
+        $shopProduct->categories()->attach($this->categoryId);
 
-        ShopProductDescription::create(
-            [
-                'description'      => $product->description,
-                'name'             => $product->title,
-                'product_id'       => $ShopProduct->product_id,
-                'language_id'      => 2,
-                'tag'              => '',
-                'meta_title'       => $product->title,
-                'meta_description' => '',
-                'meta_keyword'     => '',
-            ]
-        );
+        ShopProductDescription::create([
+            'description'      => $product->description,
+            'name'             => $product->title,
+            'product_id'       => $shopProduct->product_id,
+            'language_id'      => 2,
+            'tag'              => '',
+            'meta_title'       => $product->title,
+            'meta_description' => '',
+            'meta_keyword'     => '',
+        ]);
 
         // create variants only if there are more than 1
         // because the first variant has the default product's data
         if ($product->variants->count() > 1) {
-            $this->createVariants($product, $ShopProduct, $price);
+            $this->createVariants($product, $shopProduct, $price);
         }
 
+        // create images
         foreach ($product->productImages as $image) {
             DB::connection('shop')->table('product_image')->insert([
-                'product_id' => $ShopProduct->product_id,
+                'product_id' => $shopProduct->product_id,
                 'image'      => $image->url,
                 'sort_order' => 0,
             ]);
         }
 
+        // connect new product to shop
         DB::connection('shop')->table('product_to_store')->insert([
-            'product_id' => $ShopProduct->product_id,
+            'product_id' => $shopProduct->product_id,
         ]);
+
+        DB::commit();
     }
 
     /**
      * @param  \App\Models\Product  $product
-     * @param $ShopProduct
+     * @param $shopProduct
      * @param $price
      */
-    private function createVariants(Product $product, $ShopProduct, $price): void
+    private function createVariants(Product $product, $shopProduct, $price): void
     {
         $shopOption = ShopOption::create([
             'type'       => 'select',
@@ -136,8 +142,8 @@ class TransferProductJob implements ShouldQueue
             'name'        => 'Choose variant',
         ]);
 
-        $product_option = DB::connection('shop')->table('product_option')->insertGetID([
-            'product_id' => $ShopProduct->product_id,
+        $productOption = DB::connection('shop')->table('product_option')->insertGetID([
+            'product_id' => $shopProduct->product_id,
             'option_id'  => $shopOption->option_id,
             'value'      => '',
             'required'   => 1,
@@ -153,8 +159,6 @@ class TransferProductJob implements ShouldQueue
                     'sort_order' => 0,
                 ]);
 
-                //$option_value = DB::connection('shop')->table('option_value')->where('option_id', $shopOption->option_id)->first();
-
                 DB::connection('shop')->table('option_value_description')->insert([
                     'option_value_id' => $option_value,
                     'language_id'     => 2,
@@ -166,13 +170,13 @@ class TransferProductJob implements ShouldQueue
             }
 
             DB::connection('shop')->table('product_option_value')->insert([
-                'product_option_id' => $product_option,
-                'product_id'        => $ShopProduct->product_id,
+                'product_option_id' => $productOption,
+                'product_id'        => $shopProduct->product_id,
                 'option_id'         => $shopOption->option_id,
                 'option_value_id'   => $option_value,
-                'quantity'          => 100000,
+                'quantity'          => 99999,
                 'subtract'          => 1,
-                'price'             => $variant->price - $price,
+                'price'             => round($variant->price - $price, 2),
                 'price_prefix'      => '+',
                 'points_prefix'     => '+',
                 'points'            => 0,
@@ -180,5 +184,15 @@ class TransferProductJob implements ShouldQueue
                 'weight_prefix'     => '+',
             ]);
         }
+    }
+
+    /**
+     * The job failed to process.
+     *
+     * @return void
+     */
+    public function failed()
+    {
+        DB::rollBack();
     }
 }

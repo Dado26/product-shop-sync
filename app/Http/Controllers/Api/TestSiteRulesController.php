@@ -9,6 +9,12 @@ use App\Services\ProductCrawlerService;
 
 class TestSiteRulesController extends Controller
 {
+    /**
+     * @param  \Illuminate\Http\Request  $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
+     */
     public function get(Request $request)
     {
         $crawler = new ProductCrawlerService;

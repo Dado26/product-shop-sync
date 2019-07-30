@@ -56,14 +56,12 @@ class ProductSyncJob implements ShouldQueue
     /**
      * Create a new job instance.
      *
-     * @param \App\Models\Product $product
+     * @param  \App\Models\Product  $product
      */
     public function __construct(Product $product)
     {
         $this->product = $product;
         $this->crawler = new ProductCrawlerService();
-
-        $this->onQueue(self::QUEUE_NAME);
     }
 
     /**
@@ -89,9 +87,7 @@ class ProductSyncJob implements ShouldQueue
         } catch (InvalidArgumentException $e) {
             $this->product->update(['status' => Product::STATUS_UNAVAILABLE]);
 
-            ShopProduct::where('product_id', $this->product->shop_product_id)->update([
-                'status' => 0,
-            ]);
+            ShopProduct::where('product_id', $this->product->shop_product_id)->update(['status' => 0]);
 
             logger()->notice('Product not found, maybe it was removed', [
                 'id'        => $this->product->id,
@@ -124,36 +120,37 @@ class ProductSyncJob implements ShouldQueue
         ]);
 
         // update variants
-        $oldVariant = Variant::where('product_id', $this->product->id)->get()->pluck('name')->toArray();
+        $oldVariants = Variant::where('product_id', $this->product->id)->get()->pluck('name')->toArray();
 
-        $newVariant = $this->crawler->getVariants();
+        $newVariants = $this->crawler->getVariants();
 
-        $results = ChangeDetectorService::getIntersection($oldVariant, $newVariant);
+        $results = ChangeDetectorService::getIntersection($oldVariants, $newVariants);
 
-        $percentagePrice   = $this->product->site->price_modification;
+        $percentagePrice = $this->product->site->price_modification;
 
+        // update existing variants
         foreach ($results as $result) {
-            $price             = $this->crawler->getPrice();
-            $priceModified     = PriceCalculator::modifyByPercent($price, $percentagePrice);
+            $price = $this->crawler->getPrice();
+
             $this->product->variants()->where('name', $result)->update([
-                'price' => $priceModified,
+                'price' => PriceCalculator::modifyByPercent($price, $percentagePrice),
             ]);
         }
 
         // create new missing variants
-        $results = ChangeDetectorService::getArrayWithoutItemsFromFirstArray($oldVariant, $newVariant);
+        $results = ChangeDetectorService::getArrayWithoutItemsFromFirstArray($oldVariants, $newVariants);
 
         foreach ($results as $result) {
-            $price             = $this->crawler->getPrice();
-            $priceModified     = PriceCalculator::modifyByPercent($price, $percentagePrice);
+            $price = $this->crawler->getPrice();
+
             $this->product->variants()->create([
                 'name'  => $result,
-                'price' => $priceModified,
+                'price' => PriceCalculator::modifyByPercent($price, $percentagePrice),
             ]);
         }
 
         // delete removed variants
-        $results = ChangeDetectorService::getArrayWithoutItemsFromSecondArray($oldVariant, $newVariant);
+        $results = ChangeDetectorService::getArrayWithoutItemsFromSecondArray($oldVariants, $newVariants);
 
         $this->product->variants()->whereIn('name', $results)->delete();
     }

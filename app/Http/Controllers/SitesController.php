@@ -12,7 +12,7 @@ class SitesController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param  \App\Http\Controllers\Request  $request
+     * @param  \Illuminate\Http\Request  $request
      *
      * @return \Illuminate\Http\Response
      */

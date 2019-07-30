@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Models\Product;
 use App\Models\ShopProduct;
+use DB;
 use Illuminate\Bus\Queueable;
 use App\Models\ShopProductDescription;
 use Illuminate\Queue\SerializesModels;
@@ -18,12 +19,15 @@ class TransferUpdateProductJob implements ShouldQueue
     const QUEUE_NAME = 'transfer-update-product';
 
     /**
-     * Create a new job instance.
-     *
-     * @return void
+     * @var \App\Models\Product
      */
     public $product;
 
+    /**
+     * TransferUpdateProductJob constructor.
+     *
+     * @param  \App\Models\Product  $product
+     */
     public function __construct(Product $product)
     {
         $this->product = $product;
@@ -31,68 +35,75 @@ class TransferUpdateProductJob implements ShouldQueue
 
     /**
      * Execute the job.
-     *Product::STATUS_AVAILABLE)
      *
      * @return void
      */
     public function handle()
     {
-        $ShopProduct =  ShopProduct::where('product_id', $this->product->shop_product_id)->first();
+        DB::beginTransaction();
 
-        $price = $this->product->variants->average('price');
+        $shopProduct = ShopProduct::where('product_id', $this->product->shop_product_id)->first();
 
-        if ($ShopProduct->status == 0 || $ShopProduct == null) {
+        if ($shopProduct->status == 0 || $shopProduct == null) {
             $this->product->update([
-                'status' => ($ShopProduct->status == 0) ? Product::STATUS_ARCHIVED : Product::STATUS_DELETED,
+                'status' => ($shopProduct->status == 0) ? Product::STATUS_ARCHIVED : Product::STATUS_DELETED,
             ]);
             return;
         }
 
-        $ShopProduct->update(
-            [
-                'model'           => $this->product->title,
-                'price'           => $price,
-                'location'        => $this->product->url,
-                'status'          => ($this->product->status == 'available') ? 1 : 0,
-                'date_available'  => now(),
-                'sku'             => '',
-                'upc'             => '',
-                'ean'             => '',
-                'jan'             => '',
-                'isbn'            => '',
-                'mpn'             => '',
-                'stock_status_id' => 1,
-                'manufacturer_id' => 0,
-                'shipping'        => 1,
-                'points'          => 0,
-                'tax_class_id'    => 0,
-                'weight'          => 0.00000000,
-                'weight_class_id' => 1,
-                'length_class_id' => 1,
-                'height'          => 0.00000000,
-                'width'           => 0.00000000,
-                'length'          => 0.00000000,
-                'subtract'        => 1,
-                'minimum'         => 1,
-                'quantity'        => 1,
-                'sort_order'      => 1,
-                'viewed'          => 0,
-                'date_added'      => now(),
-                'date_modified'   => now(),
-            ]
-        );
+        $shopProduct->update([
+            'model'           => $this->product->title,
+            'price'           => $this->product->variants->min('price'),
+            'location'        => $this->product->url,
+            'status'          => ($this->product->status == 'available') ? 1 : 0,
+            'date_available'  => now(),
+            'sku'             => '',
+            'upc'             => '',
+            'ean'             => '',
+            'jan'             => '',
+            'isbn'            => '',
+            'mpn'             => '',
+            'stock_status_id' => 1,
+            'manufacturer_id' => 0,
+            'shipping'        => 1,
+            'points'          => 0,
+            'tax_class_id'    => 0,
+            'weight'          => 0.00000000,
+            'weight_class_id' => 1,
+            'length_class_id' => 1,
+            'height'          => 0.00000000,
+            'width'           => 0.00000000,
+            'length'          => 0.00000000,
+            'subtract'        => 1,
+            'minimum'         => 1,
+            'quantity'        => 1,
+            'sort_order'      => 1,
+            'viewed'          => 0,
+            'date_added'      => now(),
+            'date_modified'   => now(),
+        ]);
 
-        ShopProductDescription::where('product_id', $ShopProduct->product_id)->update(
-            [
-                'description'      => $this->product->description,
-                'name'             => $this->product->title,
-                'product_id'       => $ShopProduct->product_id,
-                'language_id'      => 2,
-                'tag'              => '',
-                'meta_title'       => $this->product->title,
-                'meta_description' => '',
-                'meta_keyword'     => '',
-            ]
-        );
+        ShopProductDescription::where('product_id', $shopProduct->product_id)->update([
+            'description'      => $this->product->description,
+            'name'             => $this->product->title,
+            'product_id'       => $shopProduct->product_id,
+            'language_id'      => 2,
+            'tag'              => '',
+            'meta_title'       => $this->product->title,
+            'meta_description' => '',
+            'meta_keyword'     => '',
+        ]);
+
+        DB::commit();
+    }
+
+    /**
+     * The job failed to process.
+     *
+     * @return void
+     */
+    public function failed()
+    {
+        DB::rollBack();
     }
 }
