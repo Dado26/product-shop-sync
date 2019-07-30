@@ -4,9 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\SiteUrlParser;
 use App\Models\Product;
-use App\Models\Variant;
 use App\Jobs\ProductSyncJob;
-use App\Models\ProductImage;
 use Illuminate\Http\Request;
 use InvalidArgumentException;
 use App\Jobs\ProductImportJob;
@@ -49,13 +47,12 @@ class ProductsController extends Controller
     {
         if ($request->batch) {
             $urls = SiteUrlParser::splitUrlsByNewLine($request->urls);
-            $jobs = [];
 
-            foreach ($urls as $url) {
-                $jobs[] = new ProductImportJob($url, $request->category);
-            }
+            $jobs = collect($urls)->map(function ($url) use ($request) {
+                return new ProductImportJob($url, $request->category);
+            })->toArray();
 
-            Queue::bulk($jobs);
+            Queue::bulk($jobs, null, ProductImportJob::QUEUE_NAME);
 
             flash('Your products were queued successfully, they will be processed soon.')->success();
         } else {
@@ -72,7 +69,7 @@ class ProductsController extends Controller
         try {
             ProductSyncJob::dispatchNow($product);
 
-            flash('Your product is being synchronized')->success();
+            flash('Your product was synchronized')->success();
 
             return redirect()->back();
         } catch (InvalidArgumentException $e) {
@@ -84,9 +81,9 @@ class ProductsController extends Controller
 
     public function show(Product $product)
     {
-        $variants =  Variant::where('product_id', $product->id)->get();
+        $variants =$product->variants()->get();
 
-        $images   = ProductImage::where('product_id', $product->id)->get();
+        $images = $product->productImages()->get();
 
         return view('products.show', compact('product', 'variants', 'images'));
     }

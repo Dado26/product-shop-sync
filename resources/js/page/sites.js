@@ -44,39 +44,17 @@ $(document).ready(function() {
                 $('#test-rules .results-container').show();
 
                 // TITLE
-                if (response.data.title !== null) {
-                    document.querySelector('#test-rules .form-group.title').classList.remove('invalid-rule');
-                    document.querySelector('#test-rules .form-group.title .form-control').innerText = response.data.title;
-                }else{
-                    document.querySelector('#test-rules .form-group.title').classList.add('invalid-rule');
+                function getData(item) {
+                    if (response.data[item] == null || (response.data[item] && response.data[item].length == 0)) {
+                        document.querySelector('#test-rules .form-group.' + item).classList.add('invalid-rule');
+                    } else {
+                        document.querySelector('#test-rules .form-group.' + item).classList.remove('invalid-rule');
+                        document.querySelector('#test-rules .form-group.' + item + ' .form-control').innerText = response.data[item];
+                    }
                 }
 
-                if (response.data.description !== null) {
-                    document.querySelector('#test-rules .form-group.description').classList.remove('invalid-rule');
-                    document.querySelector('#test-rules .form-group.description .form-control').innerText = response.data.description;
-                } else {
-                    document.querySelector('#test-rules .form-group.description').classList.add('invalid-rule');
-                }
-
-                if (response.data.specifications !== null) {
-                    document.querySelector('#test-rules .form-group.specifications').classList.remove('invalid-rule');
-                    document.querySelector('#test-rules .form-group.specifications div').innerHTML = response.data.specifications;
-                } else {
-                    document.querySelector('#test-rules .form-group.specifications').classList.add('invalid-rule');
-                }
-
-                if (response.data.price !== null) {
-                    document.querySelector('#test-rules .form-group.price').classList.remove('invalid-rule');
-                    document.querySelector('#test-rules .form-group.price .form-control').innerText = response.data.price;
-                } else {
-                    document.querySelector('#test-rules .form-group.price').classList.add('invalid-rule');
-                }
-
-                if (response.data.in_stock_value !== null) {
-                    document.querySelector('#test-rules .form-group.in_stock_value').classList.remove('invalid-rule');
-                    document.querySelector('#test-rules .form-group.in_stock_value .form-control').innerText = response.data.in_stock_value;
-                } else {
-                    document.querySelector('#test-rules .form-group.in_stock_value').classList.add('invalid-rule');
+                for (var val in response.data) {
+                    getData(val);
                 }
 
                 // IMAGES
