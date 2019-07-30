@@ -133,7 +133,7 @@ return [
         ],
 
         'slack' => [
-            'webhook_url' => env('LOG_SLACK_WEBHOOK_URL'),
+            'webhook_url' => env('INFO_SLACK_WEBHOOK_URL'),
 
             /*
              * If this is set to null the default channel of the webhook will be used.
@@ -217,7 +217,7 @@ return [
              * After cleaning up the backups remove the oldest backup until
              * this amount of megabytes has been reached.
              */
-            'delete_oldest_backups_when_using_more_megabytes_than' => 3000,
+            'delete_oldest_backups_when_using_more_megabytes_than' => 2000,
         ],
     ],
 ];
