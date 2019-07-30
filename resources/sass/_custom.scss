@@ -9,8 +9,10 @@
         margin: 25px 0;
     }
     .form-group.description .form-control {
-        min-height: 38px;
         height: auto;
+        min-height: 38px;
+        max-height: 200px;
+        overflow-y: auto;
     }
     .variants {
         &.invalid-rule .variants-container {
