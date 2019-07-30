@@ -8,6 +8,10 @@
     hr {
         margin: 25px 0;
     }
+    .form-group.description .form-control {
+        min-height: 38px;
+        height: auto;
+    }
     .variants {
         &.invalid-rule .variants-container {
             border-color: #e74a3b !important;

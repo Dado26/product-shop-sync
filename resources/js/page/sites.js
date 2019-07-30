@@ -49,7 +49,7 @@ $(document).ready(function() {
                         document.querySelector('#test-rules .form-group.' + item).classList.add('invalid-rule');
                     } else {
                         document.querySelector('#test-rules .form-group.' + item).classList.remove('invalid-rule');
-                        document.querySelector('#test-rules .form-group.' + item + ' .form-control').innerText = response.data[item];
+                        document.querySelector('#test-rules .form-group.' + item + ' .form-control').innerHTML = response.data[item];
                     }
                 }
 
