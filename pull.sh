@@ -35,11 +35,11 @@ php artisan queue:restart
 # Restart Horizon
 php artisan horizon:terminate
 
-# Install node modules & build
-npm ci
+# Install npm dependencies
+npm install
 
 # Build assets using Laravel Mix
-# npm run production
+npm run production
 
 # Turn off maintenance mode
 php artisan up
