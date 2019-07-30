@@ -152,7 +152,7 @@ return [
                     TransferUpdateProductJob::QUEUE_NAME,
                 ],
                 'balance'    => 'auto',
-                'processes'  => 10,
+                'processes'  => 30,
                 'tries'      => 2,
             ],
         ],
