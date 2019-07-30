@@ -29,6 +29,9 @@ class Kernel extends ConsoleKernel
 
         if (app()->environment('production')) {
             $schedule->command('sync:products')->hourly();
+
+            $schedule->command('backup:clean')->daily()->at('03:00');
+            $schedule->command('backup:run')->daily()->at('04:00');
         }
     }
 
