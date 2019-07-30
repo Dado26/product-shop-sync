@@ -54,6 +54,7 @@ $(document).ready(function() {
                 }
 
                 for (var val in response.data) {
+                    console.log(val);
                     getData(val);
                 }
 
