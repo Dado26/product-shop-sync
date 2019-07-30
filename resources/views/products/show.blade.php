@@ -23,7 +23,6 @@
                     <span class="form-control">{{ $product->site->name }}</span>
                 </div>
 
-
                 <div class="form-group">
                     <label class="control-label">Title</label>
                     <div class="form-control">{{ $product->title }}</div>
