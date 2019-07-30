@@ -122,7 +122,8 @@ class TransferProductJob implements ShouldQueue
 
         foreach ($product->variants as $variant) {
             $variantSame = DB::connection('shop')->table('option_value_description')->where('name', $variant->name)->first();
-
+logger()->debug('$variantSame', [$variantSame]);
+logger()->debug('$variant->name', [$variant->name]);
             if (optional($variantSame)->name !== $variant->name) {
                 $option_value =  DB::connection('shop')->table('option_value')->insertGetId([
                     'option_id'  => $shopOption->option_id,
