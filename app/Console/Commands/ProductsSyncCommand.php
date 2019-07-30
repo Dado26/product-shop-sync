@@ -41,7 +41,10 @@ class ProductsSyncCommand extends Command
     public function handle()
     {
         $products = Product::Available()->where('synced_at', '<=', now()->subHours(24))->where(
-            function ($query) { $query->where('queued_at', '<=', now()->subHours(2))->orWhere('queued_at', null); }
+            function ($query) {
+                $query->where('queued_at', '<=', now()->subHours(1))
+                      ->orWhere('queued_at', null);
+            }
         )->get();
 
         $jobs = [];
@@ -53,7 +56,7 @@ class ProductsSyncCommand extends Command
             $jobs[] = new ProductSyncJob($product);
         }
 
-        Queue::bulk($jobs);
+        Queue::bulk($jobs, null, ProductSyncJob::QUEUE_NAME);
 
         $this->info('Queued jobs:' . count($jobs));
     }

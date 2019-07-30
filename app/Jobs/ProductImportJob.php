@@ -96,7 +96,7 @@ class ProductImportJob implements ShouldQueue
 
             DB::commit();
 
-            TransferProductJob::dispatch($product, $this->categoryId);
+            TransferProductJob::dispatch($product, $this->categoryId)->onQueue(TransferProductJob::QUEUE_NAME);
         } catch (InvalidArgumentException $e) {
             logger()->warning('Product data not found, please check site rules.', [
                 'url'       => $this->url,
