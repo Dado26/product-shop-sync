@@ -30,7 +30,7 @@ class TransferProductJob implements ShouldQueue
 
     public function __construct(Product $product, $categoryId)
     {
-        $this->product    = $product;
+        $this->product = $product;
 
         $this->categoryId = $categoryId;
     }
@@ -42,10 +42,10 @@ class TransferProductJob implements ShouldQueue
      */
     public function handle()
     {
-        $product        = $this->product;
-        $price          = $product->variants->min('price');
+        $product = $this->product;
+        $price   = $product->variants->min('price');
 
-        $ShopProduct =  ShopProduct::create([
+        $ShopProduct = ShopProduct::create([
             'model'           => $product->title,
             'price'           => $price,
             'location'        => $product->url,
@@ -82,7 +82,7 @@ class TransferProductJob implements ShouldQueue
             [
                 'shop_product_id' => $ShopProduct->product_id,
             ]
-            );
+        );
 
         $ShopProduct->categories()->attach($this->categoryId);
 
@@ -97,33 +97,12 @@ class TransferProductJob implements ShouldQueue
                 'meta_description' => '',
                 'meta_keyword'     => '',
             ]
-              );
-
-        $shopOption = ShopOption::create(
-            [
-                'type'       => 'select',
-                'sort_order' => 0,
-            ]
-           );
-        // dump($shopOption->toArray());
-
-        DB::connection('shop')->table('option_description')->insert([
-            'option_id'   => $shopOption->option_id,
-            'language_id' => 2,
-            'name'        => 'Choose variant',
-        ]);
-
-        $product_option =  DB::connection('shop')->table('product_option')->insertGetID([
-            'product_id' => $ShopProduct->product_id,
-            'option_id'  => $shopOption->option_id,
-            'value'      => '',
-            'required'   => 1,
-        ]);
+        );
 
         // create variants only if there are more than 1
         // because the first variant has the default product's data
         if ($product->variants->count() > 1) {
-            $this->createVariants($product, $shopOption, $product_option, $ShopProduct, $price);
+            $this->createVariants($product, $ShopProduct, $price);
         }
 
         foreach ($product->productImages as $image) {
@@ -141,13 +120,29 @@ class TransferProductJob implements ShouldQueue
 
     /**
      * @param  \App\Models\Product  $product
-     * @param $shopOption
-     * @param  int  $product_option
      * @param $ShopProduct
      * @param $price
      */
-    private function createVariants(Product $product, $shopOption, int $product_option, $ShopProduct, $price): void
+    private function createVariants(Product $product, $ShopProduct, $price): void
     {
+        $shopOption = ShopOption::create([
+            'type'       => 'select',
+            'sort_order' => 0,
+        ]);
+
+        DB::connection('shop')->table('option_description')->insert([
+            'option_id'   => $shopOption->option_id,
+            'language_id' => 2,
+            'name'        => 'Choose variant',
+        ]);
+
+        $product_option = DB::connection('shop')->table('product_option')->insertGetID([
+            'product_id' => $ShopProduct->product_id,
+            'option_id'  => $shopOption->option_id,
+            'value'      => '',
+            'required'   => 1,
+        ]);
+
         foreach ($product->variants as $variant) {
             $variantSame = DB::connection('shop')->table('option_value_description')->where('name', $variant->name)->first();
 
