@@ -146,7 +146,7 @@ class ProductCrawlerService
         if (empty($rule)) {
             // when there is no rule for variants
             // we want to create one without name
-            return [null];
+            return ['variant'];
         }
 
         $variants = $this->crawler->filter($rule)->each(function ($node) {
