@@ -123,7 +123,7 @@ class TransferProductJob implements ShouldQueue
         foreach ($product->variants as $variant) {
             $variantSame = DB::connection('shop')->table('option_value_description')->where('name', $variant->name)->first();
 
-            if (is_null($variantSame) && optional($variantSame)->name !== $variant->name) {
+            if (is_null($variantSame) || optional($variantSame)->name !== $variant->name) {
                 $option_value =  DB::connection('shop')->table('option_value')->insertGetId([
                     'option_id'  => $shopOption->option_id,
                     'image'      => '',
