@@ -7,18 +7,18 @@ php artisan down
 # Pull the latest changes from the git repository
 # git reset --hard
 # git clean -df
-printf "Pulling changes from master branch -----------------------------------------------\n"
+printf "\nPulling changes from master branch -----------------------------------------------\n"
 git pull origin master
 
 # Install/update composer dependecies
-printf "Composer install -----------------------------------------------------------------\n"
+printf "\nComposer install -----------------------------------------------------------------\n"
 composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
 
 # Run database migrations
-printf "Running migrations----------------------------------------------------------------\n"
+printf "\nRunning migrations----------------------------------------------------------------\n"
 php artisan migrate --force
 
-printf "Clearing caches ------------------------------------------------------------------\n"
+printf "\nClearing caches ------------------------------------------------------------------\n"
 # Clear caches
 php artisan cache:clear
 
@@ -34,22 +34,22 @@ php artisan config:clear
 php artisan config:cache
 
 # Queue restart
-printf "Restarting queues ----------------------------------------------------------------\n"
+printf "\nRestarting queues ----------------------------------------------------------------\n"
 php artisan queue:restart
 
 # Restart Horizon
-printf "Terminating horizon --------------------------------------------------------------\n"
+printf "\nTerminating horizon --------------------------------------------------------------\n"
 php artisan horizon:terminate
 
 # Install npm dependencies
-printf "Installing npm dependencies ------------------------------------------------------\n"
+printf "\nInstalling npm dependencies ------------------------------------------------------\n"
 npm install
 
 # Build assets using Laravel Mix
-printf "Building production assets -------------------------------------------------------\n"
+printf "\nBuilding production assets -------------------------------------------------------\n"
 npm run production
 
 # Turn off maintenance mode
 php artisan up
 
-printf "Deploy has finished successfully -------------------------------------------------\n"
+printf "\nDeploy has finished successfully -------------------------------------------------\n"
