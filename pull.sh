@@ -19,7 +19,7 @@ php artisan migrate --force
 php artisan cache:clear
 
 # Clear expired password reset tokens
-php artisan auth:clear-resets
+# php artisan auth:clear-resets
 
 # Clear and cache routes
 php artisan route:clear
@@ -35,7 +35,7 @@ php artisan queue:restart
 # Restart Horizon
 php artisan horizon:terminate
 
-# Install node modules
+# Install node modules & build
 npm ci
 
 # Build assets using Laravel Mix
