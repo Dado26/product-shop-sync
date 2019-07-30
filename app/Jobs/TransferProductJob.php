@@ -120,12 +120,39 @@ class TransferProductJob implements ShouldQueue
             'required'   => 1,
         ]);
 
+        // create variants only if there are more than 1
+        // because the first variant has the default product's data
+        if ($product->variants->count() > 1) {
+            $this->createVariants($product, $shopOption, $product_option, $ShopProduct, $price);
+        }
+
+        foreach ($product->productImages as $image) {
+            DB::connection('shop')->table('product_image')->insert([
+                'product_id' => $ShopProduct->product_id,
+                'image'      => $image->url,
+                'sort_order' => 0,
+            ]);
+        }
+
+        DB::connection('shop')->table('product_to_store')->insert([
+            'product_id' => $ShopProduct->product_id,
+        ]);
+    }
+
+    /**
+     * @param  \App\Models\Product  $product
+     * @param $shopOption
+     * @param  int  $product_option
+     * @param $ShopProduct
+     * @param $price
+     */
+    private function createVariants(Product $product, $shopOption, int $product_option, $ShopProduct, $price): void
+    {
         foreach ($product->variants as $variant) {
             $variantSame = DB::connection('shop')->table('option_value_description')->where('name', $variant->name)->first();
-logger()->debug('$variantSame', [$variantSame]);
-logger()->debug('$variant->name', [$variant->name]);
+
             if (optional($variantSame)->name !== $variant->name) {
-                $option_value =  DB::connection('shop')->table('option_value')->insertGetId([
+                $option_value = DB::connection('shop')->table('option_value')->insertGetId([
                     'option_id'  => $shopOption->option_id,
                     'image'      => '',
                     'sort_order' => 0,
@@ -158,16 +185,5 @@ logger()->debug('$variant->name', [$variant->name]);
                 'weight_prefix'     => '+',
             ]);
         }
-
-        foreach ($product->productImages as $image) {
-            DB::connection('shop')->table('product_image')->insert([
-                'product_id' => $ShopProduct->product_id,
-                'image'      => $image->url,
-                'sort_order' => 0,
-            ]);
-        }
-        DB::connection('shop')->table('product_to_store')->insert([
-            'product_id' => $ShopProduct->product_id,
-        ]);
     }
 }
