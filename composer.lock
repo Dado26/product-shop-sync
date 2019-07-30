@@ -2351,20 +2351,20 @@
         },
         {
             "name": "spatie/db-dumper",
-            "version": "2.14.2",
+            "version": "2.14.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/db-dumper.git",
-                "reference": "093750d69c383fb14d9e7cd6caa052ea7b35e5b5"
+                "reference": "eec21c55012b02fb8453c9929fa1c3150ca184ac"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/db-dumper/zipball/093750d69c383fb14d9e7cd6caa052ea7b35e5b5",
-                "reference": "093750d69c383fb14d9e7cd6caa052ea7b35e5b5",
+                "url": "https://api.github.com/repos/spatie/db-dumper/zipball/eec21c55012b02fb8453c9929fa1c3150ca184ac",
+                "reference": "eec21c55012b02fb8453c9929fa1c3150ca184ac",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.3",
+                "php": "^7.1",
                 "symfony/process": "^4.2"
             },
             "require-dev": {
@@ -2397,7 +2397,7 @@
                 "mysqldump",
                 "spatie"
             ],
-            "time": "2019-06-28T08:23:04+00:00"
+            "time": "2019-04-17T07:03:19+00:00"
         },
         {
             "name": "spatie/dropbox-api",
@@ -3124,16 +3124,16 @@
         },
         {
             "name": "symfony/finder",
-            "version": "v4.3.2",
+            "version": "v4.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/finder.git",
-                "reference": "33c21f7d5d3dc8a140c282854a7e13aeb5d0f91a"
+                "reference": "9638d41e3729459860bb96f6247ccb61faaa45f2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/finder/zipball/33c21f7d5d3dc8a140c282854a7e13aeb5d0f91a",
-                "reference": "33c21f7d5d3dc8a140c282854a7e13aeb5d0f91a",
+                "url": "https://api.github.com/repos/symfony/finder/zipball/9638d41e3729459860bb96f6247ccb61faaa45f2",
+                "reference": "9638d41e3729459860bb96f6247ccb61faaa45f2",
                 "shasum": ""
             },
             "require": {
@@ -3169,7 +3169,7 @@
             ],
             "description": "Symfony Finder Component",
             "homepage": "https://symfony.com",
-            "time": "2019-06-13T11:03:18+00:00"
+            "time": "2019-06-28T13:16:30+00:00"
         },
         {
             "name": "symfony/http-foundation",
@@ -3730,7 +3730,7 @@
         },
         {
             "name": "symfony/process",
-            "version": "v4.3.2",
+            "version": "v4.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/process.git",
