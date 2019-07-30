@@ -52,4 +52,4 @@ npm run production
 # Turn off maintenance mode
 php artisan up
 
-printf "\nDeploy has finished successfully -------------------------------------------------\n"
+printf "\nDeploy has finished successfully -------------------------------------------------\n\n"
