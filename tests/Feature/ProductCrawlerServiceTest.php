@@ -111,6 +111,6 @@ class ProductCrawlerServiceTest extends TestCase
 
     public function test_crawler_should_return_product_price()
     {
-        $this->assertEquals(1599.00, $this->crawler->getPrice());
+        $this->assertEquals(1899.00, $this->crawler->getPrice());
     }
 }

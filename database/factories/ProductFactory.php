@@ -15,3 +15,7 @@ $factory->define(Product::class, function (Faker $faker) {
         'synced_at'      => now(),
     ];
 });
+
+$factory->state(Product::class, 'available', [
+    'status' => Product::STATUS_AVAILABLE,
+]);

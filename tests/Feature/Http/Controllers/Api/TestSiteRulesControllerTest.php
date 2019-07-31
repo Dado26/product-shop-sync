@@ -28,7 +28,7 @@ class TestSiteRulesControllerTest extends TestCase
         $response->assertJson([
             'title'          => 'Lampa za insekte',
             'description'    => 'Napravljena specijalno za uništavanje letećih štetnih insekata.',
-            'price'          => '1599.00',
+            'price'          => '1899.00',
             'in_stock_value' => true,
             'images'         => [
                 'http://www.elementa.rs/images/products/57562/original/1.jpg',

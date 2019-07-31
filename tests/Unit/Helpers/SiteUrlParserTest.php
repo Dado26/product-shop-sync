@@ -5,9 +5,12 @@ namespace Tests\Unit\Helpers;
 use Tests\TestCase;
 use App\Helpers\SiteUrlParser;
 use App\Models\Site;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class SiteUrlParserTest extends TestCase
 {
+    use RefreshDatabase;
+
     public function test_get_site_model_by_product_url()
     {
         $expectedSite = factory(Site::class)->create(['url' => 'http://test.com']);

@@ -20,8 +20,17 @@ class ProductsSyncCommandTest extends TestCase
         // prepare data
         $site = factory(Site::class)->create();
 
-        $shouldSkip  = factory(Product::class)->create(['synced_at' => now()->subHours(4), 'site_id' => $site->id]);
-        $shouldQueue = factory(Product::class)->create(['synced_at' => now()->subHours(25), 'site_id' => $site->id]);
+        $shouldSkip  = factory(Product::class)->state('available')->create([
+            'synced_at' => now()->subHours(4),
+            'queued_at' => null,
+            'site_id'   => $site->id,
+        ]);
+
+        $shouldQueue = factory(Product::class)->state('available')->create([
+            'synced_at' => now()->subHours(25),
+            'queued_at' => null,
+            'site_id'   => $site->id,
+        ]);
 
         // run command
         $this->artisan('sync:products');

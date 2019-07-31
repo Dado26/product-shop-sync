@@ -25,6 +25,10 @@ class ProductImportJobTest extends TestCase
         $productUrl = route('test.product');
         $category   = 1;
 
+        $site = tap(Site::where('name', 'ProductSync')->first())->update([
+            'price_modification' => 0,
+        ]);
+
         ProductImportJob::dispatchNow($productUrl, $category);
 
         $product = Product::latest()->first();
@@ -35,7 +39,7 @@ class ProductImportJobTest extends TestCase
             'description' => 'Napravljena specijalno za uništavanje letećih štetnih insekata.',
             'status'      => Product::STATUS_AVAILABLE,
             'url'         => $productUrl,
-            'site_id'     => Site::where('name', 'ProductSync')->first()->id,
+            'site_id'     => $site->id,
         ]);
 
         $this->assertEquals(
@@ -48,7 +52,7 @@ class ProductImportJobTest extends TestCase
             $this->assertDatabaseHas('variants', [
                 'product_id' => $product->id,
                 'name'       => $variantName,
-                'price'      => '1599.00',
+                'price'      => '1899.00',
             ]);
         }
 

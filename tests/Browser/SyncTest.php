@@ -13,8 +13,13 @@ class SyncTest extends DuskTestCase
 {
     public function test_synchronized_price()
     {
+        $site    = Site::where('name', 'ProductSync')->first();
+        $site->update([
+            'price_modification' => 0,
+        ]);
+
         $product = factory(Product::class)->create([
-            'site_id' => Site::where('name', 'ProductSync')->first()->id,
+            'site_id' => $site->id,
             'url'     => route('test.product'),
         ]);
 
@@ -28,8 +33,8 @@ class SyncTest extends DuskTestCase
             $browser->visit('/products');
             $browser->click('.users-list-actions:first-child button');
             $browser->assertPathIs('/products');
-            $browser->assertSee('Your product is being synchronized');
-            $browser->assertSee('1,599.00 din');
+            $browser->assertSee('Your product was synchronized');
+            $browser->assertSee('1,899.00 din');
         });
     }
 }
