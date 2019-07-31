@@ -32,7 +32,7 @@ class TransferProductJob implements ShouldQueue
     /**
      * TransferProductJob constructor.
      *
-     * @param  \App\Models\Product  $product
+     * @param \App\Models\Product $product
      * @param $categoryId
      */
     public function __construct(Product $product, $categoryId)
@@ -79,7 +79,7 @@ class TransferProductJob implements ShouldQueue
             'length'          => 0.00000000,
             'subtract'        => 1,
             'minimum'         => 1,
-            'quantity'        => 1,
+            'quantity'        => 99999,
             'sort_order'      => 1,
             'viewed'          => 0,
             'date_added'      => now(),
@@ -108,7 +108,7 @@ class TransferProductJob implements ShouldQueue
         }
 
         // create images
-        foreach ($product->productImages as $image) {
+        foreach ($product->productImages->slice(1) as $image) {
             DB::connection('shop')->table('product_image')->insert([
                 'product_id' => $shopProduct->product_id,
                 'image'      => $image->url,
@@ -125,7 +125,7 @@ class TransferProductJob implements ShouldQueue
     }
 
     /**
-     * @param  \App\Models\Product  $product
+     * @param \App\Models\Product $product
      * @param $shopProduct
      * @param $price
      */
@@ -139,7 +139,7 @@ class TransferProductJob implements ShouldQueue
         DB::connection('shop')->table('option_description')->insert([
             'option_id'   => $shopOption->option_id,
             'language_id' => 2,
-            'name'        => 'Choose variant',
+            'name'        => 'Izaberite varijantu',
         ]);
 
         $productOption = DB::connection('shop')->table('product_option')->insertGetID([
