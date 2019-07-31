@@ -6,6 +6,7 @@ $(document).ready(function() {
 
         const params = {
             url: document.querySelector('#test-url').value,
+            price_modification: document.querySelector('input[name="sites[price_modification]"]').value,
             rules: {
                 title: document.querySelector('input[name="sync_Rules[title]"]').value,
                 description: document.querySelector('input[name="sync_Rules[description]"]').value,
@@ -45,11 +46,13 @@ $(document).ready(function() {
 
                 // TITLE
                 function getData(item) {
+                    let className = item.replace(/_/g, '-');
+
                     if (response.data[item] == null || (response.data[item] && response.data[item].length == 0)) {
-                        document.querySelector('#test-rules .form-group.' + item).classList.add('invalid-rule');
+                        document.querySelector('#test-rules .form-group.' + className).classList.add('invalid-rule');
                     } else {
-                        document.querySelector('#test-rules .form-group.' + item).classList.remove('invalid-rule');
-                        document.querySelector('#test-rules .form-group.' + item + ' .form-control').innerHTML = response.data[item];
+                        document.querySelector('#test-rules .form-group.' + className).classList.remove('invalid-rule');
+                        document.querySelector('#test-rules .form-group.' + className + ' .form-control').innerHTML = response.data[item];
                     }
                 }
 

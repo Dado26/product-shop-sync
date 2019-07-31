@@ -31,7 +31,7 @@ class AuthTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->logout();
             $browser->visit('/debug');
-            $browser->assertPathIs( '/login');
+            $browser->assertPathIs('/login');
         });
     }
 
@@ -40,7 +40,7 @@ class AuthTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1));
             $browser->visit('/debug');
-            $browser->assertPathIs( '/debug/requests');
+            $browser->assertPathIs('/debug/requests');
         });
     }
 
@@ -48,7 +48,7 @@ class AuthTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->logout();
-            $browser->visit( '/horizon');
+            $browser->visit('/horizon');
             $browser->assertPathIs('/login');
         });
     }
@@ -57,8 +57,8 @@ class AuthTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1));
-            $browser->visit( '/horizon');
-            $browser->assertPathIs( '/horizon/dashboard');
+            $browser->visit('/horizon');
+            $browser->assertPathIs('/horizon/dashboard');
         });
     }
 }

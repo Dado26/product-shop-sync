@@ -5,8 +5,8 @@ namespace App\Helpers;
 class PriceCalculator
 {
     /**
-     * @param  float  $price
-     * @param  float  $percent
+     * @param float $price
+     * @param float $percent
      *
      * @return float
      */
@@ -16,13 +16,15 @@ class PriceCalculator
             return $price;
         }
 
-        $priceModified = (abs($percent) / 100) * $price;
+        $pricePercentage = (abs($percent) / 100) * $price;
 
         if ($percent > 0) {
-            return $priceModified + $price;
+            $priceModified =  $pricePercentage + $price;
+            return round($priceModified);
         }
         if ($percent < 0) {
-            return $price - $priceModified;
+            $priceModified =  $price - $pricePercentage;
+            return round($priceModified);
         }
     }
 }

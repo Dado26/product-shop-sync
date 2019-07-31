@@ -43,7 +43,12 @@
                         <div class="form-control"></div>
                     </div>
 
-                    <div class="form-group in_stock_value">
+                    <div class="form-group price-modification">
+                        <label class="control-label">Price Modification</label>
+                        <div class="form-control"></div>
+                    </div>
+
+                    <div class="form-group in-stock-value">
                         <label class="control-label">In stock value</label>
                         <div class="form-control"></div>
                     </div>
@@ -63,7 +68,7 @@
 
                 <div class="form-group col specifications">
                     <label class="control-label">Specifications</label>
-                    <div></div>
+                    <div class="form-control"></div>
                 </div>
             </div>
         </div>
