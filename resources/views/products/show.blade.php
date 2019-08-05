@@ -30,7 +30,7 @@
 
                 <div class="form-group">
                     <label class="control-label">Description</label>
-                    <div class="form-control">{{ $product->description }}</div>
+                    <div class="form-control multiline">{!! $product->description !!}</div>
                 </div>
 
                 <div class="form-group">

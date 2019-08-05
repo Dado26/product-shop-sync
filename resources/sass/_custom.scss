@@ -8,12 +8,6 @@
     hr {
         margin: 25px 0;
     }
-    .form-group.description .form-control {
-        height: auto;
-        min-height: 38px;
-        max-height: 200px;
-        overflow: auto;
-    }
     .form-group.specifications .form-control {
         padding: 15px;
         height: auto;
@@ -46,6 +40,13 @@
             border: 1px solid #d1d3e2;
         }
     }
+}
+
+.form-control.multiline {
+    height: auto;
+    min-height: 38px;
+    max-height: 300px;
+    overflow: auto;
 }
 
 .custom-border {

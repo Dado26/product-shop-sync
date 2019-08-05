@@ -35,7 +35,7 @@
 
                     <div class="form-group description">
                         <label class="control-label">Description</label>
-                        <div class="form-control text-truncate"></div>
+                        <div class="form-control multiline"></div>
                     </div>
 
                     <div class="form-group price">
