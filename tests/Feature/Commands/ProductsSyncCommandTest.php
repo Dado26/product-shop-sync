@@ -89,7 +89,7 @@ class ProductsSyncCommandTest extends TestCase
         });
     }
 
-    public function test_that_command_will_not_dispatch_products_that_have_been_marked_unavailable_more_30_days_ago()
+    public function test_that_command_will_not_dispatch_products_that_have_been_marked_unavailable_more_28_days_ago()
     {
         Queue::fake();
 
@@ -97,7 +97,7 @@ class ProductsSyncCommandTest extends TestCase
         $site = factory(Site::class)->create();
 
         $shouldSkip = factory(Product::class)->state('unavailable')->create([
-            'synced_at' => now()->subDays(31),
+            'synced_at' => now()->subDays(29),
             'queued_at' => now()->subHours(25),
             'site_id'   => $site->id,
         ]);

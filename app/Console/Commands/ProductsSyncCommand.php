@@ -40,6 +40,7 @@ class ProductsSyncCommand extends Command
      */
     public function handle()
     {
+        // Sync product that are available and older than 24 hours an product that are unavailable and not older than 4 weeks
         $products = Product::where(function ($query) {
             $query->where('status', Product::STATUS_AVAILABLE)
                       ->where('synced_at', '<=', now()->subHours(24))
@@ -52,7 +53,8 @@ class ProductsSyncCommand extends Command
                 $query->where('status', Product::STATUS_UNAVAILABLE)
                       ->where('synced_at', '>=', now()->subWeeks(4))
                       ->where(function ($query) {
-                          $query->where('queued_at', '<=', now()->subHours(1))->orWhere('queued_at', null);
+                          $query->where('queued_at', '<=', now()->subHours(1))
+                                ->orWhere('queued_at', null);
                       });
             })
             ->get();
