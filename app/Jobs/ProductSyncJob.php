@@ -158,12 +158,18 @@ class ProductSyncJob implements ShouldQueue
     /**
      * The job failed to process.
      *
-     * @param $exception
+     * @param  Throwable  $e
      *
      * @return void
      */
-    public function failed(Throwable $exception)
+    public function failed(Throwable $e)
     {
-        //
+        // this will be called only when the last attempt fails
+        logger()->warning('Failed to sync product', [
+            'id'        => $this->product->id,
+            'title'     => $this->product->title,
+            'url'       => $this->product->url,
+            'exception' => $e->getMessage(),
+        ]);
     }
 }
