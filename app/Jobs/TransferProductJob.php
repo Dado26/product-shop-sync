@@ -12,6 +12,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Throwable;
 
 class TransferProductJob implements ShouldQueue
 {
@@ -53,75 +54,72 @@ class TransferProductJob implements ShouldQueue
         $product = $this->product;
         $price   = $product->variants->min('price');
 
-        $shopProduct = ShopProduct::create([
-            'model'           => $product->title,
-            'price'           => $price,
-            'location'        => $product->url,
-            'status'          => ($product->status == 'available') ? 1 : 0,
-            'date_available'  => now(),
-            'image'           => $product->productImages()->first()->url,
-            'sku'             => '',
-            'upc'             => '',
-            'ean'             => '',
-            'jan'             => '',
-            'isbn'            => '',
-            'mpn'             => '',
-            'stock_status_id' => 1,
-            'manufacturer_id' => 0,
-            'shipping'        => 1,
-            'points'          => 0,
-            'tax_class_id'    => 0,
-            'weight'          => 0.00000000,
-            'weight_class_id' => 1,
-            'length_class_id' => 1,
-            'height'          => 0.00000000,
-            'width'           => 0.00000000,
-            'length'          => 0.00000000,
-            'subtract'        => 1,
-            'minimum'         => 1,
-            'quantity'        => 1,
-            'sort_order'      => 1,
-            'viewed'          => 0,
-            'date_added'      => now(),
-            'date_modified'   => now(),
-        ]);
-
-        $product->update(['shop_product_id' => $shopProduct->product_id]);
-
-        $shopProduct->categories()->attach($this->categoryId);
-
-        ShopProductDescription::create([
-            'description'      => $product->description,
-            'name'             => $product->title,
-            'product_id'       => $shopProduct->product_id,
-            'language_id'      => 2,
-            'tag'              => '',
-            'meta_title'       => $product->title,
-            'meta_description' => '',
-            'meta_keyword'     => '',
-        ]);
-
-        // create variants only if there are more than 1
-        // because the first variant has the default product's data
-        if ($product->variants->count() > 1) {
-            $this->createVariants($product, $shopProduct, $price);
-        }
-
-        // create images
-        foreach ($product->productImages as $image) {
-            DB::connection('shop')->table('product_image')->insert([
-                'product_id' => $shopProduct->product_id,
-                'image'      => $image->url,
-                'sort_order' => 0,
+        try {
+            $shopProduct = ShopProduct::create([
+                'model'           => $product->title,
+                'price'           => $price,
+                'location'        => $product->url,
+                'status'          => ($product->status == 'available') ? 1 : 0,
+                'date_available'  => now(),
+                'image'           => $product->productImages()->first()->url,
+                'sku'             => '',
+                'upc'             => '',
+                'ean'             => '',
+                'jan'             => '',
+                'isbn'            => '',
+                'mpn'             => '',
+                'stock_status_id' => 1,
+                'manufacturer_id' => 0,
+                'shipping'        => 1,
+                'points'          => 0,
+                'tax_class_id'    => 0,
+                'weight'          => 0.00000000,
+                'weight_class_id' => 1,
+                'length_class_id' => 1,
+                'height'          => 0.00000000,
+                'width'           => 0.00000000,
+                'length'          => 0.00000000,
+                'subtract'        => 1,
+                'minimum'         => 1,
+                'quantity'        => 1,
+                'sort_order'      => 1,
+                'viewed'          => 0,
+                'date_added'      => now(),
+                'date_modified'   => now(),
             ]);
+            $product->update(['shop_product_id' => $shopProduct->product_id]);
+            $shopProduct->categories()->attach($this->categoryId);
+            ShopProductDescription::create([
+                'description'      => $product->description,
+                'name'             => $product->title,
+                'product_id'       => $shopProduct->product_id,
+                'language_id'      => 2,
+                'tag'              => '',
+                'meta_title'       => $product->title,
+                'meta_description' => '',
+                'meta_keyword'     => '',
+            ]);// create variants only if there are more than 1
+            // because the first variant has the default product's data
+            if ($product->variants->count() > 1) {
+                $this->createVariants($product, $shopProduct, $price);
+            }// create images
+            foreach ($product->productImages as $image) {
+                DB::connection('shop')->table('product_image')->insert([
+                    'product_id' => $shopProduct->product_id,
+                    'image'      => $image->url,
+                    'sort_order' => 0,
+                ]);
+            }// connect new product to shop
+            DB::connection('shop')->table('product_to_store')->insert([
+                'product_id' => $shopProduct->product_id,
+            ]);
+
+            DB::commit();
+
+        } catch (Throwable $e) {
+            DB::rollBack();
+            throw $e;
         }
-
-        // connect new product to shop
-        DB::connection('shop')->table('product_to_store')->insert([
-            'product_id' => $shopProduct->product_id,
-        ]);
-
-        DB::commit();
     }
 
     /**
@@ -189,10 +187,18 @@ class TransferProductJob implements ShouldQueue
     /**
      * The job failed to process.
      *
+     * @param  Throwable  $e
+     *
      * @return void
      */
-    public function failed()
+    public function failed(Throwable $e)
     {
-        DB::rollBack();
+        // this will be called only when the last attempt fails
+        logger()->warning('Failed to import product to shop.', [
+            'id'        => $this->product->id,
+            'title'     => $this->product->title,
+            'url'       => $this->product->url,
+            'exception' => $e->getMessage(),
+        ]);
     }
 }

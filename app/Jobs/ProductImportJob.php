@@ -101,6 +101,7 @@ class ProductImportJob implements ShouldQueue
                 'exception' => $e->getMessage(),
             ]);
 
+            DB::rollBack();
             $this->delete();
         } catch (Throwable $e) {
             logger()->error('Failed to import product from url', [
@@ -108,6 +109,7 @@ class ProductImportJob implements ShouldQueue
                 'exception' => "{$e->getFile()}:{$e->getLine()}",
             ]);
 
+            DB::rollBack();
             $this->fail();
         }
     }
@@ -137,12 +139,12 @@ class ProductImportJob implements ShouldQueue
      */
     private function createVariants($product)
     {
-        $site              = SiteUrlParser::getSite($this->url);
-        $percentagePrice   = $site->price_modification;
+        $site            = SiteUrlParser::getSite($this->url);
+        $percentagePrice = $site->price_modification;
 
         foreach ($this->crawler->getVariants() as $variant) {
-            $price             = $this->crawler->getPrice();
-            $priceModified     = PriceCalculator::modifyByPercent($price, $percentagePrice);
+            $price         = $this->crawler->getPrice();
+            $priceModified = PriceCalculator::modifyByPercent($price, $percentagePrice);
 
             Variant::create([
                 'name'       => $variant,
@@ -174,6 +176,10 @@ class ProductImportJob implements ShouldQueue
                     "intercool/products/{$product->id}/{$image->id}",
                     ['crop' => 'fit', 'width' => 700, 'height' => 700, 'format' => 'jpg', 'quality' => 'auto:good']
                 );
+
+                $result = $cloudinaryImage->getResult();
+
+                $image->update(['url' => $result['secure_url']]);
             } catch (Exception $e) {
                 $image->delete();
 
@@ -182,20 +188,23 @@ class ProductImportJob implements ShouldQueue
                     'productUrl' => $this->crawler->getUrl(),
                 ]);
             }
-
-            $result = $cloudinaryImage->getResult();
-
-            $image->update(['url' => $result['secure_url']]);
         }
     }
 
     /**
      * The job failed to process.
      *
+     * @param Throwable $e
+     *
      * @return void
      */
-    public function failed()
+    public function failed(Throwable $e)
     {
-        DB::rollBack();
+        // this will be called only when the last attempt fails
+        logger()->warning('Failed to import product', [
+            'url'        => $this->url,
+            'categoryId' => $this->categoryId,
+            'exception'  => $e->getMessage(),
+        ]);
     }
 }
