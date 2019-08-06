@@ -40,12 +40,22 @@ class ProductsSyncCommand extends Command
      */
     public function handle()
     {
-        $products = Product::Available()->where('synced_at', '<=', now()->subHours(24))->where(
-            function ($query) {
-                $query->where('queued_at', '<=', now()->subHours(1))
-                      ->orWhere('queued_at', null);
-            }
-        )->get();
+        $products = Product::where(function ($query) {
+            $query->where('status', Product::STATUS_AVAILABLE)
+                      ->where('synced_at', '<=', now()->subHours(24))
+                      ->where(function ($query) {
+                          $query->where('queued_at', '<=', now()->subHours(1))
+                                ->orWhere('queued_at', null);
+                      });
+        })
+            ->orWhere(function ($query) {
+                $query->where('status', Product::STATUS_UNAVAILABLE)
+                      ->where('synced_at', '>=', now()->subWeeks(4))
+                      ->where(function ($query) {
+                          $query->where('queued_at', '<=', now()->subHours(1))->orWhere('queued_at', null);
+                      });
+            })
+            ->get();
 
         $jobs = [];
 

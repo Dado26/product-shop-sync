@@ -56,7 +56,7 @@ class ProductSyncJob implements ShouldQueue
     /**
      * Create a new job instance.
      *
-     * @param  \App\Models\Product  $product
+     * @param \App\Models\Product $product
      */
     public function __construct(Product $product)
     {

@@ -19,3 +19,7 @@ $factory->define(Product::class, function (Faker $faker) {
 $factory->state(Product::class, 'available', [
     'status' => Product::STATUS_AVAILABLE,
 ]);
+
+$factory->state(Product::class, 'unavailable', [
+    'status' => Product::STATUS_UNAVAILABLE,
+]);
