@@ -96,7 +96,7 @@ https://shop.com/product/957778">{{ old('urls') }}</textarea>
             <table class="table table-bordered">
                 <tr class="card-header">
                     <th class="text-center">ID</th>
-                    <th class="text-center">Title</th>
+                    <th>Title</th>
                     <th class="text-center">Store</th>
                     <th class="text-center">Price</th>
                     <th class="text-center">Status</th>
@@ -112,7 +112,7 @@ https://shop.com/product/957778">{{ old('urls') }}</textarea>
                             {{ $product->id}}
                         </td>
 
-                        <td class="text-center">
+                        <td>
                             {{ $product->title }}
                         </td>
 
