@@ -45,6 +45,12 @@ class TransferUpdateProductJob implements ShouldQueue
 
         $shopProduct = ShopProduct::where('product_id', $this->product->shop_product_id)->first();
 
+        if (!$shopProduct) {
+            logger()->notice('Product not found in store, maybe it was removed', ['id' => $this->product->id]);
+            $this->delete();
+            return;
+        }
+
         if ($shopProduct->status == 0 || $shopProduct == null) {
             $this->product->update([
                 'status' => ($shopProduct->status == 0) ? Product::STATUS_ARCHIVED : Product::STATUS_DELETED,
