@@ -3,7 +3,6 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Laravel\Telescope\Telescope;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -16,9 +15,9 @@ class AppServiceProvider extends ServiceProvider
     {
         if (app()->environment('local')) {
             $this->app->register(\Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);
-            $this->app->register(TelescopeServiceProvider::class);
+            $this->app->register(\Laravel\Telescope\TelescopeServiceProvider::class);
 
-            Telescope::ignoreMigrations();
+            \Laravel\Telescope\Telescope::ignoreMigrations();
         }
     }
 
