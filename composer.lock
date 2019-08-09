@@ -4,8 +4,55 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "aa6fd6d22a6c3b3e074ebdbc0a57b53a",
+    "content-hash": "6e9af24cc77f91de773284ad2cbf22e7",
     "packages": [
+        {
+            "name": "aranyasen/laravel-adminer",
+            "version": "v1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/senaranya/laravel-adminer.git",
+                "reference": "46c35fda5f16d259aaefb149844c1b571faa82d2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/senaranya/laravel-adminer/zipball/46c35fda5f16d259aaefb149844c1b571faa82d2",
+                "reference": "46c35fda5f16d259aaefb149844c1b571faa82d2",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": ">=5.1",
+                "php": ">=7.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^6.4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Aranyasen\\LaravelAdminer\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Aranya Sen",
+                    "email": "sen.aranya@gmail.com"
+                }
+            ],
+            "description": "Adminer (by Jakub Vrana) wrapper for Laravel 5.5+",
+            "keywords": [
+                "adminer",
+                "database",
+                "explorer",
+                "laravel5",
+                "management"
+            ],
+            "time": "2019-03-02T03:57:56+00:00"
+        },
         {
             "name": "cakephp/chronos",
             "version": "1.2.8",

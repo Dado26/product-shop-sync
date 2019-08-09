@@ -47,5 +47,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('sites', 'SitesController');
 });
 
+// super admin only
+Route::group(['middleware' => 'super-admin-only'], function () {
+    Route::any('adminer', '\Aranyasen\LaravelAdminer\AdminerAutologinController@index');
+});
+
 // test routes
 Route::view('/test/product', 'test/product')->name('test.product');
