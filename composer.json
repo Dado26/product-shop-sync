@@ -30,6 +30,7 @@
         "beyondcode/laravel-dump-server": "^1.0",
         "doctrine/dbal": "^2.9",
         "filp/whoops": "^2.0",
+        "fruitcake/laravel-telescope-toolbar": "1.x@dev",
         "fzaninotto/faker": "^1.4",
         "laravel/dusk": "^5.2",
         "mockery/mockery": "^1.0",
