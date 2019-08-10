@@ -16,8 +16,10 @@
 
             <div class="card-body">
                 <div class="form-group">
-                    <label class="control-label">Site Name</label>
-                    <span class="form-control">{{ $product->site->name }}</span>
+                    <label class="control-label">Name</label>
+                    <span class="form-control">
+                        <a href="{{ $product->site->url }}" target="_blank">{{ $product->site->name }}</a>
+                    </span>
                 </div>
             </div>
         </div>
