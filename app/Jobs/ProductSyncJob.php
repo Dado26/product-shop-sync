@@ -46,7 +46,7 @@ class ProductSyncJob implements ShouldQueue
     /**
      * @var int
      */
-    public $timeout = 40;
+    public $timeout = 60;
 
     /**
      * @var \App\Services\ProductCrawlerService

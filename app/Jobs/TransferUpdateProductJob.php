@@ -20,6 +20,16 @@ class TransferUpdateProductJob implements ShouldQueue
     const QUEUE_NAME = 'transfer-update-product';
 
     /**
+     * @var int
+     */
+    public $tries = 3;
+
+    /**
+     * @var int
+     */
+    public $timeout = 60;
+
+    /**
      * @var \App\Models\Product
      */
     public $product;

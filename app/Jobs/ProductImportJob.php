@@ -48,12 +48,12 @@ class ProductImportJob implements ShouldQueue
     /**
      * @var int
      */
-    public $tries = 1;
+    public $tries = 2;
 
     /**
      * @var int
      */
-    public $timeout = 40;
+    public $timeout = 60;
 
     /**
      * Create a new job instance.
