@@ -40,7 +40,6 @@ class Product extends Model
 
     public function scopeAvailableOrUnvailable($query)
     {
-        
         return $query->where('status', $this::STATUS_AVAILABLE)->OrWhere('status', $this::STATUS_UNAVAILABLE);
     }
 }
