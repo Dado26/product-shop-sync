@@ -12,18 +12,21 @@
 
         <div class="card shadow mb-4">
 
-            <div class="card-header">
-                Products
-            </div>
+            <div class="card-header">Site</div>
 
             <div class="card-body">
-
                 <div class="form-group">
                     <label class="control-label">Site Name</label>
                     <span class="form-control">{{ $product->site->name }}</span>
                 </div>
+            </div>
+        </div>
 
-                <hr>
+        <div class="card shadow mb-4">
+
+            <div class="card-header">Products</div>
+
+            <div class="card-body">
 
                 <div class="form-group">
                     <label class="control-label">Title</label>
