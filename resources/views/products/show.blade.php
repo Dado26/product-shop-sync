@@ -19,9 +19,11 @@
             <div class="card-body">
 
                 <div class="form-group">
-                    <label class="control-label">Name</label>
+                    <label class="control-label">Site Name</label>
                     <span class="form-control">{{ $product->site->name }}</span>
                 </div>
+
+                <hr>
 
                 <div class="form-group">
                     <label class="control-label">Title</label>
