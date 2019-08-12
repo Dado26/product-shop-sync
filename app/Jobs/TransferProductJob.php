@@ -123,6 +123,8 @@ class TransferProductJob implements ShouldQueue
             foreach ($product->productImages->slice(1) as $image) {
                 DB::connection('shop')->table('product_image')->insert([
                     'product_id' => $shopProduct->product_id,
+                    'image'      => $image->url,
+                    'sort_order' => 0,
                 ]);
             }
 
