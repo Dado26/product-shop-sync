@@ -126,6 +126,11 @@ class TransferProductJob implements ShouldQueue
                 ]);
             }
 
+            // connect new product to shop
+            DB::connection('shop')->table('product_to_store')->insert([
+                'product_id' => $shopProduct->product_id,
+            ]);
+
             DB::commit();
         } catch (Throwable $e) {
             DB::rollBack();
