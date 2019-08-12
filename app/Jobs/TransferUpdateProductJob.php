@@ -20,6 +20,16 @@ class TransferUpdateProductJob implements ShouldQueue
     const QUEUE_NAME = 'transfer-update-product';
 
     /**
+     * @var int
+     */
+    public $tries = 3;
+
+    /**
+     * @var int
+     */
+    public $timeout = 60;
+
+    /**
      * @var \App\Models\Product
      */
     public $product;
@@ -45,6 +55,12 @@ class TransferUpdateProductJob implements ShouldQueue
 
         $shopProduct = ShopProduct::where('product_id', $this->product->shop_product_id)->first();
 
+        if (!$shopProduct) {
+            logger()->notice('Product not found in store, maybe it was removed', ['id' => $this->product->id]);
+            $this->delete();
+            return;
+        }
+
         if ($shopProduct->status == 0 || $shopProduct == null) {
             $this->product->update([
                 'status' => ($shopProduct->status == 0) ? Product::STATUS_ARCHIVED : Product::STATUS_DELETED,
@@ -58,30 +74,6 @@ class TransferUpdateProductJob implements ShouldQueue
                 'price'           => $this->product->variants->min('price'),
                 'location'        => $this->product->url,
                 'status'          => ($this->product->status == 'available') ? 1 : 0,
-                'date_available'  => now(),
-                'sku'             => '',
-                'upc'             => '',
-                'ean'             => '',
-                'jan'             => '',
-                'isbn'            => '',
-                'mpn'             => '',
-                'stock_status_id' => 1,
-                'manufacturer_id' => 0,
-                'shipping'        => 1,
-                'points'          => 0,
-                'tax_class_id'    => 0,
-                'weight'          => 0.00000000,
-                'weight_class_id' => 1,
-                'length_class_id' => 1,
-                'height'          => 0.00000000,
-                'width'           => 0.00000000,
-                'length'          => 0.00000000,
-                'subtract'        => 1,
-                'minimum'         => 1,
-                'quantity'        => 1,
-                'sort_order'      => 1,
-                'viewed'          => 0,
-                'date_added'      => now(),
                 'date_modified'   => now(),
             ]);
 
@@ -89,11 +81,7 @@ class TransferUpdateProductJob implements ShouldQueue
                 'description'      => $this->product->description,
                 'name'             => $this->product->title,
                 'product_id'       => $shopProduct->product_id,
-                'language_id'      => 2,
-                'tag'              => '',
                 'meta_title'       => $this->product->title,
-                'meta_description' => '',
-                'meta_keyword'     => '',
             ]);
 
             DB::commit();

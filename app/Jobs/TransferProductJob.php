@@ -21,6 +21,16 @@ class TransferProductJob implements ShouldQueue
     const QUEUE_NAME = 'transfer-product';
 
     /**
+     * @var int
+     */
+    public $tries = 3;
+
+    /**
+     * @var int
+     */
+    public $timeout = 60;
+
+    /**
      * @var \App\Models\Product
      */
     public $product;
@@ -115,6 +125,11 @@ class TransferProductJob implements ShouldQueue
                     'product_id' => $shopProduct->product_id,
                 ]);
             }
+
+            // connect new product to shop
+            DB::connection('shop')->table('product_to_store')->insert([
+                'product_id' => $shopProduct->product_id,
+            ]);
 
             DB::commit();
         } catch (Throwable $e) {

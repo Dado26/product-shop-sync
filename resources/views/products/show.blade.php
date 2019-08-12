@@ -12,16 +12,23 @@
 
         <div class="card shadow mb-4">
 
-            <div class="card-header">
-                Products
-            </div>
+            <div class="card-header">Site</div>
 
             <div class="card-body">
-
                 <div class="form-group">
                     <label class="control-label">Name</label>
-                    <span class="form-control">{{ $product->site->name }}</span>
+                    <span class="form-control">
+                        <a href="{{ $product->site->url }}" target="_blank">{{ $product->site->name }}</a>
+                    </span>
                 </div>
+            </div>
+        </div>
+
+        <div class="card shadow mb-4">
+
+            <div class="card-header">Products</div>
+
+            <div class="card-body">
 
                 <div class="form-group">
                     <label class="control-label">Title</label>

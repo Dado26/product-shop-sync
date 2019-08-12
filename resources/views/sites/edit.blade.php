@@ -44,7 +44,9 @@
                     </div>
                 </div>
 
-                @include('sites.test_rules')
+                {{-- @include('sites.test_rules') --}}
+
+                <check-rules-component />
             </div>
 
             <div class="col-lg-6 members-position">

@@ -17,7 +17,7 @@ class ProductsController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      *
      * @return \Illuminate\Http\Response
      */
@@ -25,9 +25,9 @@ class ProductsController extends Controller
     {
         $search = $request->input('search');
 
-        $searchWords   = explode(' ', $search);
+        $searchWords = explode(' ', $search);
 
-        $categories    = ShopCategory::with('languageCategoryDescriptions')->get();
+        $categories = ShopCategory::with('languageCategoryDescriptions')->get();
 
         $products = Product::query()
                            ->where(function ($query) use ($searchWords) {
@@ -96,7 +96,7 @@ class ProductsController extends Controller
      */
     public function show(Product $product)
     {
-        $variants =$product->variants()->get();
+        $variants = $product->variants()->get();
 
         $images = $product->productImages()->get();
 
