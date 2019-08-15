@@ -37,9 +37,4 @@ class Product extends Model
     {
         return $query->where('status', $this::STATUS_AVAILABLE);
     }
-
-    public function scopeAvailableOrUnvailable($query)
-    {
-        return $query->where('status', $this::STATUS_AVAILABLE)->OrWhere('status', $this::STATUS_UNAVAILABLE);
-    }
 }
