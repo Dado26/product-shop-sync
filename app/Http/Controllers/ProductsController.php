@@ -2,22 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\SiteUrlParser;
+use Queue;
 use App\Models\Product;
 use App\Jobs\ProductSyncJob;
+use App\Models\ShopCategory;
 use Illuminate\Http\Request;
 use InvalidArgumentException;
+use App\Helpers\SiteUrlParser;
 use App\Jobs\ProductImportJob;
 use App\Http\Requests\ProductImportRequest;
-use App\Models\ShopCategory;
-use Queue;
 
 class ProductsController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      *
      * @return \Illuminate\Http\Response
      */
@@ -27,7 +27,7 @@ class ProductsController extends Controller
 
         $searchWords = explode(' ', $search);
 
-        $categories = ShopCategory::with('languageCategoryDescriptions')->get();
+        $categories = ShopCategory::allWithFormattedNames();
 
         $products = Product::query()
                            ->where(function ($query) use ($searchWords) {
@@ -44,7 +44,7 @@ class ProductsController extends Controller
     }
 
     /**
-     * @param  \App\Http\Requests\ProductImportRequest  $request
+     * @param \App\Http\Requests\ProductImportRequest $request
      *
      * @return \Illuminate\Http\RedirectResponse
      */
@@ -70,7 +70,7 @@ class ProductsController extends Controller
     }
 
     /**
-     * @param  \App\Models\Product  $product
+     * @param \App\Models\Product $product
      *
      * @return \Illuminate\Http\RedirectResponse
      */
@@ -90,7 +90,7 @@ class ProductsController extends Controller
     }
 
     /**
-     * @param  \App\Models\Product  $product
+     * @param \App\Models\Product $product
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */

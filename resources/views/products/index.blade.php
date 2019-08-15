@@ -49,7 +49,7 @@ https://shop.com/product/957778">{{ old('urls') }}</textarea>
                     <select class="form-control" name="category">
                         @foreach($categories as $category )
                         <option value="{{ $category->category_id }}">
-                            {{ $category->languageCategoryDescriptions[0]->name }}
+                            {{ $category->name }}
                         </option>
                         @endforeach
                     </select>

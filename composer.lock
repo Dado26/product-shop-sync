@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3b2dd6fbedd8ddb931f027d2a56f2203",
+    "content-hash": "441ace70ccc87c8ed0f3e7c1240693bf",
     "packages": [
         {
             "name": "aranyasen/laravel-adminer",
@@ -587,6 +587,138 @@
                 "trusted proxy"
             ],
             "time": "2019-01-10T14:06:47+00:00"
+        },
+        {
+            "name": "glhd/aire",
+            "version": "1.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/glhd/aire.git",
+                "reference": "be6573530f56c734f07ef489767c8e3ef7fa47ae"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/glhd/aire/zipball/be6573530f56c734f07ef489767c8e3ef7fa47ae",
+                "reference": "be6573530f56c734f07ef489767c8e3ef7fa47ae",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "illuminate/events": "5.5.*|5.6.*|5.7.*|5.8.*",
+                "illuminate/support": "5.5.*|5.6.*|5.7.*|5.8.*",
+                "illuminate/view": "5.5.*|5.6.*|5.7.*|5.8.*",
+                "php": ">=7.1"
+            },
+            "require-dev": {
+                "barryvdh/reflection-docblock": "^2.0",
+                "glhd/aire-bootstrap": "^1.0.0-beta.3",
+                "glhd/aire-tailwind-custom-forms": "^1.0.0-beta.1",
+                "graham-campbell/markdown": "^10.2",
+                "guzzlehttp/guzzle": "~6.0",
+                "laravel/framework": "^5.7",
+                "mockery/mockery": "^1.1",
+                "orchestra/testbench": "~3.0",
+                "php-coveralls/php-coveralls": "^2.1",
+                "phpunit/phpunit": "^7.3",
+                "symfony/css-selector": "^4.1",
+                "symfony/dom-crawler": "^4.1"
+            },
+            "suggest": {
+                "glhd/aire-tailwind-custom-forms": "Use the Tailwind custom forms plugin for even nicer looking forms"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Galahad\\Aire\\Support\\AireServiceProvider"
+                    ],
+                    "aliases": {
+                        "Aire": "Galahad\\Aire\\Support\\Facades\\Aire"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Galahad\\Aire\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Chris Morrell",
+                    "homepage": "http://www.cmorrell.com"
+                }
+            ],
+            "description": "Modern Laravel form builder. Remembers old input, retrieves error messages and comes with beautiful Tailwind-based markup out of the box.",
+            "keywords": [
+                "Forms",
+                "aire",
+                "laravel",
+                "tailwind"
+            ],
+            "time": "2019-08-13T15:32:58+00:00"
+        },
+        {
+            "name": "glhd/aire-bootstrap",
+            "version": "0.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/glhd/aire-bootstrap.git",
+                "reference": "b73ccb34be8334cb367c42e82da6cc80a729769b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/glhd/aire-bootstrap/zipball/b73ccb34be8334cb367c42e82da6cc80a729769b",
+                "reference": "b73ccb34be8334cb367c42e82da6cc80a729769b",
+                "shasum": ""
+            },
+            "require": {
+                "glhd/aire": "^1.1.0",
+                "illuminate/support": "5.6.*|5.7.*|5.8.*",
+                "php": ">=7.1"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.1",
+                "orchestra/testbench": "~3.0",
+                "php-coveralls/php-coveralls": "^2.1",
+                "phpunit/phpunit": "^7.3",
+                "symfony/css-selector": "^4.1",
+                "symfony/dom-crawler": "^4.1"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Galahad\\AireBootstrap\\AireBootstrapServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Galahad\\AireBootstrap\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Chris Morrell",
+                    "homepage": "http://www.cmorrell.com"
+                }
+            ],
+            "description": "Bootstrap themes for Aire",
+            "keywords": [
+                "Forms",
+                "aire",
+                "bootstrap",
+                "laravel"
+            ],
+            "time": "2019-08-09T03:41:58+00:00"
         },
         {
             "name": "graham-campbell/guzzle-factory",
@@ -5221,16 +5353,16 @@
         },
         {
             "name": "fruitcake/laravel-telescope-toolbar",
-            "version": "dev-master",
+            "version": "v1.0.0-alpha.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fruitcake/laravel-telescope-toolbar.git",
-                "reference": "a3ce74c5986e005c8a77695dbd4ce626d4bca0d4"
+                "reference": "f1241d3b8483aa08d1d93d4489e038c89fab5658"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fruitcake/laravel-telescope-toolbar/zipball/a3ce74c5986e005c8a77695dbd4ce626d4bca0d4",
-                "reference": "a3ce74c5986e005c8a77695dbd4ce626d4bca0d4",
+                "url": "https://api.github.com/repos/fruitcake/laravel-telescope-toolbar/zipball/f1241d3b8483aa08d1d93d4489e038c89fab5658",
+                "reference": "f1241d3b8483aa08d1d93d4489e038c89fab5658",
                 "shasum": ""
             },
             "require": {
@@ -5279,7 +5411,7 @@
                 "toolbar",
                 "webprofiler"
             ],
-            "time": "2019-08-10T17:14:17+00:00"
+            "time": "2019-08-12T09:47:37+00:00"
         },
         {
             "name": "fzaninotto/faker",
