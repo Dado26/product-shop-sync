@@ -5353,16 +5353,16 @@
         },
         {
             "name": "fruitcake/laravel-telescope-toolbar",
-            "version": "v1.0.0-alpha.2",
+            "version": "v1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fruitcake/laravel-telescope-toolbar.git",
-                "reference": "f1241d3b8483aa08d1d93d4489e038c89fab5658"
+                "reference": "faa5a47073d3777f0775f0d50b46b99204f9ba91"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fruitcake/laravel-telescope-toolbar/zipball/f1241d3b8483aa08d1d93d4489e038c89fab5658",
-                "reference": "f1241d3b8483aa08d1d93d4489e038c89fab5658",
+                "url": "https://api.github.com/repos/fruitcake/laravel-telescope-toolbar/zipball/faa5a47073d3777f0775f0d50b46b99204f9ba91",
+                "reference": "faa5a47073d3777f0775f0d50b46b99204f9ba91",
                 "shasum": ""
             },
             "require": {
@@ -5411,7 +5411,7 @@
                 "toolbar",
                 "webprofiler"
             ],
-            "time": "2019-08-12T09:47:37+00:00"
+            "time": "2019-08-15T20:41:17+00:00"
         },
         {
             "name": "fzaninotto/faker",
