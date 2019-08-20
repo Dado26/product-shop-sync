@@ -5353,16 +5353,16 @@
         },
         {
             "name": "fruitcake/laravel-telescope-toolbar",
-            "version": "v1.0.0",
+            "version": "v1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fruitcake/laravel-telescope-toolbar.git",
-                "reference": "faa5a47073d3777f0775f0d50b46b99204f9ba91"
+                "reference": "65f201139be4e024091b0ef39fce9c84a7389cbe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fruitcake/laravel-telescope-toolbar/zipball/faa5a47073d3777f0775f0d50b46b99204f9ba91",
-                "reference": "faa5a47073d3777f0775f0d50b46b99204f9ba91",
+                "url": "https://api.github.com/repos/fruitcake/laravel-telescope-toolbar/zipball/65f201139be4e024091b0ef39fce9c84a7389cbe",
+                "reference": "65f201139be4e024091b0ef39fce9c84a7389cbe",
                 "shasum": ""
             },
             "require": {
@@ -5379,13 +5379,19 @@
                 "laravel": {
                     "providers": [
                         "Fruitcake\\TelescopeToolbar\\ToolbarServiceProvider"
-                    ]
+                    ],
+                    "aliases": {
+                        "Toolbar": "Fruitcake\\TelescopeToolbar\\Toolbar"
+                    }
                 }
             },
             "autoload": {
                 "psr-4": {
                     "Fruitcake\\TelescopeToolbar\\": "src/"
-                }
+                },
+                "files": [
+                    "src/helpers.php"
+                ]
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -5411,7 +5417,7 @@
                 "toolbar",
                 "webprofiler"
             ],
-            "time": "2019-08-15T20:41:17+00:00"
+            "time": "2019-08-19T19:28:13+00:00"
         },
         {
             "name": "fzaninotto/faker",
