@@ -2,7 +2,7 @@
 
 @section('content')
     <!-- Main content -->
-     {!! Form::open(['route'=>'sites.store', 'method'=>'POST', 'class'=>'validate']) !!}
+    {!! Form::open(['route'=>'sites.store', 'method'=>'POST', 'class'=>'validate']) !!}
 
     <div class="d-sm-flex align-items-center mb-4">
         <h1 class="h3 mb-0 text-gray-800">Create Site</h1>
@@ -115,7 +115,7 @@
     </div>
 
     {!! Form::close() !!}  
-
+    
 
  {{--  
     {{ Aire::open()->route('sites.store') }}
@@ -231,6 +231,5 @@
   
 {{ Aire::close() }}
 --}}
-
     <!-- /.content -->
 @endsection
