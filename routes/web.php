@@ -45,6 +45,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::put('products/{product}/sync', 'ProductsController@sync')->name('product.sync');
 
     Route::resource('sites', 'SitesController');
+
+    Route::get('product/test', 'TestLoginController@get');
+
+    Route::get('product/test/cookie', 'TestLoginController@testCookieLogin');
 });
 
 // super admin only

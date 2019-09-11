@@ -41,13 +41,61 @@
                             <label class="control-label">Price Modification</label>
                             <input type="number" name="sites[price_modification]" class="form-control" value="{{$site->price_modification}}">
                         </div>
+                   </div>
+
+
+            <div class="card shadow mb-4">
+                         <div class="card-header">
+                           Login
+                        </div>
+
+                <div class="card-body">
+                    <div class="form-group">
+                        <label class="control-label">Login url</label>
+                        <input type="text" name="sites[login_url]" class="form-control" value="{{$site->login_url}}">
                     </div>
+
+                    <div class="form-group">
+                        <label class="control-label">Username</label>
+                        <input type="text" name="sites[username]" class="form-control" value="{{$site->username}}">
+
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label">Password</label>
+                        <input type="text" name="sites[password]" class="form-control" value="{{$site->password}}">
+
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Login button text</label>
+                        <input type="text" name="sites[login_button_text]" class="form-control" value="{{$site->login_button_text}}">
+                    </div>
+                  
+                    <div class="form-group">
+                        <label class="control-label">Username input field</label>
+                        <input type="text" name="sites[username_input_field]" class="form-control" value="{{$site->username_input_field}}">
+
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label">Password input field</label>
+                        <input type="text" name="sites[password_input_field]" class="form-control" value="{{$site->password_input_field}}">
+
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Session name</label>
+                        <input type="text" name="sites[session_name]" class="form-control" value="{{$site->session_name}}">
+                    </div>
+                   
                 </div>
+                
+            </div>
+         </div>
 
                 {{-- @include('sites.test_rules') --}}
 
                 <check-rules-component />
-            </div>
+     </div>
 
             <div class="col-lg-6 members-position">
                 <div class="card shadow mb-4">

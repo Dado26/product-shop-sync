@@ -2,13 +2,15 @@
 
 namespace App\Services;
 
-use App\Helpers\PriceExtractor;
-use App\Helpers\SiteUrlParser;
-use App\Models\Site;
-use App\Models\SyncRules;
-use Goutte\Client;
 use Exception;
 use Throwable;
+use Goutte\Client;
+use App\Models\Site;
+use App\Models\SyncRules;
+use App\Helpers\SiteUrlParser;
+use App\Helpers\PriceExtractor;
+use Symfony\Component\BrowserKit\Cookie;
+use Symfony\Component\BrowserKit\CookieJar;
 
 class ProductCrawlerService
 {
@@ -37,8 +39,6 @@ class ProductCrawlerService
      */
     public function handle(string $url, array $rules = []): void
     {
-        $client = new Client();
-
         if (empty($url)) {
             throw new Exception('Product URL cannot be empty');
         }
@@ -52,7 +52,19 @@ class ProductCrawlerService
             $this->rules = (object) $rules;
         }
 
+        // get cookie if needed
+        $cookie = LoginCrawlerService::getCookie($this->site);
+
+        $cookieJar = new CookieJar();
+
+        if ($cookie !== null) {
+            $cookie    = new Cookie($this->site->session_name, $cookie, $this->site->session->expires_at->timestamp);
+            $cookieJar->set($cookie);
+        }
+
         // fetch product url
+        $client = new Client([], null, $cookieJar);
+
         $this->crawler = $client->request('GET', $url);
     }
 

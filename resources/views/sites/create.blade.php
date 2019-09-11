@@ -40,6 +40,48 @@
                 </div>
             </div>
 
+            <div class="card shadow mb-4">
+                <div class="card-header">
+                    Login
+                </div>
+
+                <div class="card-body">
+
+                    <div class="form-group">
+                        <label class="control-label">Login url</label>
+                        {!! Form::input('text', 'sites[login_url]', null, ['class'=>'form-control']) !!}
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label">Login button text</label>
+                        {!! Form::input('text', 'sites[login_button_text]', null, ['class'=>'form-control']) !!}
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label">Username</label>
+                        {!! Form::input('text', 'sites[username]', null, ['class'=>'form-control']) !!}
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Password</label>
+                        {!! Form::input('text', 'sites[password]', null, ['class'=>'form-control']) !!}
+                    </div>                   
+                    <div class="form-group">
+                        <label class="control-label">Username input field</label>
+                        {!! Form::input('text', 'sites[username_input_field]', null, ['class'=>'form-control']) !!}
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Password input field</label>
+                        {!! Form::input('text', 'sites[password_input_field]', null, ['class'=>'form-control']) !!}
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Session name</label>
+                        {!! Form::input('text', 'sites[session_name]', null, ['class'=>'form-control']) !!}
+                    </div>
+                    
+              </div>
+                
+            </div>
+
             @include('sites.test_rules')
         </div>
 
