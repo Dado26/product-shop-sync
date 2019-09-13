@@ -52,6 +52,26 @@ class ProductCrawlerService
             $this->rules = (object) $rules;
         }
 
+        // initial request
+        $this->crawler = $this->makeRequest($url);
+
+        if ($this->needsAuthCheck() && !$this->isAuthenticated()) {
+            // make cookie expired
+            $this->site->session->updated(['expires_at' => now()->subDay()]);
+            $this->site->refresh();
+
+            // make new request with fresh cookie
+            $this->crawler = $this->makeRequest($url);
+        }
+    }
+
+    /**
+     * Make main request to product url
+     *
+     * @param string $url
+     */
+    protected function makeRequest($url)
+    {
         // get cookie if needed
         $cookie = LoginCrawlerService::getCookie($this->site);
 
@@ -65,7 +85,21 @@ class ProductCrawlerService
         // fetch product url
         $client = new Client([], null, $cookieJar);
 
-        $this->crawler = $client->request('GET', $url);
+        return $client->request('GET', $url);
+    }
+
+    public function isAuthenticated()
+    {
+        $rule = $this->site->auth_element_check;
+
+        $auth = $this->crawler->filter($rule)->count();
+
+        return $auth > 0;
+    }
+
+    protected function needsAuthCheck()
+    {
+        return !empty($this->site->auth_element_check);
     }
 
     /**

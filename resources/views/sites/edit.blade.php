@@ -82,6 +82,12 @@
                         <input type="text" name="sites[password_input_field]" class="form-control" value="{{$site->password_input_field}}">
 
                     </div>
+
+                    <div class="form-group">
+                        <label class="control-label">Auth element check</label>
+                        <input type="text" name="sites[auth_element_check]" class="form-control" value="{{$site->auth_element_check}}">
+                    </div>
+
                     <div class="form-group">
                         <label class="control-label">Session name</label>
                         <input type="text" name="sites[session_name]" class="form-control" value="{{$site->session_name}}">

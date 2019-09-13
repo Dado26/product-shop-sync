@@ -16,7 +16,7 @@ class CreateSessionsTable extends Migration
         Schema::create('sessions', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('site_id');
-            $table->string('value', 255);
+            $table->text('value');
             $table->timestamp('expires_at');
             $table->timestamp('updated_at')->nullable();
             $table->foreign('site_id')->references('id')->on('sites');

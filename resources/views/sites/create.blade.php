@@ -74,6 +74,10 @@
                         {!! Form::input('text', 'sites[password_input_field]', null, ['class'=>'form-control']) !!}
                     </div>
                     <div class="form-group">
+                        <label class="control-label">Auth element check</label>
+                        {!! Form::input('text', 'sites[auth_element_check]', null, ['class'=>'form-control']) !!}
+                    </div>
+                    <div class="form-group">
                         <label class="control-label">Session name</label>
                         {!! Form::input('text', 'sites[session_name]', null, ['class'=>'form-control']) !!}
                     </div>

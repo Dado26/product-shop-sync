@@ -9,11 +9,11 @@ class LoginCrawlerService
 {
     public static function getCookie(?Site $site)
     {
-        if (empty($site->username) && empty($site->password)) {
+        if (empty($site->username) || empty($site->password)) {
             return null;
         }
 
-        if (!$site->session->expired()) {
+        if ($site->session && !$site->session->expired()) {
             return $site->session->value;
         }
 
@@ -43,7 +43,9 @@ class LoginCrawlerService
             'value'      => $value,
             'expires_at' => $expires,
         ]);
+
         // return new cookie
+
         return $value;
     }
 }

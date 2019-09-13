@@ -9,7 +9,7 @@ class Site extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['name', 'url', 'email', 'price_modification', 'login_url', 'username', 'password', 'session_name', 'username_input_field', 'password_input_field', 'login_button_text'];
+    protected $fillable = ['name', 'url', 'email', 'price_modification', 'login_url', 'username', 'password', 'session_name', 'username_input_field', 'password_input_field', 'login_button_text', 'auth_element_check'];
 
     public function getPasswordAttribute($value)
     {

@@ -46,9 +46,9 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('sites', 'SitesController');
 
-    Route::get('product/test', 'TestLoginController@get');
+    //Route::get('product/test', 'TestLoginController@get');
 
-    Route::get('product/test/cookie', 'TestLoginController@testCookieLogin');
+    // Route::get('product/test/cookie', 'TestLoginController@testCookieLogin');
 });
 
 // super admin only
@@ -57,4 +57,13 @@ Route::group(['middleware' => 'super-admin-only'], function () {
 });
 
 // test routes
+
 Route::view('/test/product', 'test/product')->name('test.product');
+
+Route::view('/test/product-auth', 'test/product_auth')->name('test.product_auth');
+
+Route::group(['middleware' => 'guest'], function () {
+    Route::get('test/login', 'TestAuthController@LoginForm')->name('login_test.form');
+
+    Route::post('test/login', 'TestAuthController@LoginAttempt')->name('test.login');
+});

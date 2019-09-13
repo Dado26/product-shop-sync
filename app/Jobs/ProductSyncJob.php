@@ -158,7 +158,7 @@ class ProductSyncJob implements ShouldQueue
     /**
      * The job failed to process.
      *
-     * @param  Throwable  $e
+     * @param Throwable $e
      *
      * @return void
      */
