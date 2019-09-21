@@ -91,9 +91,9 @@
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <check-rules-component/>
+                <check-rules-component/>
+            </div>
 
             <div class="col-lg-6 members-position">
                 <div class="card shadow mb-4">
