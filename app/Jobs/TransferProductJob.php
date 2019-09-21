@@ -61,8 +61,9 @@ class TransferProductJob implements ShouldQueue
     {
         DB::beginTransaction();
 
-        $product = $this->product;
-        $price   = $product->variants->min('price');
+        $product      = $this->product;
+        $price        = $product->variants->min('price');
+        $tax_class    =  DB::connection('shop')->table('tax_class')->first();
 
         try {
             $shopProduct = ShopProduct::create([
@@ -82,7 +83,7 @@ class TransferProductJob implements ShouldQueue
                 'manufacturer_id' => 0,
                 'shipping'        => 1,
                 'points'          => 0,
-                'tax_class_id'    => 0,
+                'tax_class_id'    => $tax_class->tax_class_id,
                 'weight'          => 0.00000000,
                 'weight_class_id' => 1,
                 'length_class_id' => 1,
