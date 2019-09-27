@@ -70,18 +70,19 @@ class TransferUpdateProductJob implements ShouldQueue
 
         try {
             $shopProduct->update([
-                'model'           => $this->product->title,
-                'price'           => $this->product->variants->min('price'),
-                'location'        => $this->product->url,
-                'status'          => ($this->product->status == 'available') ? 1 : 0,
-                'date_modified'   => now(),
+                'model'         => $this->product->title,
+                'price'         => $this->product->variants->min('price'),
+                'location'      => $this->product->url,
+                'status'        => ($this->product->status == 'available') ? 1 : 0,
+                'date_modified' => now(),
             ]);
 
             ShopProductDescription::where('product_id', $shopProduct->product_id)->update([
-                'description'      => $this->product->description,
-                'name'             => $this->product->title,
-                'product_id'       => $shopProduct->product_id,
-                'meta_title'       => $this->product->title,
+                'description'    => $this->product->description,
+                'specifications' => $this->product->specifications,
+                'name'           => $this->product->title,
+                'product_id'     => $shopProduct->product_id,
+                'meta_title'     => $this->product->title,
             ]);
 
             DB::commit();

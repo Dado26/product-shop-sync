@@ -43,7 +43,7 @@ class TransferProductJob implements ShouldQueue
     /**
      * TransferProductJob constructor.
      *
-     * @param \App\Models\Product $product
+     * @param  \App\Models\Product  $product
      * @param $categoryId
      */
     public function __construct(Product $product, $categoryId)
@@ -61,9 +61,9 @@ class TransferProductJob implements ShouldQueue
     {
         DB::beginTransaction();
 
-        $product      = $this->product;
-        $price        = $product->variants->min('price');
-        $tax_class    =  DB::connection('shop')->table('tax_class')->first();
+        $product   = $this->product;
+        $price     = $product->variants->min('price');
+        $tax_class = DB::connection('shop')->table('tax_class')->first();
 
         try {
             $shopProduct = ShopProduct::create([
@@ -105,6 +105,7 @@ class TransferProductJob implements ShouldQueue
 
             ShopProductDescription::create([
                 'description'      => $product->description,
+                'specifications'   => $product->specifications,
                 'name'             => $product->title,
                 'product_id'       => $shopProduct->product_id,
                 'language_id'      => 2,
@@ -142,7 +143,7 @@ class TransferProductJob implements ShouldQueue
     }
 
     /**
-     * @param \App\Models\Product $product
+     * @param  \App\Models\Product  $product
      * @param $shopProduct
      * @param $price
      */
@@ -206,7 +207,7 @@ class TransferProductJob implements ShouldQueue
     /**
      * The job failed to process.
      *
-     * @param Throwable $e
+     * @param  Throwable  $e
      *
      * @return void
      */
