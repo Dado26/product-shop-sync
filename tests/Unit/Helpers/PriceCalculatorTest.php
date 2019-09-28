@@ -13,6 +13,8 @@ class PriceCalculatorTest extends TestCase
         $tests = [
             [120, 20, -10, 90],
             [120, 20, 0, 100],
+            [100, 0, 0, 100],
+            [100, 0, -10, 90],
         ];
 
         foreach ($tests as $test) {
