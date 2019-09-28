@@ -126,14 +126,16 @@ class ProductSyncJob implements ShouldQueue
 
         $results = ChangeDetectorService::getIntersection($oldVariants, $newVariants);
 
-        $percentagePrice = $this->product->site->price_modification;
-
         // update existing variants
         foreach ($results as $result) {
             $price = $this->crawler->getPrice();
 
             $this->product->variants()->where('name', $result)->update([
-                'price' => PriceCalculator::modifyByPercent($price, $percentagePrice),
+                'price' => PriceCalculator::modifyByPercent(
+                    $price,
+                    $this->product->site->price_modification,
+                    $this->product->site->tax_percent
+                )
             ]);
         }
 
@@ -145,7 +147,11 @@ class ProductSyncJob implements ShouldQueue
 
             $this->product->variants()->create([
                 'name'  => $result,
-                'price' => PriceCalculator::modifyByPercent($price, $percentagePrice),
+                'price' => PriceCalculator::modifyByPercent(
+                    $price,
+                    $this->product->site->price_modification,
+                    $this->product->site->tax_percent
+                )
             ]);
         }
 

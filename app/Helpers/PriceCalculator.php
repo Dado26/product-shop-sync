@@ -5,26 +5,30 @@ namespace App\Helpers;
 class PriceCalculator
 {
     /**
-     * @param float $price
-     * @param float $percent
+     * @param  float  $price
+     * @param  float  $percent
+     * @param  float  $tax
      *
      * @return float
      */
-    public static function modifyByPercent($price, $percent): float
+    public static function modifyByPercent($price, $percent, $tax): float
     {
-        if ($percent == 0) {
-            return $price;
-        }
+        // https://www.simetric.co.uk/si_deduct_tax.htm
+        $priceNoTax = $price / (1 + ($tax/100));
 
-        $pricePercentage = (abs($percent) / 100) * $price;
+        // the price that will be added or subtracted from the =price without tax
+        $priceDifference = 0;
+
+        if ($percent !== 0) {
+            $priceDifference = (abs($percent) / 100) * $priceNoTax;
+        }
 
         if ($percent > 0) {
-            $priceModified =  $pricePercentage + $price;
-            return round($priceModified);
+            return round($priceDifference + $priceNoTax);
         }
         if ($percent < 0) {
-            $priceModified =  $price - $pricePercentage;
-            return round($priceModified);
+            return round($priceNoTax - $priceDifference);
         }
+        return $priceNoTax;
     }
 }

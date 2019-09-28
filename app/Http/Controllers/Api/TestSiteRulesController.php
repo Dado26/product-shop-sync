@@ -48,7 +48,7 @@ class TestSiteRulesController extends Controller
             }
         }
         if ($request->price_modification !== null) {
-            $modifiedPrice = PriceCalculator::modifyByPercent($results['price'], $request->price_modification);
+            $modifiedPrice = PriceCalculator::modifyByPercent($results['price'], $request->price_modification, $request->tax_percent);
 
             $results['price_modification'] = number_format($modifiedPrice, 2, '.', '');
         } else {

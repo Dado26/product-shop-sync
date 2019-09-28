@@ -140,11 +140,10 @@ class ProductImportJob implements ShouldQueue
     private function createVariants($product)
     {
         $site            = SiteUrlParser::getSite($this->url);
-        $percentagePrice = $site->price_modification;
 
         foreach ($this->crawler->getVariants() as $variant) {
             $price         = $this->crawler->getPrice();
-            $priceModified = PriceCalculator::modifyByPercent($price, $percentagePrice);
+            $priceModified = PriceCalculator::modifyByPercent($price, $site->price_modification, $site->tax_percent);
 
             Variant::create([
                 'name'       => $variant,

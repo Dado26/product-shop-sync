@@ -35,6 +35,11 @@
                         </div>
 
                         <div class="form-group">
+                            <label class="control-label">Tax Percent</label>
+                            <input type="number" name="sites[tax_percent]" class="form-control" value="{{$site->tax_percent}}">
+                        </div>
+
+                        <div class="form-group">
                             <label class="control-label">Price Modification</label>
                             <input type="number" name="sites[price_modification]" class="form-control" value="{{$site->price_modification}}">
                         </div>

@@ -106,6 +106,7 @@ export default {
        const params = {
             url: this.testUrl,
             price_modification: document.querySelector('input[name="sites[price_modification]"]').value,
+            tax_percent: document.querySelector('input[name="sites[tax_percent]"]').value,
             rules: {
                 title: document.querySelector('input[name="sync_Rules[title]"]').value,
                 description: document.querySelector('input[name="sync_Rules[description]"]').value,
