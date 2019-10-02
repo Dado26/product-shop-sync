@@ -46,6 +46,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('sites', 'SitesController');
 
+    Route::get('utilities/fetch-product-links-from-category', 'UtilitiesController@fetchProductLinksFromCategory');
+
     //Route::get('product/test', 'TestLoginController@get');
 
     // Route::get('product/test/cookie', 'TestLoginController@testCookieLogin');
