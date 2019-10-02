@@ -25,9 +25,13 @@ class UtilitiesController extends Controller
             <input type='submit' value='Submit'/>
         </form>";
 
+        if (empty($url)) {
+            exit;
+        }
+
         do {
             echo "[*] ";
-            
+
             $links = $links->merge(
                 $this->getProductLinksFromUrl($url, $client)
             );
