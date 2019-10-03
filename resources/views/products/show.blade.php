@@ -47,7 +47,7 @@
 
                 <div class="form-group">
                     <label class="control-label">Specifications</label>
-                    <div class="form-control">{{ $product->specifications }}</div>
+                    <div class="form-control">{!! $product->specifications !!}</div>
                 </div>
 
                 <div class="form-group">
