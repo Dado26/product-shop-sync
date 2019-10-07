@@ -48,9 +48,10 @@ class ProductsSyncCommand extends Command
                           $query->where('queued_at', '<=', now()->subHours(1))
                                 ->orWhere('queued_at', null);
                       });
-        })
+            })
             ->orWhere(function ($query) {
                 $query->where('status', Product::STATUS_UNAVAILABLE)
+                      ->where('queued_at', '<=', now()->subHours(24))
                       ->where('synced_at', '>=', now()->subWeeks(4))
                       ->where(function ($query) {
                           $query->where('queued_at', '<=', now()->subHours(1))
