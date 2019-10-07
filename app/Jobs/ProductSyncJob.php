@@ -89,7 +89,7 @@ class ProductSyncJob implements ShouldQueue
 
             ShopProduct::where('product_id', $this->product->shop_product_id)->update(['status' => 0]);
 
-            logger()->notice('Product not found, maybe it was removed', [
+            logger()->notice('Product not found on the source store, maybe it was removed', [
                 'id'        => $this->product->id,
                 'url'       => $this->product->url,
                 'newStatus' => Product::STATUS_UNAVAILABLE,
