@@ -128,7 +128,7 @@ class UtilitiesController extends Controller
     public function fetchAllProductsFromCategories()
     {
         set_time_limit(0);
-        
+
         $categoryLinks = [];
         $client     = new Client();
 
@@ -162,6 +162,10 @@ class UtilitiesController extends Controller
             } while ($nextLinkExists);
 
             // queue product import
+            $productLinks->transform(function ($link) {
+                return "https://elementa.rs" . $link;
+            });
+
             $jobs = $productLinks->map(function ($url) use ($categoryId) {
                 return new ProductImportJob($url, $categoryId);
             })->toArray();
