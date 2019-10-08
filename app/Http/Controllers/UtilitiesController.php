@@ -96,21 +96,16 @@ class UtilitiesController extends Controller
 
         //dd($categories);
 
-        $i1 = $i2 = $i3 = 0;
-
         foreach ($categories as $category => $subCategories) {
-            $i1++;
             $categoryId = $this->firstOrCreateCategory($category, 0);
             $this->addCategoryPath($categoryId, $categoryId, 0);
 
             foreach ($subCategories as $subCategory => $subSubCategories) {
-                $i2++;
                 $subCategoryId = $this->firstOrCreateCategory($subCategory, $categoryId);
                 $this->addCategoryPath($subCategoryId, $categoryId, 0);
                 $this->addCategoryPath($subCategoryId, $subCategoryId, 1);
 
                 foreach ($subSubCategories as $subSubSubCategory) {
-                    $i3++;
                     $subSubCategoryId = $this->firstOrCreateCategory($subSubSubCategory, $subCategoryId);
 
                     $this->addCategoryPath($subSubCategoryId, $categoryId, 0);
@@ -118,11 +113,12 @@ class UtilitiesController extends Controller
                     $this->addCategoryPath($subSubCategoryId, $subSubCategoryId, 2);
 
                     echo $category.' => '.$subCategory.' => '.$subSubSubCategory.'<br>';
-
-                    //if ($i3 === 1) die;
                 }
             }
         }
+
+        DB::statement("INSERT INTO `category_to_store`(`category_id`, `store_id`) (SELECT category.category_id, category.sort_order FROM category)");
+        DB::statement("INSERT INTO `category_to_layout`(`category_id`, `store_id`, `layout_id`) (SELECT category.category_id, category.sort_order, category.sort_order FROM category)");
     }
 
     public function fetchAllProductsFromCategories()
