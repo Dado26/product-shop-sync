@@ -72,7 +72,7 @@ class UtilitiesController extends Controller
             $links[] = $node->attr('href');
         });
 
-        return $links;
+        return $links ?? [];
     }
 
     public function fetchAllCategories()
@@ -160,6 +160,10 @@ class UtilitiesController extends Controller
                     $url = $this->crawler->filter('.pager-right a.next')->attr('href');
                 }
             } while ($nextLinkExists);
+
+            if ($productLinks->count() === 0) {
+                continue;
+            }
 
             // queue product import
             $productLinks->transform(function ($link) {
