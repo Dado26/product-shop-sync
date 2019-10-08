@@ -48,6 +48,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('utilities/fetch-product-links-from-category', 'UtilitiesController@fetchProductLinksFromCategory');
     Route::get('utilities/fetch-all-categories', 'UtilitiesController@fetchAllCategories');
+    Route::get('utilities/fetch-all-products-from-categories', 'UtilitiesController@fetchAllProductsFromCategories');
 
     //Route::get('product/test', 'TestLoginController@get');
 

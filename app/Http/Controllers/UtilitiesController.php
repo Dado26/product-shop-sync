@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\SiteUrlParser;
+use App\Jobs\ProductImportJob;
 use DB;
 use Goutte\Client;
 use Illuminate\Http\Request;
+use Queue;
 
 class UtilitiesController extends Controller
 {
@@ -12,6 +15,7 @@ class UtilitiesController extends Controller
      * @var \Symfony\Component\DomCrawler\Crawler
      */
     private $crawler;
+
 
     public function fetchProductLinksFromCategory(Request $request)
     {
@@ -118,6 +122,51 @@ class UtilitiesController extends Controller
                     //if ($i3 === 1) die;
                 }
             }
+        }
+    }
+
+    public function fetchAllProductsFromCategories()
+    {
+        set_time_limit(0);
+        
+        $categoryLinks = [];
+        $client     = new Client();
+
+        $this->crawler = $client->request('GET', 'https://www.elementa.rs/mapa-sajta');
+
+        $this->crawler->filter('ul#sitemap > li')->each(function ($node) use (&$categoryLinks) {
+            $node->filter('ul > li')->each(function ($li) use (&$categoryLinks) {
+                $li->filter('ul > li > a')->each(function ($li2) use (&$categoryLinks) {
+                    $categoryLinks[trim($li2->text())] = "http://elementa.rs/" . trim($li2->attr('href')) . "/sort/name/page/1/kolicina/12?filters=[]&spec=[]&lager=na-stanju";
+                });
+            });
+        });
+
+        foreach ($categoryLinks as $categoryName => $categoryLink) {
+            // get product links from category url
+            $productLinks  = collect([]);
+            $client = new Client();
+            $url = $categoryLink;
+            $categoryId = DB::connection('shop')->table('category_description')->where('name', $categoryName)->first()->category_id;
+
+            do {
+                $productLinks = $productLinks->merge(
+                    $this->getProductLinksFromUrl($url, $client)
+                );
+
+                $nextLinkExists = $this->crawler->filter('.pager-right a.next')->count();
+
+                if ($nextLinkExists) {
+                    $url = $this->crawler->filter('.pager-right a.next')->attr('href');
+                }
+            } while ($nextLinkExists);
+
+            // queue product import
+            $jobs = $productLinks->map(function ($url) use ($categoryId) {
+                return new ProductImportJob($url, $categoryId);
+            })->toArray();
+
+            Queue::bulk($jobs, null, ProductImportJob::QUEUE_NAME);
         }
     }
 
