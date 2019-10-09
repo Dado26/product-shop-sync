@@ -80,14 +80,18 @@ class ProductSyncJob implements ShouldQueue
             return;
         }
 
+        // check if product is in stock
+        if (!$this->crawler->getInStock()) {
+            $this->product->makeProductUnavailable($this->product->shop_product_id);
+            return;
+        }
+
         try {
             $this->updateProduct();
 
             TransferUpdateProductJob::dispatch($this->product)->onQueue(TransferUpdateProductJob::QUEUE_NAME);
         } catch (InvalidArgumentException $e) {
-            $this->product->update(['status' => Product::STATUS_UNAVAILABLE]);
-
-            ShopProduct::where('product_id', $this->product->shop_product_id)->update(['status' => 0]);
+            $this->product->makeProductUnavailable($this->product->shop_product_id);
 
             logger()->notice('Product not found on the source store, maybe it was removed', [
                 'id'        => $this->product->id,
@@ -115,9 +119,10 @@ class ProductSyncJob implements ShouldQueue
             'description'    => $this->crawler->getDescription(),
             'url'            => $this->crawler->getUrl(),
             'specifications' => $this->crawler->getSpecifications(),
-            'status'         => Product::STATUS_AVAILABLE,
             'synced_at'      => now(),
         ]);
+
+        $this->product->makeProductAvailable($this->product->shop_product_id);
 
         // update variants
         $oldVariants = Variant::where('product_id', $this->product->id)->get()->pluck('name')->toArray();
