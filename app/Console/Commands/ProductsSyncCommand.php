@@ -58,6 +58,7 @@ class ProductsSyncCommand extends Command
                                 ->orWhere('queued_at', null);
                       });
             })
+            ->limit(50)
             ->get();
 
         $jobs = [];
