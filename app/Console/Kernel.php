@@ -30,6 +30,8 @@ class Kernel extends ConsoleKernel
         if (app()->environment('production')) {
             $schedule->command('sync:products')->everyTenMinutes();
 
+            $schedule->command('horizon:snapshot')->everyFiveMinutes();
+
             $schedule->command('backup:clean')->daily()->at('03:00');
             $schedule->command('backup:run')->daily()->at('03:30');
             $schedule->command('backup:run --only-db --disable-notifications')->hourly();
