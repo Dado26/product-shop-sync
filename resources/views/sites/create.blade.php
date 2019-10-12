@@ -134,6 +134,16 @@
                         </div>
 
                         <div class="form-group">
+                            <label class="control-label">SKU</label>
+                            {!! Form::input('text', 'sync_Rules[sku]', null, ['class'=>'form-control']) !!}
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label">Remove string from SKU</label>
+                            {!! Form::input('text', 'sync_Rules[remove_string_from_sku]', null, ['class'=>'form-control']) !!}
+                        </div>
+
+                        <div class="form-group">
                             <label class="control-label">Images</label>
                             {!! Form::input('text', 'sync_Rules[images]', null, ['class'=>'form-control']) !!}
                         </div>

@@ -134,12 +134,22 @@
 
                         <div class="form-group">
                             <label class="control-label">In stock</label>
-                            <input type="text" name="sync_Rules[in_stock]" class="form-control" value="{{  $site->SyncRules->in_stock}}">
+                            <input type="text" name="sync_Rules[in_stock]" class="form-control" value="{{  $site->SyncRules->in_stock }}">
                         </div>
 
                         <div class="form-group">
                             <label class="control-label">In stock value</label>
-                            <input type="text" name="sync_Rules[in_stock_value]" class="form-control" value="{{ $site->SyncRules->in_stock_value}}">
+                            <input type="text" name="sync_Rules[in_stock_value]" class="form-control" value="{{ $site->SyncRules->in_stock_value }}">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label">SKU</label>
+                            <input type="text" name="sync_Rules[sku]" class="form-control" value="{{ $site->SyncRules->sku }}">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label">Remove string from SKU</label>
+                            <input type="text" name="sync_Rules[remove_string_from_sku]" class="form-control" value="{{ $site->SyncRules->remove_string_from_sku }}">
                         </div>
 
                         <div class="form-group">

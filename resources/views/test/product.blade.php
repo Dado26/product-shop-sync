@@ -54,6 +54,10 @@
                                 <div class="color">Black</div>
                             </div>
 
+                            <div class="sku">
+                                SKU: 123ABC
+                            </div>
+
                             <div class="mt-3">
                                 <div class="h4">Specs table</div>
                                 <table class="tbl-technical-data table-bordered" id="product-specs">

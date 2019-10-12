@@ -73,6 +73,7 @@ class TransferUpdateProductJob implements ShouldQueue
                 'model'         => $this->product->title,
                 'price'         => $this->product->variants->min('price'),
                 'location'      => $this->product->url,
+                'sku'           => $this->product->sku,
                 'status'        => ($this->product->status == 'available') ? 1 : 0,
                 'date_modified' => now(),
             ]);

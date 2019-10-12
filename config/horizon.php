@@ -155,6 +155,8 @@ return [
                 'minProcesses' => 10,
                 'maxProcesses' => 40,
                 'tries'      => 2,
+                'sleep'      => 3,
+                'memory'      => 64,
             ],
         ],
 

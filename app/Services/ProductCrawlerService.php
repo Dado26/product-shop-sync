@@ -35,7 +35,10 @@ class ProductCrawlerService
     private $crawler;
 
     /**
-     * @param string $url
+     * @param  string  $url
+     * @param  array  $rules
+     *
+     * @throws \Exception
      */
     public function handle(string $url, array $rules = []): void
     {
@@ -68,7 +71,9 @@ class ProductCrawlerService
     /**
      * Make main request to product url
      *
-     * @param string $url
+     * @param  string  $url
+     *
+     * @return \Symfony\Component\DomCrawler\Crawler
      */
     protected function makeRequest($url)
     {
@@ -178,6 +183,22 @@ class ProductCrawlerService
         $rule = $this->rules->in_stock;
 
         $value = $this->crawler->filter($rule)->text();
+
+        return trim($value);
+    }
+
+    /**
+     * @return string
+     */
+    public function getSku(): string
+    {
+        $rule = $this->rules->sku;
+
+        $value = $this->crawler->filter($rule)->text();
+
+        if (!empty($this->rules->remove_string_from_sku)) {
+            $value = str_replace($this->rules->remove_string_from_sku, '', $value);
+        }
 
         return trim($value);
     }

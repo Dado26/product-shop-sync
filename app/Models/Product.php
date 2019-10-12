@@ -14,7 +14,10 @@ class Product extends Model
     public const STATUS_ARCHIVED    = 'archived';
     public const STATUS_DELETED     = 'deleted';
 
-    protected $fillable = ['title', 'description', 'status', 'url', 'site_id', 'specifications', 'synced_at', 'queued_at', 'shop_product_id'];
+    protected $fillable = [
+        'title', 'description', 'status', 'url', 'site_id', 'specifications', 'synced_at', 'queued_at',
+        'shop_product_id', 'sku',
+    ];
 
     protected $dates = ['synced_at'];
 

@@ -56,7 +56,7 @@ class ProductSyncJob implements ShouldQueue
     /**
      * Create a new job instance.
      *
-     * @param \App\Models\Product $product
+     * @param  \App\Models\Product  $product
      */
     public function __construct(Product $product)
     {
@@ -119,6 +119,7 @@ class ProductSyncJob implements ShouldQueue
             'description'    => $this->crawler->getDescription(),
             'url'            => $this->crawler->getUrl(),
             'specifications' => $this->crawler->getSpecifications(),
+            'sku'            => $this->crawler->getSku(),
             'synced_at'      => now(),
         ]);
 
@@ -140,7 +141,7 @@ class ProductSyncJob implements ShouldQueue
                     $price,
                     $this->product->site->price_modification,
                     $this->product->site->tax_percent
-                )
+                ),
             ]);
         }
 
@@ -156,7 +157,7 @@ class ProductSyncJob implements ShouldQueue
                     $price,
                     $this->product->site->price_modification,
                     $this->product->site->tax_percent
-                )
+                ),
             ]);
         }
 
@@ -169,7 +170,7 @@ class ProductSyncJob implements ShouldQueue
     /**
      * The job failed to process.
      *
-     * @param Throwable $e
+     * @param  Throwable  $e
      *
      * @return void
      */

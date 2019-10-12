@@ -73,7 +73,7 @@ class TransferProductJob implements ShouldQueue
                 'status'          => ($product->status == 'available') ? 1 : 0,
                 'date_available'  => now(),
                 'image'           => $product->productImages()->first()->url,
-                'sku'             => '',
+                'sku'             => $product->sku,
                 'upc'             => '',
                 'ean'             => '',
                 'jan'             => '',

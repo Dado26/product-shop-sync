@@ -36,6 +36,7 @@ class TestSiteRulesController extends Controller
             'in_stock_value' => 'getInStockValue',
             'images'         => 'getImages',
             'variants'       => 'getVariants',
+            'sku'            => 'getSku',
         ];
 
         $results = [];

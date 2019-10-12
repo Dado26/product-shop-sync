@@ -132,6 +132,7 @@ class ProductImportJob implements ShouldQueue
             'url'            => $this->crawler->getUrl(),
             'specifications' => $this->crawler->getSpecifications(),
             'status'         => Product::STATUS_AVAILABLE,
+            'sku'            => $this->crawler->getSku(),
             'synced_at'      => now(),
         ]);
     }
