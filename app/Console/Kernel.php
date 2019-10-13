@@ -29,6 +29,8 @@ class Kernel extends ConsoleKernel
 
         if (app()->environment('production')) {
             $schedule->command('sync:products')->everyTenMinutes();
+            
+            $schedule->command('sync:products', ['--unavailable'])->dailyAt('03:00');
 
             $schedule->command('horizon:snapshot')->everyFiveMinutes();
 
