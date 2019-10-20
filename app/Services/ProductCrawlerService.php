@@ -240,10 +240,6 @@ class ProductCrawlerService
             return $node->attr('src');
         });
 
-        if (empty($images) && !($image = $this->crawler->filter($rule)->attr('src'))) {
-            $images = [$image];
-        }
-
         return $images;
     }
 
