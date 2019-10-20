@@ -240,6 +240,12 @@ class ProductCrawlerService
             return $node->attr('src');
         });
 
+        if (empty($images)) {
+            $images = $this->crawler->filter($rule)->each(function ($node) {
+                return $node->attr('href');
+            });
+        }
+
         return $images;
     }
 
