@@ -128,6 +128,8 @@ class ProductCrawlerService
 
         $description = $this->crawler->filter($rule)->html();
 
+        $description = strip_tags($description, '<strong><b><i><p><u><div>');
+
         return trim($description);
     }
 
