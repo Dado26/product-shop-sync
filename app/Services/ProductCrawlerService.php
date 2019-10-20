@@ -180,7 +180,7 @@ class ProductCrawlerService
     /**
      * @return string
      */
-    public function getInStockValue(): string
+    public function getInStockValue(): ?string
     {
         if (!$rule = $this->rules->in_stock) {
             return null;
@@ -194,7 +194,7 @@ class ProductCrawlerService
     /**
      * @return string
      */
-    public function getSku(): string
+    public function getSku(): ?string
     {
         if (!$rule = $this->rules->sku) {
             return null;
