@@ -136,9 +136,7 @@ class ProductCrawlerService
      */
     public function getSpecifications(): ?string
     {
-        $rule = $this->rules->specifications;
-
-        if (empty($rule)) {
+        if (!$rule = $this->rules->specifications) {
             return null;
         }
 
@@ -160,9 +158,13 @@ class ProductCrawlerService
      */
     public function getInStock(): bool
     {
+        if (!$rule = $this->rules->in_stock_value) {
+            return false;
+        }
+
         try {
             $stockText         = strtolower($this->getInStockValue());
-            $expectedStockText = strtolower($this->rules->in_stock_value);
+            $expectedStockText = strtolower($rule);
         } catch (Throwable $e) {
             logger()->emergency('Failed to get stock for product', [
                 'exception' => $e->getMessage(),
@@ -180,7 +182,9 @@ class ProductCrawlerService
      */
     public function getInStockValue(): string
     {
-        $rule = $this->rules->in_stock;
+        if (!$rule = $this->rules->in_stock) {
+            return null;
+        }
 
         $value = $this->crawler->filter($rule)->text();
 
@@ -192,7 +196,9 @@ class ProductCrawlerService
      */
     public function getSku(): string
     {
-        $rule = $this->rules->sku;
+        if (!$rule = $this->rules->sku) {
+            return null;
+        }
 
         $value = $this->crawler->filter($rule)->text();
 

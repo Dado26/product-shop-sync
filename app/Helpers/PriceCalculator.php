@@ -29,6 +29,6 @@ class PriceCalculator
         if ($percent < 0) {
             return round($priceNoTax - $priceDifference);
         }
-        return $priceNoTax;
+        return round($priceNoTax);
     }
 }
