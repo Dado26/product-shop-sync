@@ -91,12 +91,12 @@ class ProductSyncJob implements ShouldQueue
 
             TransferUpdateProductJob::dispatch($this->product)->onQueue(TransferUpdateProductJob::QUEUE_NAME);
         } catch (InvalidArgumentException $e) {
-            $this->product->makeProductUnavailable($this->product->shop_product_id);
+            $this->product->update(['status' => Product::STATUS_DELETED]);
 
             logger()->notice('Product not found on the source store, maybe it was removed', [
                 'id'        => $this->product->id,
                 'url'       => $this->product->url,
-                'newStatus' => Product::STATUS_UNAVAILABLE,
+                'newStatus' => Product::STATUS_DELETED,
                 'exception' => $e->getMessage(),
             ]);
 
