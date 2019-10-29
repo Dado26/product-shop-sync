@@ -14,7 +14,7 @@ class ProductsSyncCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'sync:products {--unavailable}';
+    protected $signature = 'sync:products {--unavailable} {--older-than-hours=24}';
 
     /**
      * The console command description.
@@ -52,9 +52,11 @@ class ProductsSyncCommand extends Command
                                ->orWhere('queued_at', null);
                      });
         } else {
+            $hours = $this->option('older-than-hours');
+
             // AVAILABLE
             $products->where('status', Product::STATUS_AVAILABLE)
-                     ->where('synced_at', '<=', now()->subHours(24))
+                     ->where('synced_at', '<=', now()->subHours($hours))
                      ->where(function ($query) {
                          $query->where('queued_at', '<=', now()->subHours(1))
                                ->orWhere('queued_at', null);
