@@ -29,7 +29,7 @@ class Kernel extends ConsoleKernel
 
         if (app()->environment('production')) {
             $schedule->command('sync:products')->everyTenMinutes();
-            
+
             $schedule->command('sync:products', ['--unavailable'])->dailyAt('03:00');
 
             $schedule->command('horizon:snapshot')->everyFiveMinutes();
@@ -37,6 +37,8 @@ class Kernel extends ConsoleKernel
             $schedule->command('backup:clean')->daily()->at('03:00');
             $schedule->command('backup:run')->daily()->at('03:30');
             $schedule->command('backup:run --only-db --disable-notifications')->hourly();
+
+            $schedule->command('elementa:sync-all-products-from-all-categories')->weeklyOn(1, '3:00');
         }
     }
 
