@@ -50,6 +50,11 @@
               <div class="form-control" :class="{'invalid-rule': results.price === null}">{{ results.price }}</div>
             </div>
 
+            <div class="form-group price">
+              <label class="control-label">SKU</label>
+              <div class="form-control" :class="{'invalid-rule': results.sku === null}">{{ results.sku }}</div>
+            </div>
+
             <div class="form-group price-modification">
               <label class="control-label">Price Modification</label>
               <div class="form-control" :class="{'invalid-rule': results.price_modification === null}">{{ results.price_modification }}</div>
@@ -106,6 +111,7 @@ export default {
        const params = {
             url: this.testUrl,
             price_modification: document.querySelector('input[name="sites[price_modification]"]').value,
+            tax_percent: document.querySelector('input[name="sites[tax_percent]"]').value,
             rules: {
                 title: document.querySelector('input[name="sync_Rules[title]"]').value,
                 description: document.querySelector('input[name="sync_Rules[description]"]').value,
@@ -114,6 +120,8 @@ export default {
                 in_stock: document.querySelector('input[name="sync_Rules[in_stock]"]').value,
                 in_stock_value: document.querySelector('input[name="sync_Rules[in_stock_value]"]').value,
                 price_decimals: document.querySelector('input[name="sync_Rules[price_decimals]"]').value,
+                sku: document.querySelector('input[name="sync_Rules[sku]"]').value,
+                remove_string_from_sku: document.querySelector('input[name="sync_Rules[remove_string_from_sku]"]').value,
                 images: document.querySelector('input[name="sync_Rules[images]"]').value,
                 variants: document.querySelector('input[name="sync_Rules[variants]"]').value,
             },
@@ -128,6 +136,8 @@ export default {
     //       price: ".product-price",
     //       in_stock: ".product-stock",
     //       price_decimals: "2",
+    //       sku: "",
+    //       remove_string_from_sku: "",
     //       images: ".product-images > img",
     //       variants: ".variants > .color"
     //     }

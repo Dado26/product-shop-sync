@@ -28,7 +28,11 @@ class Kernel extends ConsoleKernel
         $schedule->command('telescope:prune --hours=48')->daily();
 
         if (app()->environment('production')) {
-            $schedule->command('sync:products')->hourly();
+            $schedule->command('sync:products')->everyTenMinutes();
+            
+            $schedule->command('sync:products', ['--unavailable'])->dailyAt('03:00');
+
+            $schedule->command('horizon:snapshot')->everyFiveMinutes();
 
             $schedule->command('backup:clean')->daily()->at('03:00');
             $schedule->command('backup:run')->daily()->at('03:30');

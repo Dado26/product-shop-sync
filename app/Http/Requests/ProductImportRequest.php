@@ -32,7 +32,7 @@ class ProductImportRequest extends FormRequest
             $rules['urls'] = [
                 'required',
                 new SiteExistsBatchRule,
-                new UniqueProductUrlBatchRule,
+                //new UniqueProductUrlBatchRule,
             ];
         } else {
             $rules['url'] = [

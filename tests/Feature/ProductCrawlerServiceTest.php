@@ -113,4 +113,9 @@ class ProductCrawlerServiceTest extends TestCase
     {
         $this->assertEquals(1899.00, $this->crawler->getPrice());
     }
+
+    public function test_crawler_should_return_sku()
+    {
+        $this->assertEquals('123ABC', $this->crawler->getSku());
+    }
 }

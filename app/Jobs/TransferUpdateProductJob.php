@@ -56,7 +56,7 @@ class TransferUpdateProductJob implements ShouldQueue
         $shopProduct = ShopProduct::where('product_id', $this->product->shop_product_id)->first();
 
         if (!$shopProduct) {
-            logger()->notice('Product not found in store, maybe it was removed', ['id' => $this->product->id]);
+            logger()->notice('Product not found in the target store, maybe it was removed', ['id' => $this->product->id]);
             $this->delete();
             return;
         }
@@ -70,18 +70,20 @@ class TransferUpdateProductJob implements ShouldQueue
 
         try {
             $shopProduct->update([
-                'model'           => $this->product->title,
-                'price'           => $this->product->variants->min('price'),
-                'location'        => $this->product->url,
-                'status'          => ($this->product->status == 'available') ? 1 : 0,
-                'date_modified'   => now(),
+                'model'         => $this->product->title,
+                'price'         => $this->product->variants->min('price'),
+                'location'      => $this->product->url,
+                'sku'           => $this->product->sku,
+                'status'        => ($this->product->status == 'available') ? 1 : 0,
+                'date_modified' => now(),
             ]);
 
             ShopProductDescription::where('product_id', $shopProduct->product_id)->update([
-                'description'      => $this->product->description,
-                'name'             => $this->product->title,
-                'product_id'       => $shopProduct->product_id,
-                'meta_title'       => $this->product->title,
+                'description'    => $this->product->description,
+                'specifications' => $this->product->specifications,
+                'name'           => $this->product->title,
+                'product_id'     => $shopProduct->product_id,
+                'meta_title'     => $this->product->title,
             ]);
 
             DB::commit();

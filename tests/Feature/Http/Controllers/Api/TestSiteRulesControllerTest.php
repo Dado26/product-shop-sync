@@ -11,15 +11,17 @@ class TestSiteRulesControllerTest extends TestCase
         $params = [
             'url'   => 'http://product-sync/test/product',
             'rules' => [
-                'title'          => '#product-title',
-                'description'    => '.product-description',
-                'specifications' => '#product-specs',
-                'price'          => '.product-price',
-                'in_stock'       => '.product-stock',
-                'in_stock_value' => 'In stock',
-                'price_decimals' => '2',
-                'images'         => '.product-images > img',
-                'variants'       => '.variants > .color',
+                'title'                  => '#product-title',
+                'description'            => '.product-description',
+                'specifications'         => '#product-specs',
+                'price'                  => '.product-price',
+                'in_stock'               => '.product-stock',
+                'in_stock_value'         => 'In stock',
+                'price_decimals'         => '2',
+                'images'                 => '.product-images > img',
+                'variants'               => '.variants > .color',
+                'sku'                    => '.sku',
+                'remove_string_from_sku' => 'SKU:',
             ],
         ];
 
@@ -40,6 +42,7 @@ class TestSiteRulesControllerTest extends TestCase
                 'White',
                 'Black',
             ],
+            'sku'            => '123ABC',
         ]);
 
         $this->assertNotNull($response->decodeResponseJson()['specifications']);
@@ -50,14 +53,16 @@ class TestSiteRulesControllerTest extends TestCase
         $params = [
             'url'   => 'http://product-sync/test/product',
             'rules' => [
-                'title'          => '#product-title-invalid', // INVALID
-                'description'    => '.invalid-description', // INVALID
-                'specifications' => '#invalid-specs', // IINVALID
-                'price'          => '.product-price-invalid', // INVALID
-                'in_stock'       => '.product-stock-invalid', // INVALID
-                'price_decimals' => '2', // INVALID
-                'images'         => '.product-images > img-invalid', // INVALID
-                'variants'       => '.invalid', // INVALID
+                'title'                  => '#product-title-invalid', // INVALID
+                'description'            => '.invalid-description', // INVALID
+                'specifications'         => '#invalid-specs', // IINVALID
+                'price'                  => '.product-price-invalid', // INVALID
+                'in_stock'               => '.product-stock-invalid', // INVALID
+                'price_decimals'         => '2', // INVALID
+                'images'                 => '.product-images > img-invalid', // INVALID
+                'variants'               => '.invalid', // INVALID
+                'sku'                    => '.sku-invalid', // INVALID
+                'remove_string_from_sku' => 'SKU:INVALID', // INVALID
             ],
         ];
 
@@ -71,6 +76,7 @@ class TestSiteRulesControllerTest extends TestCase
             'in_stock_value' => null,
             'images'         => null,
             'variants'       => null,
+            'sku'            => null,
         ]);
     }
 }

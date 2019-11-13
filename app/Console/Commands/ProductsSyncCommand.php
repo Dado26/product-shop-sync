@@ -14,7 +14,7 @@ class ProductsSyncCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'sync:products';
+    protected $signature = 'sync:products {--unavailable} {--older-than-hours=24} {--limit=100}';
 
     /**
      * The console command description.
@@ -40,36 +40,41 @@ class ProductsSyncCommand extends Command
      */
     public function handle()
     {
-        // Sync product that are available and older than 24 hours an product that are unavailable and not older than 4 weeks
-        $products = Product::where(function ($query) {
-            $query->where('status', Product::STATUS_AVAILABLE)
-                      ->where('synced_at', '<=', now()->subHours(24))
-                      ->where(function ($query) {
-                          $query->where('queued_at', '<=', now()->subHours(1))
-                                ->orWhere('queued_at', null);
-                      });
-        })
-            ->orWhere(function ($query) {
-                $query->where('status', Product::STATUS_UNAVAILABLE)
-                      ->where('synced_at', '>=', now()->subWeeks(4))
-                      ->where(function ($query) {
-                          $query->where('queued_at', '<=', now()->subHours(1))
-                                ->orWhere('queued_at', null);
-                      });
-            })
-            ->get();
+        $products = Product::query();
+
+        if ($this->option('unavailable')) {
+            // UNAVAILABLE
+            $products->where('status', Product::STATUS_UNAVAILABLE)
+                     ->where('queued_at', '<=', now()->subDays(5))
+                     ->where('synced_at', '>=', now()->subMonths(6))
+                     ->where(function ($query) {
+                         $query->where('queued_at', '<=', now()->subHours(1))
+                               ->orWhere('queued_at', null);
+                     });
+        } else {
+            $hours = $this->option('older-than-hours');
+            $limit = $this->option('limit');
+
+            // AVAILABLE
+            $products->where('status', Product::STATUS_AVAILABLE)
+                     ->where('synced_at', '<=', now()->subHours($hours))
+                     ->where(function ($query) {
+                         $query->where('queued_at', '<=', now()->subHours(1))
+                               ->orWhere('queued_at', null);
+                     })
+                     ->limit($limit);
+        }
 
         $jobs = [];
 
-        foreach ($products as $product) {
-            $product->update([
-                'queued_at' => now(),
-            ]);
+        foreach ($products->get() as $product) {
+            $product->update(['queued_at' => now()]);
+
             $jobs[] = new ProductSyncJob($product);
         }
 
         Queue::bulk($jobs, null, ProductSyncJob::QUEUE_NAME);
 
-        $this->info('Queued jobs:' . count($jobs));
+        $this->info('Queued jobs:'.count($jobs));
     }
 }

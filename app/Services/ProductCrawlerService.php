@@ -35,7 +35,10 @@ class ProductCrawlerService
     private $crawler;
 
     /**
-     * @param string $url
+     * @param  string  $url
+     * @param  array  $rules
+     *
+     * @throws \Exception
      */
     public function handle(string $url, array $rules = []): void
     {
@@ -68,7 +71,9 @@ class ProductCrawlerService
     /**
      * Make main request to product url
      *
-     * @param string $url
+     * @param  string  $url
+     *
+     * @return \Symfony\Component\DomCrawler\Crawler
      */
     protected function makeRequest($url)
     {
@@ -123,6 +128,8 @@ class ProductCrawlerService
 
         $description = $this->crawler->filter($rule)->html();
 
+        $description = strip_tags($description, '<strong><b><i><p><u><div>');
+
         return trim($description);
     }
 
@@ -131,9 +138,7 @@ class ProductCrawlerService
      */
     public function getSpecifications(): ?string
     {
-        $rule = $this->rules->specifications;
-
-        if (empty($rule)) {
+        if (!$rule = $this->rules->specifications) {
             return null;
         }
 
@@ -155,9 +160,13 @@ class ProductCrawlerService
      */
     public function getInStock(): bool
     {
+        if (!$rule = $this->rules->in_stock_value) {
+            return false;
+        }
+
         try {
             $stockText         = strtolower($this->getInStockValue());
-            $expectedStockText = strtolower($this->rules->in_stock_value);
+            $expectedStockText = strtolower($rule);
         } catch (Throwable $e) {
             logger()->emergency('Failed to get stock for product', [
                 'exception' => $e->getMessage(),
@@ -173,11 +182,31 @@ class ProductCrawlerService
     /**
      * @return string
      */
-    public function getInStockValue(): string
+    public function getInStockValue(): ?string
     {
-        $rule = $this->rules->in_stock;
+        if (!$rule = $this->rules->in_stock) {
+            return null;
+        }
 
         $value = $this->crawler->filter($rule)->text();
+
+        return trim($value);
+    }
+
+    /**
+     * @return string
+     */
+    public function getSku(): ?string
+    {
+        if (!$rule = $this->rules->sku) {
+            return null;
+        }
+
+        $value = $this->crawler->filter($rule)->text();
+
+        if (!empty($this->rules->remove_string_from_sku)) {
+            $value = str_replace($this->rules->remove_string_from_sku, '', $value);
+        }
 
         return trim($value);
     }
@@ -210,7 +239,12 @@ class ProductCrawlerService
         $rule = $this->rules->images;
 
         $images = $this->crawler->filter($rule)->each(function ($node) {
-            return $node->attr('src');
+            if ($value = $node->attr('href')) {
+                return $value;
+            }
+            if ($value = $node->attr('src')) {
+                return $value;
+            }
         });
 
         return $images;

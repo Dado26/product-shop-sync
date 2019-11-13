@@ -58,8 +58,8 @@ class ProductImportJob implements ShouldQueue
     /**
      * Create a new job instance.
      *
-     * @param String $url
-     * @param int    $categoryId
+     * @param  String  $url
+     * @param  int  $categoryId
      */
     public function __construct(String $url, int $categoryId)
     {
@@ -75,6 +75,12 @@ class ProductImportJob implements ShouldQueue
      */
     public function handle()
     {
+        if (Product::where('url', $this->url)->exists()) {
+            logger()->debug('Product was already imported, skipping', ['url' => $this->url]);
+            $this->delete();
+            return;
+        }
+
         try {
             $this->crawler->handle($this->url);
         } catch (ModelNotFoundException $e) {
@@ -126,6 +132,7 @@ class ProductImportJob implements ShouldQueue
             'url'            => $this->crawler->getUrl(),
             'specifications' => $this->crawler->getSpecifications(),
             'status'         => Product::STATUS_AVAILABLE,
+            'sku'            => $this->crawler->getSku(),
             'synced_at'      => now(),
         ]);
     }
@@ -139,12 +146,11 @@ class ProductImportJob implements ShouldQueue
      */
     private function createVariants($product)
     {
-        $site            = SiteUrlParser::getSite($this->url);
-        $percentagePrice = $site->price_modification;
+        $site = SiteUrlParser::getSite($this->url);
 
         foreach ($this->crawler->getVariants() as $variant) {
             $price         = $this->crawler->getPrice();
-            $priceModified = PriceCalculator::modifyByPercent($price, $percentagePrice);
+            $priceModified = PriceCalculator::modifyByPercent($price, $site->price_modification, $site->tax_percent);
 
             Variant::create([
                 'name'       => $variant,
@@ -194,7 +200,7 @@ class ProductImportJob implements ShouldQueue
     /**
      * The job failed to process.
      *
-     * @param Throwable $e
+     * @param  Throwable  $e
      *
      * @return void
      */

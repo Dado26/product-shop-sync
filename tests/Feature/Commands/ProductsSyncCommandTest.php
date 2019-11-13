@@ -45,7 +45,7 @@ class ProductsSyncCommandTest extends TestCase
         });
     }
 
-    public function test_that_command_dispatches_products_that_have_been_marked_unavailable_more_than_24_hours_ago()
+    public function test_that_command_dispatches_products_that_have_been_marked_unavailable_more_than_5_days_ago()
     {
         Queue::fake();
 
@@ -53,13 +53,13 @@ class ProductsSyncCommandTest extends TestCase
         $site = factory(Site::class)->create();
 
         $shouldQueue = factory(Product::class)->state('unavailable')->create([
-            'synced_at' => now()->subDays(2),
-            'queued_at' => now()->subHours(25),
+            'synced_at' => now()->subMonths(2),
+            'queued_at' => now()->subDays(6),
             'site_id'   => $site->id,
         ]);
 
         // run command
-        $this->artisan('sync:products');
+        $this->artisan('sync:products --unavailable');
 
         // test results
         Queue::assertPushed(ProductSyncJob::class, function ($job) use ($shouldQueue) {
@@ -76,12 +76,12 @@ class ProductsSyncCommandTest extends TestCase
 
         $shouldQueue = factory(Product::class)->state('unavailable')->create([
             'synced_at' => now()->subDays(15),
-            'queued_at' => now()->subHours(25),
+            'queued_at' => now()->subDays(6),
             'site_id'   => $site->id,
         ]);
 
         // run command
-        $this->artisan('sync:products');
+        $this->artisan('sync:products --unavailable');
 
         // test results
         Queue::assertPushed(ProductSyncJob::class, function ($job) use ($shouldQueue) {
@@ -103,7 +103,7 @@ class ProductsSyncCommandTest extends TestCase
         ]);
 
         // run command
-        $this->artisan('sync:products');
+        $this->artisan('sync:products --unavailable');
 
         // test results
         Queue::assertNotPushed(ProductSyncJob::class, function ($job) use ($shouldSkip) {

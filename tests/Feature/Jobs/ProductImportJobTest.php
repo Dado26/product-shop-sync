@@ -38,6 +38,7 @@ class ProductImportJobTest extends TestCase
             'title'       => 'Lampa za insekte',
             'description' => 'Napravljena specijalno za uništavanje letećih štetnih insekata.',
             'status'      => Product::STATUS_AVAILABLE,
+            'sku'         => '123ABC',
             'url'         => $productUrl,
             'site_id'     => $site->id,
         ]);

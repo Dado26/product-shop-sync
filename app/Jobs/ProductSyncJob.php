@@ -56,7 +56,7 @@ class ProductSyncJob implements ShouldQueue
     /**
      * Create a new job instance.
      *
-     * @param \App\Models\Product $product
+     * @param  \App\Models\Product  $product
      */
     public function __construct(Product $product)
     {
@@ -80,19 +80,23 @@ class ProductSyncJob implements ShouldQueue
             return;
         }
 
+        // check if product is in stock
+        if (!$this->crawler->getInStock()) {
+            $this->product->makeProductUnavailable($this->product->shop_product_id);
+            return;
+        }
+
         try {
             $this->updateProduct();
 
             TransferUpdateProductJob::dispatch($this->product)->onQueue(TransferUpdateProductJob::QUEUE_NAME);
         } catch (InvalidArgumentException $e) {
-            $this->product->update(['status' => Product::STATUS_UNAVAILABLE]);
+            $this->product->update(['status' => Product::STATUS_DELETED]);
 
-            ShopProduct::where('product_id', $this->product->shop_product_id)->update(['status' => 0]);
-
-            logger()->notice('Product not found, maybe it was removed', [
+            logger()->notice('Product not found on the source store, maybe it was removed', [
                 'id'        => $this->product->id,
                 'url'       => $this->product->url,
-                'newStatus' => Product::STATUS_UNAVAILABLE,
+                'newStatus' => Product::STATUS_DELETED,
                 'exception' => $e->getMessage(),
             ]);
 
@@ -115,9 +119,11 @@ class ProductSyncJob implements ShouldQueue
             'description'    => $this->crawler->getDescription(),
             'url'            => $this->crawler->getUrl(),
             'specifications' => $this->crawler->getSpecifications(),
-            'status'         => Product::STATUS_AVAILABLE,
+            'sku'            => $this->crawler->getSku(),
             'synced_at'      => now(),
         ]);
+
+        $this->product->makeProductAvailable($this->product->shop_product_id);
 
         // update variants
         $oldVariants = Variant::where('product_id', $this->product->id)->get()->pluck('name')->toArray();
@@ -126,14 +132,16 @@ class ProductSyncJob implements ShouldQueue
 
         $results = ChangeDetectorService::getIntersection($oldVariants, $newVariants);
 
-        $percentagePrice = $this->product->site->price_modification;
-
         // update existing variants
         foreach ($results as $result) {
             $price = $this->crawler->getPrice();
 
             $this->product->variants()->where('name', $result)->update([
-                'price' => PriceCalculator::modifyByPercent($price, $percentagePrice),
+                'price' => PriceCalculator::modifyByPercent(
+                    $price,
+                    $this->product->site->price_modification,
+                    $this->product->site->tax_percent
+                ),
             ]);
         }
 
@@ -145,7 +153,11 @@ class ProductSyncJob implements ShouldQueue
 
             $this->product->variants()->create([
                 'name'  => $result,
-                'price' => PriceCalculator::modifyByPercent($price, $percentagePrice),
+                'price' => PriceCalculator::modifyByPercent(
+                    $price,
+                    $this->product->site->price_modification,
+                    $this->product->site->tax_percent
+                ),
             ]);
         }
 
@@ -158,7 +170,7 @@ class ProductSyncJob implements ShouldQueue
     /**
      * The job failed to process.
      *
-     * @param Throwable $e
+     * @param  Throwable  $e
      *
      * @return void
      */

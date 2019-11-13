@@ -22,15 +22,17 @@ class CrawlerTestDataSeeder extends Seeder
         ]);
 
         $site->syncRules()->create([
-            'title'          => '#product-title',
-            'description'    => '.product-description',
-            'price'          => '.product-price',
-            'price_decimals' => 2,
-            'in_stock'       => '.product-stock',
-            'in_stock_value' => 'In stock',
-            'images'         => '.product-images > img',
-            'variants'       => '.variants > .color',
-            'specifications' => '#product-specs',
+            'title'                  => '#product-title',
+            'description'            => '.product-description',
+            'price'                  => '.product-price',
+            'price_decimals'         => 2,
+            'in_stock'               => '.product-stock',
+            'in_stock_value'         => 'In stock',
+            'images'                 => '.product-images > img',
+            'variants'               => '.variants > .color',
+            'specifications'         => '#product-specs',
+            'sku'                    => '.sku',
+            'remove_string_from_sku' => 'SKU:',
         ]);
     }
 }

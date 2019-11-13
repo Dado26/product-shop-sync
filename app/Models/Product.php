@@ -14,7 +14,10 @@ class Product extends Model
     public const STATUS_ARCHIVED    = 'archived';
     public const STATUS_DELETED     = 'deleted';
 
-    protected $fillable = ['title', 'description', 'status', 'url', 'site_id', 'specifications', 'synced_at', 'queued_at', 'shop_product_id'];
+    protected $fillable = [
+        'title', 'description', 'status', 'url', 'site_id', 'specifications', 'synced_at', 'queued_at',
+        'shop_product_id', 'sku',
+    ];
 
     protected $dates = ['synced_at'];
 
@@ -35,6 +38,20 @@ class Product extends Model
 
     public function scopeAvailable($query)
     {
-        return $query->where('status', $this::STATUS_AVAILABLE);
+        return $query->where('status', self::STATUS_AVAILABLE);
+    }
+
+    public function makeProductAvailable($shopProductId): void
+    {
+        ShopProduct::where('product_id', $shopProductId)->update(['status' => 1]);
+
+        $this->update(['status' => self::STATUS_AVAILABLE]);
+    }
+
+    public function makeProductUnavailable($shopProductId): void
+    {
+        ShopProduct::where('product_id', $shopProductId)->update(['status' => 0]);
+
+        $this->update(['status' => self::STATUS_UNAVAILABLE]);
     }
 }
