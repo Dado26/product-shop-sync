@@ -12,13 +12,13 @@ class SitesController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      *
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
     {
-        $sites = Site::with('products')->latest()->paginate(10);
+        $sites = Site::withCount('productsActive', 'productsUnavailable', 'productsDeleted')->latest()->paginate(10);
 
         return view('sites.index', compact('sites'));
     }

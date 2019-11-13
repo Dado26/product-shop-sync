@@ -39,6 +39,21 @@ class Site extends Model
         return $this->hasMany(Product::class);
     }
 
+    public function productsActive()
+    {
+        return $this->hasMany(Product::class)->where('status', '=', Product::STATUS_AVAILABLE);
+    }
+
+    public function productsUnavailable()
+    {
+        return $this->hasMany(Product::class)->where('status', '=', Product::STATUS_UNAVAILABLE);
+    }
+
+    public function productsDeleted()
+    {
+        return $this->hasMany(Product::class)->onlyTrashed();
+    }
+
     public function session()
     {
         return $this->hasOne(SiteSession::class);

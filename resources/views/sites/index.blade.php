@@ -21,7 +21,9 @@
                 <th class="text-center">ID</th>
                 <th class="text-center">Name</th>
                 <th class="text-center">Url</th>
-                <th class="text-center">Imported</th>
+                <th class="text-center">Imported - Active</th>
+                <th class="text-center">Imported - Not found</th>
+                <th class="text-center">Imported - Deleted</th>
                 <th class="text-center">Created at</th>
                 <th class="text-center">Updated at</th>
                 <th class="text-center">Actions</th>
@@ -43,7 +45,15 @@
                 </td>
 
                 <td class="text-center">
-                    {{ $site->products->count() }}
+                    {{ $site->products_active_count }}
+                </td>
+
+                <td class="text-center">
+                    {{ $site->products_unavailable_count }}
+                </td>
+
+                <td class="text-center">
+                    {{ $site->products_deleted_count }}
                 </td>
 
                 <td class="text-center">
