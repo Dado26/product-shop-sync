@@ -56,7 +56,7 @@ class SyncAllProductsFromAllCategoriesCommand extends Command
             $this->line('-----------------------------------------');
             $this->line("Category: {$categoryName}");
 
-            if ($this->hasOption('category-name')) {
+            if ($this->option('category-name')) {
                 // import only passed category
                 if (strtolower($this->option('category-name')) !== strtolower($categoryName)) {
                     continue;
