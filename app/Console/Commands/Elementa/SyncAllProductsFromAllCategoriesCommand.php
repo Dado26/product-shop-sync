@@ -51,7 +51,11 @@ class SyncAllProductsFromAllCategoriesCommand extends Command
         $categoryLinks = $this->getAllCategoryLinks();
         // dd($categoryLinks);
         $this->line('Starting product links fetch');
+
         foreach ($categoryLinks as $categoryName => $categoryLink) {
+            $this->line('-----------------------------------------');
+            $this->line("Category: {$categoryName}");
+
             if ($this->hasOption('category-name')) {
                 // import only passed category
                 if (strtolower($this->option('category-name')) !== strtolower($categoryName)) {
