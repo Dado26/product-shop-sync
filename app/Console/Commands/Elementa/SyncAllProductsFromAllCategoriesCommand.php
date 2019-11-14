@@ -69,6 +69,7 @@ class SyncAllProductsFromAllCategoriesCommand extends Command
             }
 
             // queue product import
+            $allFoundLinks = $productLinks->count();
 
             $productLinks = $productLinks->transform(function ($link) {
                 return 'https://elementa.rs' . $link;
@@ -83,7 +84,8 @@ class SyncAllProductsFromAllCategoriesCommand extends Command
             Queue::bulk($jobs, null, ProductImportJob::QUEUE_NAME);
 
             $jobsCount = count($jobs);
-            $this->info("Dispatched {$jobsCount} jobs for '{$categoryName}' category.");
+            $alreadyExisted = $allFoundLinks - $jobsCount;
+            $this->info("Dispatched {$jobsCount} jobs for '{$categoryName}' category, while {$alreadyExisted} were ignored.");
         }
     }
 
