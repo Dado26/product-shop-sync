@@ -64,8 +64,13 @@ class SyncAllProductsFromAllCategoriesCommand extends Command
             }
 
             // get product links from category url
-            $this->line('Fetching all product links');
-            [$productLinks, $categoryId] = $this->getAllProductLinksFromCategory($categoryLink, $categoryName);
+            try {
+                $this->line('Fetching all product links');
+                [$productLinks, $categoryId] = $this->getAllProductLinksFromCategory($categoryLink, $categoryName);
+            } catch (\Exception $e) {
+                $this->error('Error: '.$e->getMessage());
+                continue;
+            }
 
             if ($productLinks->count() === 0) {
                 $this->comment("Empty category {$categoryName} category, skipping");
