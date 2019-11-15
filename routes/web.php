@@ -46,11 +46,11 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('sites', 'SitesController');
 
-    Route::get('productsLinks/{site}', 'ProductLinkRuleController@index')->name('product.link');
+    Route::get('products-links/{site}', 'ProductLinkRuleController@index')->name('product.link');
 
-    Route::post('productsLinks/{site}', 'ProductLinkRuleController@store')->name('product.store');
+    Route::post('products-links/{site}', 'ProductLinkRuleController@store')->name('product.store');
 
-    Route::get('productsLinks/link/{site}', 'ProductLinkRuleController@getProductsLinks')->name('link');
+    Route::get('products-links/link/{site}', 'ProductLinkRuleController@getProductsLinks')->name('link');
 
     //Route::get('product/test', 'TestLoginController@get');
 

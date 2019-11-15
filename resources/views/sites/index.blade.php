@@ -80,8 +80,8 @@
                             </a>
                         </div>
                         <div class="edit-user">
-                            <a href="{{ route('product.link', $site->id) }}" class="btn btn-success d-none d-sm-inline-block btn-sm">
-                                P.Links
+                            <a href="{{ route('product.link', $site->id) }}" class="btn btn-primary d-none d-sm-inline-block btn-sm">
+                                Fetch Links
                             </a>
                         </div>
                     </div>
