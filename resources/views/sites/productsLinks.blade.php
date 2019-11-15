@@ -5,17 +5,17 @@
     {!! Form::open(['route' => ['product.store', $site->id], 'method' => 'POST']) !!}
 
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Add rules</h1>
+        <h1 class="h3 mb-0 text-gray-800">Fetch Links</h1>
     </div>
 
     <div class="row">
-        <div class="col-sm-12 col-md-6 col-lg-6">
+        <div class="col-sm-12 col-md-4 col-lg-3">
             @include('partials.errors')
 
             <!-- SITE -->
             <div class="card shadow mb-4">
                 <div class="card-header">
-                    General
+                    Fetching Rules
                 </div>
 
                 <div class="card-body">
@@ -50,7 +50,7 @@
         {!! Form::close() !!}
 
 
-        <div class="col-sm-12 col-md-6 col-lg-6">
+        <div class="col-sm-12 col-md-8 col-lg-9">
 
             {!! Form::open(['route' => ['link', $site->id], 'method' => 'GET']) !!}
             <div class="card shadow mb-4">
@@ -60,18 +60,21 @@
 
                 <div class="card-body">
                     <div class="form-group">
-                        <label class="control-label">Link</label>
+                        <label class="control-label">Category Link</label>
                         <input type="text" name="link" class="form-control" value="{{ request('link') }}">
                     </div>
 
                     @if(!empty($productLinks))
-                        <textarea class="form-control mt-3" style="width:100%; height:500px">{!! $productLinks->implode("\n") !!}</textarea>
+                        <div class="form-group">
+                            <label class="control-label">Found Product Links</label>
+                            <textarea class="form-control mt-3" style="width:100%; height:500px">{!! $productLinks->implode("\n") !!}</textarea>
+                        </div>
                     @endif
 
                 </div>
 
                 <div class="card-footer">
-                    <button type="submit" class="btn btn-success pull-right">Fetch</button>
+                    <button type="submit" class="btn btn-success float-right">Fetch</button>
                 </div>
             </div>
             {!! Form::close() !!}
