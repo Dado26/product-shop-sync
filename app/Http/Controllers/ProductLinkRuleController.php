@@ -7,6 +7,7 @@ use App\Models\Site;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Models\ProductLinkRule;
+use Illuminate\Support\Str;
 
 class ProductLinkRuleController extends Controller
 {
@@ -55,7 +56,7 @@ class ProductLinkRuleController extends Controller
         } while ($nextLinkExists);
 
         $productLinks = $productLinks->transform(function ($link) use ($site) {
-            return $site->url . $link;
+            return Str::startsWith($link, 'http') ? $link : $site->url . $link;
         })->reject(function ($link) {
             return Product::where('url', $link)->exists();
         });
