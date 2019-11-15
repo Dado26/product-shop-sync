@@ -34,6 +34,11 @@ class Site extends Model
         return $this->hasOne(SyncRules::class);
     }
 
+    public function productLinks()
+    {
+        return $this->hasOne(ProductLinkRule::class);
+    }
+
     public function products()
     {
         return $this->hasMany(Product::class);

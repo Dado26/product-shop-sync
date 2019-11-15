@@ -46,6 +46,12 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('sites', 'SitesController');
 
+    Route::get('productsLinks/{site}', 'ProductLinkRuleController@index')->name('product.link');
+
+    Route::post('productsLinks/{site}', 'ProductLinkRuleController@store')->name('product.store');
+
+    Route::get('productsLinks/link/{site}', 'ProductLinkRuleController@getProductsLinks')->name('link');
+
     //Route::get('product/test', 'TestLoginController@get');
 
     // Route::get('product/test/cookie', 'TestLoginController@testCookieLogin');

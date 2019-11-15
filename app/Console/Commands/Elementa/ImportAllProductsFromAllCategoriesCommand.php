@@ -69,7 +69,7 @@ class ImportAllProductsFromAllCategoriesCommand extends Command
 
             // queue product import
             $productLinks->transform(function ($link) {
-                return "https://elementa.rs" . $link;
+                return 'https://elementa.rs' . $link;
             });
 
             $jobs = $productLinks->map(function ($url) use ($categoryId) {
@@ -84,8 +84,8 @@ class ImportAllProductsFromAllCategoriesCommand extends Command
     }
 
     /**
-     * @param  string  $url
-     * @param  \Goutte\Client  $client
+     * @param string         $url
+     * @param \Goutte\Client $client
      *
      * @return array
      */
@@ -113,7 +113,7 @@ class ImportAllProductsFromAllCategoriesCommand extends Command
         $this->crawler->filter('ul#sitemap > li')->each(function ($node) use (&$categoryLinks) {
             $node->filter('ul > li')->each(function ($li) use (&$categoryLinks) {
                 $li->filter('ul > li > a')->each(function ($li2) use (&$categoryLinks) {
-                    $categoryLinks[trim($li2->text())] = "http://elementa.rs/".trim($li2->attr('href'))."/sort/name/page/1/kolicina/12?filters=[]&spec=[]&lager=na-stanju";
+                    $categoryLinks[trim($li2->text())] = 'http://elementa.rs/' . trim($li2->attr('href')) . '/sort/name/page/1/kolicina/12?filters=[]&spec=[]&lager=na-stanju';
                 });
             });
         });

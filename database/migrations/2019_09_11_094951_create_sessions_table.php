@@ -7,19 +7,34 @@ use Illuminate\Database\Migrations\Migration;
 class CreateSessionsTable extends Migration
 {
     /**
+     * Schema table name to migrate
+     * @var string
+     */
+    public $tableName = 'sessions';
+
+    /**
      * Run the migrations.
+     * @table sessions
      *
      * @return void
      */
     public function up()
     {
-        Schema::create('sessions', function (Blueprint $table) {
+        Schema::create($this->tableName, function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->increments('id');
             $table->unsignedInteger('site_id');
-            $table->text('value');
-            $table->timestamp('expires_at');
+            $table->string('value')->nullable();
+            $table->timestamp('expires_at')->nullable();
             $table->timestamp('updated_at')->nullable();
-            $table->foreign('site_id')->references('id')->on('sites');
+
+            $table->index(["site_id"], 'fk_sessions_sites1_idx');
+
+
+            $table->foreign('site_id', 'fk_sessions_sites1_idx')
+                ->references('id')->on('sites')
+                ->onDelete('no action')
+                ->onUpdate('no action');
         });
     }
 
@@ -28,8 +43,8 @@ class CreateSessionsTable extends Migration
      *
      * @return void
      */
-    public function down()
-    {
-        Schema::dropIfExists('sessions');
-    }
+     public function down()
+     {
+       Schema::dropIfExists($this->tableName);
+     }
 }

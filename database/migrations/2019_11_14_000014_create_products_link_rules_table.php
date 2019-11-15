@@ -4,17 +4,17 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUsersTable extends Migration
+class CreateProductsLinkRulesTable extends Migration
 {
     /**
      * Schema table name to migrate
      * @var string
      */
-    public $tableName = 'users';
+    public $tableName = 'products_link_rules';
 
     /**
      * Run the migrations.
-     * @table users
+     * @table products_link_rules
      *
      * @return void
      */
@@ -22,17 +22,18 @@ class CreateUsersTable extends Migration
     {
         Schema::create($this->tableName, function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->bigIncrements('id');
-            $table->string('first_name');
-            $table->string('last_name');
-            $table->string('email');
-            $table->string('password');
-            $table->rememberToken();
-            $table->tinyInteger('admin')->default('0');
+            $table->increments('site_id');
+            $table->string('next_page')->nullable();
+            $table->string('product_link')->nullable();
 
-            $table->unique(["email"], 'users_email_unique');
-            $table->softDeletes();
+            $table->index(["site_id"], 'fk_products_link_rules_sites1_idx');
             $table->nullableTimestamps();
+
+
+            $table->foreign('site_id', 'fk_products_link_rules_sites1_idx')
+                ->references('id')->on('sites')
+                ->onDelete('no action')
+                ->onUpdate('no action');
         });
     }
 

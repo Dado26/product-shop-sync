@@ -79,6 +79,11 @@
                                 Edit
                             </a>
                         </div>
+                        <div class="edit-user">
+                            <a href="{{ route('product.link', $site->id) }}" class="btn btn-success d-none d-sm-inline-block btn-sm">
+                                P.Links
+                            </a>
+                        </div>
                     </div>
                 </td>
             </tr>

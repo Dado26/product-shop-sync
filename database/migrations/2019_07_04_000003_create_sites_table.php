@@ -28,6 +28,14 @@ class CreateSitesTable extends Migration
             $table->string('url', 120);
             $table->string('email', 120)->nullable();
             $table->decimal('price_modification', 5, 2)->nullable();
+            $table->string('login_url')->nullable();
+            $table->string('login_button_text', 30)->nullable();
+            $table->string('username', 64)->nullable();
+            $table->string('password')->nullable();
+            $table->string('username_input_field', 60)->nullable();
+            $table->string('password_input_field', 60)->nullable();
+            $table->string('auth_element_check', 60)->nullable();
+            $table->string('session_name', 32)->nullable();
 
             $table->index(["user_id"], 'fk_sites_users_idx');
             $table->softDeletes();
