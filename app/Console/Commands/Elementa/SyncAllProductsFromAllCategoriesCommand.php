@@ -51,8 +51,12 @@ class SyncAllProductsFromAllCategoriesCommand extends Command
         $categoryLinks = $this->getAllCategoryLinks();
         // dd($categoryLinks);
         $this->line('Starting product links fetch');
+
         foreach ($categoryLinks as $categoryName => $categoryLink) {
-            if ($this->hasOption('category-name')) {
+            $this->line('-----------------------------------------');
+            $this->line("Category: {$categoryName}");
+
+            if ($this->option('category-name')) {
                 // import only passed category
                 if (strtolower($this->option('category-name')) !== strtolower($categoryName)) {
                     continue;
@@ -60,8 +64,13 @@ class SyncAllProductsFromAllCategoriesCommand extends Command
             }
 
             // get product links from category url
-            $this->line('Fetching all product links');
-            [$productLinks, $categoryId] = $this->getAllProductLinksFromCategory($categoryLink, $categoryName);
+            try {
+                $this->line('Fetching all product links');
+                [$productLinks, $categoryId] = $this->getAllProductLinksFromCategory($categoryLink, $categoryName);
+            } catch (\Exception $e) {
+                $this->error('Error: '.$e->getMessage());
+                continue;
+            }
 
             if ($productLinks->count() === 0) {
                 $this->comment("Empty category {$categoryName} category, skipping");
@@ -69,6 +78,7 @@ class SyncAllProductsFromAllCategoriesCommand extends Command
             }
 
             // queue product import
+            $allFoundLinks = $productLinks->count();
 
             $productLinks = $productLinks->transform(function ($link) {
                 return 'https://elementa.rs' . $link;
@@ -83,7 +93,8 @@ class SyncAllProductsFromAllCategoriesCommand extends Command
             Queue::bulk($jobs, null, ProductImportJob::QUEUE_NAME);
 
             $jobsCount = count($jobs);
-            $this->info("Dispatched {$jobsCount} jobs for '{$categoryName}' category.");
+            $alreadyExisted = $allFoundLinks - $jobsCount;
+            $this->info("Dispatched {$jobsCount} jobs for '{$categoryName}' category, while {$alreadyExisted} were ignored.");
         }
     }
 
