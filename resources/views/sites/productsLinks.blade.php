@@ -33,13 +33,13 @@
 
                 <div class="card-footer d-flex justify-content-between">
                     <div class="back">
-                        <a href="{{route('sites.index') }}" class="btn btn-primary d-none d-sm-inline-block btn-lg">
+                        <a href="{{route('sites.index') }}" class="btn btn-primary d-none d-sm-inline-block">
                             <i class="fas fa-angle-left"></i> Back
                         </a>
                     </div>
 
                     <div class="save-user">
-                        <button type="submit" class="btn btn-success d-none d-sm-inline-block btn-lg">
+                        <button type="submit" class="btn btn-success d-none d-sm-inline-block">
                             <i class="far fa-save"></i> Save
                         </button>
                     </div>
@@ -70,8 +70,8 @@
 
                 </div>
 
-                <div class="card-footer pull-right">
-                    <button type="submit" class="btn btn-success btn-lg pull-right">Fetch</button>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-success pull-right">Fetch</button>
                 </div>
             </div>
             {!! Form::close() !!}
