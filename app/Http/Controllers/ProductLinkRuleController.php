@@ -58,7 +58,7 @@ class ProductLinkRuleController extends Controller
             } while ($nextLinkExists);
         } catch (\Exception $e) {
         }
-dd('end');
+dd($productLinks);
         $productLinks = $productLinks->transform(function ($link) use ($site) {
             return Str::startsWith($link, 'http') ? $link : $site->url . $link;
         })->reject(function ($link) {
