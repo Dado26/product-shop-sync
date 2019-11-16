@@ -49,8 +49,6 @@ class ProductLinkRuleController extends Controller
                     $this->getProductLinksFromUrl($url, $client, $filterProduct)
                 );
 
-                dump($productLinks);
-
                 $nextLinkExists = $this->crawler->filter($filterNext)->count();
 
                 if ($nextLinkExists) {
@@ -59,7 +57,7 @@ class ProductLinkRuleController extends Controller
             } while ($nextLinkExists);
         } catch (\Exception $e) {
         }
-dd($productLinks);
+
         $productLinks = $productLinks->transform(function ($link) use ($site) {
             return Str::startsWith($link, 'http') ? $link : $site->url . $link;
         })->reject(function ($link) {
