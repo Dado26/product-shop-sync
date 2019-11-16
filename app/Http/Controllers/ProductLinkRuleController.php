@@ -18,13 +18,13 @@ class ProductLinkRuleController extends Controller
 
     public function store(Site $site)
     {
-        $param = request()->validate(['product_link'=> 'required']);
+        $param = request()->validate(['product_link' => 'required']);
 
         $param['site_id'] = $site->id;
 
         $productLink = ProductLinkRule::where('site_id', $site->id)->first();
 
-        ProductLinkRule::updateOrCreate(['site_id'=> $site->id], $param);
+        ProductLinkRule::updateOrCreate(['site_id' => $site->id], $param);
 
         if ($productLink) {
             flash('You have successfully updated rules')->success();
@@ -43,23 +43,24 @@ class ProductLinkRuleController extends Controller
         $filterNext    = $site->productLinks->next_page;
         $filterProduct = $site->productLinks->product_link;
 
-        try {
-            do {
-                $productLinks = $productLinks->merge(
-                    $this->getProductLinksFromUrl($url, $client, $filterProduct)
-                );
+        do {
+            $productLinks = $productLinks->merge(
+                $this->getProductLinksFromUrl($url, $client, $filterProduct)
+            );
 
-                $nextLinkExists = $this->crawler->filter($filterNext)->count();
+            if (empty($filterNext)) {
+                break;
+            }
 
-                if ($nextLinkExists) {
-                    $url = $this->crawler->filter($filterNext)->attr('href');
-                }
-            } while ($nextLinkExists);
-        } catch (\Exception $e) {
-        }
+            $nextLinkExists = $this->crawler->filter($filterNext)->count();
+
+            if ($nextLinkExists) {
+                $url = $this->crawler->filter($filterNext)->attr('href');
+            }
+        } while ($nextLinkExists);
 
         $productLinks = $productLinks->transform(function ($link) use ($site) {
-            return Str::startsWith($link, 'http') ? $link : $site->url . $link;
+            return Str::startsWith($link, 'http') ? $link : $site->url.$link;
         })->unique()->reject(function ($link) {
             return Product::where('url', $link)->exists();
         });
