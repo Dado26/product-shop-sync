@@ -45,6 +45,7 @@ class ProductLinkRuleController extends Controller
 
         try {
             do {
+                dump('1');
                 $productLinks = $productLinks->merge(
                     $this->getProductLinksFromUrl($url, $client, $filterProduct)
                 );
@@ -57,7 +58,7 @@ class ProductLinkRuleController extends Controller
             } while ($nextLinkExists);
         } catch (\Exception $e) {
         }
-
+dd('end');
         $productLinks = $productLinks->transform(function ($link) use ($site) {
             return Str::startsWith($link, 'http') ? $link : $site->url . $link;
         })->reject(function ($link) {
