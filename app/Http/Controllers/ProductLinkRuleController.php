@@ -48,7 +48,7 @@ class ProductLinkRuleController extends Controller
                 $this->getProductLinksFromUrl($url, $client, $filterProduct)
             );
 
-            if ($filterNext) {
+            if (!empty($filterNext)) {
                 $nextLinkExists = $this->crawler->filter($filterNext)->count();
 
                 if ($nextLinkExists) {
