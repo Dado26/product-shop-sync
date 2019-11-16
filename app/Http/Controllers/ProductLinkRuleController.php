@@ -18,7 +18,7 @@ class ProductLinkRuleController extends Controller
 
     public function store(Site $site)
     {
-        $param = request()->all();
+        $param = request()->validate(['product_link'=> 'required']);
 
         $param['site_id'] = $site->id;
 
@@ -48,14 +48,10 @@ class ProductLinkRuleController extends Controller
                 $this->getProductLinksFromUrl($url, $client, $filterProduct)
             );
 
-            if (!empty($filterNext)) {
-                $nextLinkExists = $this->crawler->filter($filterNext)->count();
+            $nextLinkExists = $this->crawler->filter($filterNext)->count();
 
-                if ($nextLinkExists) {
-                    $url = $this->crawler->filter($filterNext)->attr('href');
-                }
-            } else {
-                $nextLinkExists = false;
+            if ($nextLinkExists) {
+                $url = $this->crawler->filter($filterNext)->attr('href');
             }
         } while ($nextLinkExists);
 
