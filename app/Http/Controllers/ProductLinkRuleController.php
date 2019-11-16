@@ -49,12 +49,13 @@ class ProductLinkRuleController extends Controller
                     $this->getProductLinksFromUrl($url, $client, $filterProduct)
                 );
 
+                dump($productLinks);
+
                 $nextLinkExists = $this->crawler->filter($filterNext)->count();
 
                 if ($nextLinkExists) {
                     $url = $this->crawler->filter($filterNext)->attr('href');
                 }
-                dump($nextLinkExists);
             } while ($nextLinkExists);
         } catch (\Exception $e) {
         }
