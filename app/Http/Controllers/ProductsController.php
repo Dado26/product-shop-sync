@@ -36,10 +36,8 @@ class ProductsController extends Controller
                                          ->orWhere('id', 'LIKE', "%$searchWord%");
                                }
                            })
-                           ->orWhereHas('site', function ($query) use ($searchWords) {
-                               foreach ($searchWords as $searchWord) {
-                                   $query->orWhere('name', 'LIKE', "%$searchWord%");
-                               }
+                           ->orWhereHas('site', function ($query) use ($search) {
+                               $query->where('name', $search);
                            })
                            ->with(['site', 'variants'])
                            ->latest()
