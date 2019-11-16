@@ -45,7 +45,6 @@ class ProductLinkRuleController extends Controller
 
         try {
             do {
-                dump('1');
                 $productLinks = $productLinks->merge(
                     $this->getProductLinksFromUrl($url, $client, $filterProduct)
                 );
@@ -55,6 +54,7 @@ class ProductLinkRuleController extends Controller
                 if ($nextLinkExists) {
                     $url = $this->crawler->filter($filterNext)->attr('href');
                 }
+                dump($nextLinkExists);
             } while ($nextLinkExists);
         } catch (\Exception $e) {
         }
@@ -72,10 +72,12 @@ dd('end');
     {
         $this->crawler = $client->request('GET', $url);
 
+        $links = [];
+
         $this->crawler->filter($filterProduct)->each(function ($node) use (&$links) {
             $links[] = $node->attr('href');
         });
 
-        return $links ?? [];
+        return $links;
     }
 }
