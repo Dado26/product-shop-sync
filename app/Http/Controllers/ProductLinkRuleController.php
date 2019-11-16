@@ -43,17 +43,20 @@ class ProductLinkRuleController extends Controller
         $filterNext    = $site->productLinks->next_page;
         $filterProduct = $site->productLinks->product_link;
 
-        do {
-            $productLinks = $productLinks->merge(
-                $this->getProductLinksFromUrl($url, $client, $filterProduct)
-            );
+        try {
+            do {
+                $productLinks = $productLinks->merge(
+                    $this->getProductLinksFromUrl($url, $client, $filterProduct)
+                );
 
-            $nextLinkExists = $this->crawler->filter($filterNext)->count();
+                $nextLinkExists = $this->crawler->filter($filterNext)->count();
 
-            if ($nextLinkExists) {
-                $url = $this->crawler->filter($filterNext)->attr('href');
-            }
-        } while ($nextLinkExists);
+                if ($nextLinkExists) {
+                    $url = $this->crawler->filter($filterNext)->attr('href');
+                }
+            } while ($nextLinkExists);
+        } catch (\Exception $e) {
+        }
 
         $productLinks = $productLinks->transform(function ($link) use ($site) {
             return Str::startsWith($link, 'http') ? $link : $site->url . $link;
