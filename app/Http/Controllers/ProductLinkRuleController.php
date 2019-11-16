@@ -18,7 +18,7 @@ class ProductLinkRuleController extends Controller
 
     public function store(Site $site)
     {
-        $param = request()->validate(['product_link'=> 'required']);
+        $param = request()->all();
 
         $param['site_id'] = $site->id;
 
