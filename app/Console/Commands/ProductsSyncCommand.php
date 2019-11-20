@@ -14,7 +14,7 @@ class ProductsSyncCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'sync:products {--unavailable} {--older-than-hours=24} {--limit=100}';
+    protected $signature = 'sync:products {--unavailable} {--older-than-hours=24} {--limit=100} {--force}';
 
     /**
      * The console command description.
@@ -42,22 +42,27 @@ class ProductsSyncCommand extends Command
     {
         $products = Product::query();
 
+        $hours = $this->option('older-than-hours');
+        $limit = $this->option('limit');
+        $force = $this->option('force');
+
         if ($this->option('unavailable')) {
             // UNAVAILABLE
             $products->where('status', Product::STATUS_UNAVAILABLE)
-                     ->where('queued_at', '<=', now()->subDays(5))
-                     ->where('synced_at', '>=', now()->subMonths(6))
+                     ->when(!$force, function ($query) {
+                         $query->where('queued_at', '<=', now()->subDays(5))
+                               ->where('synced_at', '>=', now()->subMonths(6));
+                     })
                      ->where(function ($query) {
                          $query->where('queued_at', '<=', now()->subHours(1))
                                ->orWhere('queued_at', null);
                      });
         } else {
-            $hours = $this->option('older-than-hours');
-            $limit = $this->option('limit');
-
             // AVAILABLE
             $products->where('status', Product::STATUS_AVAILABLE)
-                     ->where('synced_at', '<=', now()->subHours($hours))
+                     ->when(!$force, function ($query) use ($hours) {
+                         $query->where('synced_at', '<=', now()->subHours($hours));
+                     })
                      ->where(function ($query) {
                          $query->where('queued_at', '<=', now()->subHours(1))
                                ->orWhere('queued_at', null);
