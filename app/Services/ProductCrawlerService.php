@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Helpers\String;
 use Exception;
 use Throwable;
 use Goutte\Client;
@@ -180,7 +181,7 @@ class ProductCrawlerService
             return true;
         }
 
-        return $stockText == trim($expectedStockText);
+        return String::removeAllWhitespaces($stockText) === String::removeAllWhitespaces($expectedStockText);
     }
 
     /**
@@ -193,8 +194,6 @@ class ProductCrawlerService
         }
 
         $value = $this->crawler->filter($rule)->text();
-
-        echo $value;
 
         return trim($value);
     }
