@@ -180,7 +180,7 @@ class ProductCrawlerService
             return true;
         }
 
-        return trim($stockText) == trim($expectedStockText);
+        return $stockText == trim($expectedStockText);
     }
 
     /**
@@ -193,6 +193,8 @@ class ProductCrawlerService
         }
 
         $value = $this->crawler->filter($rule)->text();
+
+        echo $value;
 
         return trim($value);
     }
