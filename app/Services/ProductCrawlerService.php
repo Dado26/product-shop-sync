@@ -183,7 +183,7 @@ class ProductCrawlerService
 
         $stockText = StringHelper::removeAllWhitespaces($stockText);
         $expectedStockText = StringHelper::removeAllWhitespaces($expectedStockText);
-
+echo $stockText . ' = ' . $expectedStockText;
         return $stockText === $expectedStockText;
     }
 
