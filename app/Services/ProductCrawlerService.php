@@ -183,7 +183,7 @@ class ProductCrawlerService
 
         $stockText = StringHelper::keepLettersAndNumbers($stockText);
         $expectedStockText = StringHelper::keepLettersAndNumbers($expectedStockText);
-echo $stockText . ' = ' . $expectedStockText;
+
         return $stockText === $expectedStockText;
     }
 
