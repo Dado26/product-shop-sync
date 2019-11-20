@@ -181,8 +181,8 @@ class ProductCrawlerService
             return true;
         }
 
-        $stockText = StringHelper::removeAllWhitespaces($stockText);
-        $expectedStockText = StringHelper::removeAllWhitespaces($expectedStockText);
+        $stockText = StringHelper::keepLettersAndNumbers($stockText);
+        $expectedStockText = StringHelper::keepLettersAndNumbers($expectedStockText);
 echo $stockText . ' = ' . $expectedStockText;
         return $stockText === $expectedStockText;
     }

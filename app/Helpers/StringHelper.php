@@ -9,10 +9,8 @@ class StringHelper
      *
      * @return string|string[]|null
      */
-    public static function removeAllWhitespaces(string $string)
+    public static function keepLettersAndNumbers(string $string)
     {
-        $string = preg_replace('/\s*$^\s*/m', "\n", $string);
-
-        return preg_replace('/[ \t]+/', ' ', $string);
+        return preg_replace('/[^a-zA-Z0-9]/', '', $string);
     }
 }
