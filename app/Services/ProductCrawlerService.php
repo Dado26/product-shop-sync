@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Helpers\String;
+use App\Helpers\StringHelper;
 use Exception;
 use Throwable;
 use Goutte\Client;
@@ -181,7 +181,10 @@ class ProductCrawlerService
             return true;
         }
 
-        return String::removeAllWhitespaces($stockText) === String::removeAllWhitespaces($expectedStockText);
+        $stockText = StringHelper::removeAllWhitespaces($stockText);
+        $expectedStockText = StringHelper::removeAllWhitespaces($expectedStockText);
+
+        return $stockText === $expectedStockText;
     }
 
     /**

@@ -2,10 +2,12 @@
 
 namespace App\Helpers;
 
-class String
+class StringHelper
 {
     /**
-     * @param string $string
+     * @param  string  $string
+     *
+     * @return string|string[]|null
      */
     public static function removeAllWhitespaces(string $string)
     {
