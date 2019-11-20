@@ -180,7 +180,7 @@ class ProductCrawlerService
             return true;
         }
 
-        return trim($stockText) == $expectedStockText;
+        return trim($stockText) == trim($expectedStockText);
     }
 
     /**
