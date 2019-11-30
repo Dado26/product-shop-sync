@@ -42,7 +42,7 @@ class ProductLinkRuleController extends Controller
         $url           = $request->link;
         $filterNext    = $site->productLinks->next_page;
         $filterProduct = $site->productLinks->product_link;
-
+dd($request->all());
         do {
             $productLinks = $productLinks->merge(
                 $this->getProductLinksFromUrl($url, $client, $filterProduct)
