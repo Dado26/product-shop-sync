@@ -47,6 +47,7 @@ https://shop.com/product/957778">{{ old('urls') }}</textarea>
                 <div class="col-3 w-100">
 
                     <select class="form-control" name="category">
+                        <option value="" selected disabled>Select Category</option>
                         @foreach($categories as $category )
                         <option value="{{ $category->category_id }}">
                             {{ $category->name }}
@@ -81,14 +82,22 @@ https://shop.com/product/957778">{{ old('urls') }}</textarea>
             <div class="row">
                 <div class="col-6">
                     <form action="" method="get" class="d-flex d-inline-block mb-4 w-100">
-                        <div class="input-group">
-                            <input name="search" type="text" value="{{ request()->get('search') }}" class="form-control border" placeholder="Search">
-                            <div class="input-group-append">
-                                <button class="btn btn-light border text-muted" type="submit">
-                                    Go!
-                                </button>
-                            </div>
+                        <input name="search" type="text" value="{{ request()->get('search') }}" class="form-control border mr-3" placeholder="Search">
+                        
+                        <div class="mr-3 w-50">
+                            <select name="site" class="form-control border" value="{{ request()->get('site') }}">
+                                <option value="" selected disabled>Select Site</option>
+                                @foreach($sites as $site )
+                                <option value="{{ $site->id }}">
+                                    {{ $site->name }}
+                                </option>
+                                @endforeach
+                            </select>
                         </div>
+
+                        <button class="btn btn-primary border" type="submit">
+                            Go!
+                        </button>
                     </form>
                 </div>
             </div>
@@ -160,7 +169,8 @@ https://shop.com/product/957778">{{ old('urls') }}</textarea>
 
         <div class="card-footer d-flex justify-content-center">
             <div class="mt-3">
-                {!! $products->render() !!}
+               
+                {{ $products->appends(['site' => request()->get('site' ), 'search' => request()->get('search')])->links() }}
             </div>
         </div>
     </div>
@@ -174,6 +184,10 @@ https://shop.com/product/957778">{{ old('urls') }}</textarea>
     <script>
         $("select[name=category]").select2({
             placeholder: "Select Category",
+        });
+
+        $("select[name=site]").select2({
+            placeholder: "Select Site",
         });
 
         // toggle batch/single feature

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Queue;
+use App\Models\Site;
 use App\Models\Product;
 use App\Jobs\ProductSyncJob;
 use App\Models\ShopCategory;
@@ -23,24 +24,36 @@ class ProductsController extends Controller
      */
     public function index(Request $request)
     {
-        $search = $request->input('search');
+        $search   = $request->input('search');
+        $site     = $request->site;
+        $category = $request->category;
 
         $searchWords = explode(' ', $search);
 
         $categories = ShopCategory::allWithFormattedNames();
 
-        $products = Product::query()
-                           ->where(function ($query) use ($searchWords) {
-                               foreach ($searchWords as $searchWord) {
-                                   $query->orWhere('title', 'LIKE', "%$searchWord%")
-                                         ->orWhere('id', 'LIKE', "%$searchWord%");
-                               }
-                           })
-                           ->with(['site', 'variants'])
-                           ->latest()
-                           ->paginate();
+        $sites = Site::query()->get();
 
-        return view('products.index', compact('products', 'categories'));
+        $products = Product::query()->with(['site', 'variants']);
+
+        if (!empty($search)) {
+            $products->where(function ($query) use ($searchWords) {
+                foreach ($searchWords as $searchWord) {
+                    $query->orWhere('title', 'LIKE', "%$searchWord%")
+                          ->orWhere('id', 'LIKE', "%$searchWord%");
+                }
+            });
+        }
+
+        if (!empty($site)) {
+            $products->whereHas('site', function ($query) use ($site) {
+                $query->where('id', $site);
+            });
+        }
+
+        $products = $products->latest()->paginate(15);
+
+        return view('products.index', compact('products', 'categories', 'sites'));
     }
 
     /**
