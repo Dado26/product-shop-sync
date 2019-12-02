@@ -17,6 +17,8 @@ class SiteUrlParser
         $domain = parse_url($url);
         $domain = $domain['host'];
 
+        $domain = str_replace('www.', '', $domain);
+
         $site = Site::where('url', 'LIKE', "%$domain%");
 
         if ($withoutException) {

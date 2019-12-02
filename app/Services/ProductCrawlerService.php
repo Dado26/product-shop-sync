@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Helpers\StringHelper;
 use Exception;
 use Throwable;
 use Goutte\Client;
@@ -126,6 +127,10 @@ class ProductCrawlerService
     {
         $rule = $this->rules->description;
 
+        if (empty($rule)) {
+            return '';
+        }
+
         $description = $this->crawler->filter($rule)->html();
 
         $description = strip_tags($description, '<strong><b><i><p><u><div>');
@@ -176,7 +181,10 @@ class ProductCrawlerService
             return true;
         }
 
-        return trim($stockText) == $expectedStockText;
+        $stockText = StringHelper::keepLettersAndNumbers($stockText);
+        $expectedStockText = StringHelper::keepLettersAndNumbers($expectedStockText);
+
+        return $stockText === $expectedStockText;
     }
 
     /**

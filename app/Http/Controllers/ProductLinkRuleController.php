@@ -7,6 +7,7 @@ use App\Models\Site;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Models\ProductLinkRule;
+use Illuminate\Support\Str;
 
 class ProductLinkRuleController extends Controller
 {
@@ -17,13 +18,13 @@ class ProductLinkRuleController extends Controller
 
     public function store(Site $site)
     {
-        $param = request()->validate(['next_page' => 'required', 'product_link'=> 'required']);
+        $param = request()->all();
 
         $param['site_id'] = $site->id;
 
         $productLink = ProductLinkRule::where('site_id', $site->id)->first();
 
-        ProductLinkRule::updateOrCreate(['site_id'=> $site->id], $param);
+        ProductLinkRule::updateOrCreate(['site_id' => $site->id], $param);
 
         if ($productLink) {
             flash('You have successfully updated rules')->success();
@@ -47,16 +48,20 @@ class ProductLinkRuleController extends Controller
                 $this->getProductLinksFromUrl($url, $client, $filterProduct)
             );
 
+            if (empty($filterNext)) {
+                break;
+            }
+
             $nextLinkExists = $this->crawler->filter($filterNext)->count();
 
             if ($nextLinkExists) {
                 $url = $this->crawler->filter($filterNext)->attr('href');
             }
-        } while ($nextLinkExists);
+        } while ($nextLinkExists && $url);
 
         $productLinks = $productLinks->transform(function ($link) use ($site) {
-            return $site->url . $link;
-        })->reject(function ($link) {
+            return Str::startsWith($link, 'http') ? $link : $site->url.$link;
+        })->unique()->reject(function ($link) {
             return Product::where('url', $link)->exists();
         });
 
@@ -67,10 +72,12 @@ class ProductLinkRuleController extends Controller
     {
         $this->crawler = $client->request('GET', $url);
 
+        $links = [];
+
         $this->crawler->filter($filterProduct)->each(function ($node) use (&$links) {
             $links[] = $node->attr('href');
         });
 
-        return $links ?? [];
+        return $links;
     }
 }
