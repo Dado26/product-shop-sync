@@ -26,7 +26,6 @@ class ProductsController extends Controller
     {
         $search   = $request->input('search');
         $site     = $request->site;
-        $category = $request->category;
 
         $searchWords = explode(' ', $search);
 
@@ -44,11 +43,8 @@ class ProductsController extends Controller
                 }
             });
         }
-
         if (!empty($site)) {
-            $products->whereHas('site', function ($query) use ($site) {
-                $query->where('id', $site);
-            });
+            $products->where('site_id', $site);
         }
 
         $products = $products->latest()->paginate(15);
