@@ -25,7 +25,7 @@ class ProductsController extends Controller
     public function index(Request $request)
     {
         $search   = $request->input('search');
-        $site     = $request->site;
+        $site_id  = $request->site_id;
 
         $searchWords = explode(' ', $search);
 
@@ -43,8 +43,8 @@ class ProductsController extends Controller
                 }
             });
         }
-        if (!empty($site)) {
-            $products->where('site_id', $site);
+        if (!empty($site_id)) {
+            $products->where('site_id', $site_id);
         }
 
         $products = $products->latest()->paginate(15);

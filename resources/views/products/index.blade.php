@@ -85,10 +85,10 @@ https://shop.com/product/957778">{{ old('urls') }}</textarea>
                         <input name="search" type="text" value="{{ request()->get('search') }}" class="form-control border mr-3" placeholder="Search">
                         
                         <div class="mr-3 w-50">
-                            <select name="site" class="form-control border" value="{{ request()->get('site') }}">
-                                <option value="" selected disabled>Select Site</option>
+                            <select name="site_id" class="form-control border">
+                                <option value="" {{ (request()->get('site_id')) ? '' : 'selected' }} disabled>Select Site</option>
                                 @foreach($sites as $site )
-                                <option value="{{ $site->id }}">
+                                <option value="{{ $site->id }}" {{ (request()->get('site_id') == $site->id) ? 'selected' : '' }}>
                                     {{ $site->name }}
                                 </option>
                                 @endforeach
@@ -186,7 +186,7 @@ https://shop.com/product/957778">{{ old('urls') }}</textarea>
             placeholder: "Select Category",
         });
 
-        $("select[name=site]").select2({
+        $("select[name=site_id]").select2({
             placeholder: "Select Site",
         });
 
