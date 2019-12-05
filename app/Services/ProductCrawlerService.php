@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Helpers\StringHelper;
 use Exception;
+use Illuminate\Support\Str;
 use Throwable;
 use Goutte\Client;
 use App\Models\Site;
@@ -184,7 +185,7 @@ class ProductCrawlerService
         $stockText = StringHelper::keepLettersAndNumbers($stockText);
         $expectedStockText = StringHelper::keepLettersAndNumbers($expectedStockText);
 
-        return $stockText === $expectedStockText;
+        return Str::contains($stockText, $expectedStockText);
     }
 
     /**
