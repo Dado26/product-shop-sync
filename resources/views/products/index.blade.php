@@ -83,7 +83,7 @@ https://shop.com/product/957778">{{ old('urls') }}</textarea>
                 <div class="col-6">
                     <form action="" method="get" class="d-flex d-inline-block mb-4 w-100">
                         <input name="search" type="text" value="{{ request()->get('search') }}" class="form-control border mr-3" placeholder="Search">
-                        
+
                         <div class="mr-3 w-50">
                             <select name="site_id" class="form-control border">
                                 <option value="" {{ (request()->get('site_id')) ? '' : 'selected' }} disabled>Select Site</option>
@@ -169,8 +169,7 @@ https://shop.com/product/957778">{{ old('urls') }}</textarea>
 
         <div class="card-footer d-flex justify-content-center">
             <div class="mt-3">
-               
-                {{ $products->appends(['site' => request()->get('site' ), 'search' => request()->get('search')])->links() }}
+                {{ $products->appends(['site_id' => request()->get('site_id' ), 'search' => request()->get('search')])->links() }}
             </div>
         </div>
     </div>
