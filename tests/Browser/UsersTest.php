@@ -71,7 +71,7 @@ class UsersTest extends DuskTestCase
             $browser->visit('/user/create');
             $browser->type('first_name', 'test2user');
             $browser->type('last_name', 'lasttes2');
-            $browser->type('email', 'test2@'.time().'.com');
+            $browser->type('email', 'test2@' . time() . '.com');
             $browser->type('password', '12345678');
             $browser->type('password_confirmation', '12345678');
             $browser->press('Save');

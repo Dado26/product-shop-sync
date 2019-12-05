@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Queue;
+use App\Models\Site;
 use App\Models\Product;
 use App\Jobs\ProductSyncJob;
 use App\Models\ShopCategory;
@@ -23,27 +24,32 @@ class ProductsController extends Controller
      */
     public function index(Request $request)
     {
-        $search = $request->input('search');
+        $search   = $request->input('search');
+        $site_id  = $request->site_id;
 
         $searchWords = explode(' ', $search);
 
         $categories = ShopCategory::allWithFormattedNames();
 
-        $products = Product::query()
-                           ->where(function ($query) use ($searchWords) {
-                               foreach ($searchWords as $searchWord) {
-                                   $query->orWhere('title', 'LIKE', "%$searchWord%")
-                                         ->orWhere('id', 'LIKE', "%$searchWord%");
-                               }
-                           })
-                           ->orWhereHas('site', function ($query) use ($search) {
-                               $query->where('name', $search);
-                           })
-                           ->with(['site', 'variants'])
-                           ->latest()
-                           ->paginate();
+        $sites = Site::query()->get();
 
-        return view('products.index', compact('products', 'categories'));
+        $products = Product::query()->with(['site', 'variants']);
+
+        if (!empty($search)) {
+            $products->where(function ($query) use ($searchWords) {
+                foreach ($searchWords as $searchWord) {
+                    $query->orWhere('title', 'LIKE', "%$searchWord%")
+                          ->orWhere('id', 'LIKE', "%$searchWord%");
+                }
+            });
+        }
+        if (!empty($site_id)) {
+            $products->where('site_id', $site_id);
+        }
+
+        $products = $products->latest()->paginate(15);
+
+        return view('products.index', compact('products', 'categories', 'sites'));
     }
 
     /**
