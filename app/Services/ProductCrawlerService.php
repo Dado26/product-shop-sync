@@ -247,7 +247,14 @@ class ProductCrawlerService
     {
         $rule = $this->rules->images;
 
-        $images = $this->crawler->filter($rule)->each(function ($node) {
+        $parts = explode('|', $rule);
+        $rule = $parts[0];
+        $attribute = $parts[1] ?? null;
+
+        $images = $this->crawler->filter($rule)->each(function ($node) use ($attribute) {
+            if ($attribute) {
+                return $node->attr($attribute);
+            }
             if ($value = $node->attr('href')) {
                 return $value;
             }
