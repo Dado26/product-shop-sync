@@ -53,23 +53,25 @@ class ProductsSyncCommand extends Command
                      ->when(!$force, function ($query) {
                          $query->where('queued_at', '<=', now()->subDays(5))
                                ->where('synced_at', '>=', now()->subMonths(6));
+
+                         $query->where(function ($query) {
+                             $query->where('queued_at', '<=', now()->subHours(1))
+                                   ->orWhere('queued_at', null);
+                         });
                      })
                      ->when($siteId, function ($query) use ($siteId) {
                          $query->where('site_id', $siteId);
-                     })
-                     ->where(function ($query) {
-                         $query->where('queued_at', '<=', now()->subHours(1))
-                               ->orWhere('queued_at', null);
                      });
         } else {
             // AVAILABLE
             $products->where('status', Product::STATUS_AVAILABLE)
                      ->when(!$force, function ($query) use ($hours) {
                          $query->where('synced_at', '<=', now()->subHours($hours));
-                     })
-                     ->where(function ($query) {
-                         $query->where('queued_at', '<=', now()->subHours(1))
-                               ->orWhere('queued_at', null);
+
+                         $query->where(function ($query) {
+                             $query->where('queued_at', '<=', now()->subHours(1))
+                                   ->orWhere('queued_at', null);
+                         });
                      })
                      ->when($siteId, function ($query) use ($siteId) {
                          $query->where('site_id', $siteId);
