@@ -11,7 +11,7 @@ use App\Helpers\PriceCalculator;
 class TestSiteRulesController extends Controller
 {
     /**
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      *
      * @return \Illuminate\Http\JsonResponse
      *
@@ -34,6 +34,7 @@ class TestSiteRulesController extends Controller
             'specifications' => 'getSpecifications',
             'price'          => 'getPrice',
             'in_stock_value' => 'getInStockValue',
+            'in_stock'       => 'getInStock',
             'images'         => 'getImages',
             'variants'       => 'getVariants',
             'sku'            => 'getSku',
