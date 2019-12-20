@@ -171,8 +171,8 @@ class ProductCrawlerService
         }
 
         try {
-            $stockText         = strtolower($this->getInStockValue());
-            $expectedStockText = strtolower($rule);
+            $stockText         = mb_strtolower($this->getInStockValue());
+            $expectedStockText = mb_strtolower($rule);
         } catch (Throwable $e) {
             logger()->emergency('Failed to get stock for product', [
                 'exception' => $e->getMessage(),
