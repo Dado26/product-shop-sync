@@ -185,8 +185,6 @@ class ProductCrawlerService
         $stockText = StringHelper::keepLettersAndNumbers($stockText);
         $expectedStockText = StringHelper::keepLettersAndNumbers($expectedStockText);
 
-        logger()->debug("\$stockText: {$stockText}; \$expectedStockText: {$expectedStockText}");
-
         return Str::contains($stockText, $expectedStockText);
     }
 
