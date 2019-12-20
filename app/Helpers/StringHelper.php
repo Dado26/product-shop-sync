@@ -11,6 +11,6 @@ class StringHelper
      */
     public static function keepLettersAndNumbers(string $string)
     {
-        return preg_replace('/[^a-zA-Z0-9]/u', '', $string);
+        return preg_replace('/\s(\S*)\s/u', '', $string);
     }
 }
