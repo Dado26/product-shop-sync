@@ -51,7 +51,7 @@ class DeleteSiteProducts extends Command
             ShopProduct::where('product_id', $product->shop_product_id)->update(['status' => 0]);
 
             $product->update(['status' => Product::STATUS_DELETED]);
-            $product->delete(); // soft delete
+            //$product->delete(); // soft delete
 
             $bar->advance();
         });
