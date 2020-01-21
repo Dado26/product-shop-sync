@@ -26,12 +26,15 @@ class UserRequest extends FormRequest
         $rules = [
             'first_name' => 'min:2',
             'last_name'  => 'min:3',
-            'email'      => 'required|email',
+            'email'      => 'required|email|unique:users',
             'password'   => 'confirmed|required|min:8',
         ];
 
         if (request()->isMethod('PUT') && empty(request()->get('password'))) {
             unset($rules['password']);
+        }
+        if (request()->isMethod('PUT')) {
+            $rules['email'] =  'required|email|unique:users,email,' . request()->user->id;
         }
 
         return $rules;
