@@ -14,7 +14,7 @@ class ProductsSyncCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'sync:products {--unavailable} {--older-than-hours=24} {--limit=100} {--force}';
+    protected $signature = 'sync:products {--unavailable} {--older-than-hours=24} {--site-id=} {--limit=100} {--force}';
 
     /**
      * The console command description.
@@ -42,9 +42,10 @@ class ProductsSyncCommand extends Command
     {
         $products = Product::query();
 
-        $hours = $this->option('older-than-hours');
-        $limit = $this->option('limit');
-        $force = $this->option('force');
+        $siteId = $this->option('site-id');
+        $hours  = $this->option('older-than-hours');
+        $limit  = $this->option('limit');
+        $force  = $this->option('force');
 
         if ($this->option('unavailable')) {
             // UNAVAILABLE
@@ -52,20 +53,28 @@ class ProductsSyncCommand extends Command
                      ->when(!$force, function ($query) {
                          $query->where('queued_at', '<=', now()->subDays(5))
                                ->where('synced_at', '>=', now()->subMonths(6));
+
+                         $query->where(function ($query) {
+                             $query->where('queued_at', '<=', now()->subHours(1))
+                                   ->orWhere('queued_at', null);
+                         });
                      })
-                     ->where(function ($query) {
-                         $query->where('queued_at', '<=', now()->subHours(1))
-                               ->orWhere('queued_at', null);
+                     ->when($siteId, function ($query) use ($siteId) {
+                         $query->where('site_id', $siteId);
                      });
         } else {
             // AVAILABLE
             $products->where('status', Product::STATUS_AVAILABLE)
                      ->when(!$force, function ($query) use ($hours) {
                          $query->where('synced_at', '<=', now()->subHours($hours));
+
+                         $query->where(function ($query) {
+                             $query->where('queued_at', '<=', now()->subHours(1))
+                                   ->orWhere('queued_at', null);
+                         });
                      })
-                     ->where(function ($query) {
-                         $query->where('queued_at', '<=', now()->subHours(1))
-                               ->orWhere('queued_at', null);
+                     ->when($siteId, function ($query) use ($siteId) {
+                         $query->where('site_id', $siteId);
                      })
                      ->limit($limit);
         }

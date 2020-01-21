@@ -11,6 +11,8 @@ class StringHelper
      */
     public static function keepLettersAndNumbers(string $string)
     {
-        return preg_replace('/[^a-zA-Z0-9]/', '', $string);
+        // keep only letters (even cyrillic) and numbers
+        // https://stackoverflow.com/questions/49861408/remove-all-special-chars-but-not-non-latin-characters
+        return preg_replace('~[^\p{Cyrillic}a-z0-9_\s-]+~ui', '', $string);
     }
 }

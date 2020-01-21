@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Helpers\StringHelper;
 use Exception;
+use Illuminate\Support\Str;
 use Throwable;
 use Goutte\Client;
 use App\Models\Site;
@@ -170,8 +171,8 @@ class ProductCrawlerService
         }
 
         try {
-            $stockText         = strtolower($this->getInStockValue());
-            $expectedStockText = strtolower($rule);
+            $stockText         = mb_strtolower($this->getInStockValue());
+            $expectedStockText = mb_strtolower($rule);
         } catch (Throwable $e) {
             logger()->emergency('Failed to get stock for product', [
                 'exception' => $e->getMessage(),
@@ -184,7 +185,7 @@ class ProductCrawlerService
         $stockText = StringHelper::keepLettersAndNumbers($stockText);
         $expectedStockText = StringHelper::keepLettersAndNumbers($expectedStockText);
 
-        return $stockText === $expectedStockText;
+        return Str::contains($stockText, $expectedStockText);
     }
 
     /**
@@ -246,7 +247,14 @@ class ProductCrawlerService
     {
         $rule = $this->rules->images;
 
-        $images = $this->crawler->filter($rule)->each(function ($node) {
+        $parts = explode('|', $rule);
+        $rule = $parts[0];
+        $attribute = $parts[1] ?? null;
+
+        $images = $this->crawler->filter($rule)->each(function ($node) use ($attribute) {
+            if ($attribute) {
+                return $node->attr($attribute);
+            }
             if ($value = $node->attr('href')) {
                 return $value;
             }
