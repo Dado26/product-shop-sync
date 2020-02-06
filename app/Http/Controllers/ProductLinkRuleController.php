@@ -60,7 +60,10 @@ class ProductLinkRuleController extends Controller
         } while ($nextLinkExists && $url);
 
         $productLinks = $productLinks->transform(function ($link) use ($site) {
-            return Str::startsWith($link, 'http') ? $link : $site->url.$link;
+            if (Str::startsWith($link, 'http')) {
+                return $link;
+            }
+            return $site->url . (($link[0] === '/') ? $link : '/'.$link);
         })->unique()->reject(function ($link) {
             return Product::where('url', $link)->exists();
         });
