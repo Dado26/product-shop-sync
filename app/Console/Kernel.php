@@ -32,7 +32,7 @@ class Kernel extends ConsoleKernel
 
             $schedule->command('sync:products', ['--unavailable'])->dailyAt('03:00');
 
-            $schedule->command('sync:products', ['--deleted'])->weeklyOn(2, '3:00');
+           // $schedule->command('sync:products', ['--deleted'])->weeklyOn(2, '3:00');
 
             $schedule->command('horizon:snapshot')->everyFiveMinutes();
 
