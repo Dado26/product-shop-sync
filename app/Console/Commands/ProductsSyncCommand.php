@@ -14,7 +14,7 @@ class ProductsSyncCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'sync:products {--unavailable} {--older-than-hours=24} {--site-id=} {--limit=100} {--force}';
+    protected $signature = 'sync:products {--unavailable} {--deleted} {--older-than-hours=24} {--site-id=} {--limit=100} {--force}';
 
     /**
      * The console command description.
@@ -51,18 +51,33 @@ class ProductsSyncCommand extends Command
             // UNAVAILABLE
             $products->where('status', Product::STATUS_UNAVAILABLE)
                      ->when(!$force, function ($query) {
-                         $query->where('queued_at', '<=', now()->subDays(5))
-                               ->where('synced_at', '>=', now()->subMonths(6));
+                         $query->where('synced_at', '>=', now()->subMonths(6));
 
                          $query->where(function ($query) {
-                             $query->where('queued_at', '<=', now()->subHours(1))
+                             $query->where('queued_at', '<=', now()->subDays(5))
                                    ->orWhere('queued_at', null);
                          });
                      })
                      ->when($siteId, function ($query) use ($siteId) {
                          $query->where('site_id', $siteId);
                      });
-        } else {
+        } elseif($this->option('deleted')){
+                   // DELETED
+                    $products->where('status', Product::STATUS_DELETED)
+                    ->when(!$force, function ($query) {
+                        $query->where('synced_at', '>=', now()->subMonths(3));
+                     
+                        $query->where(function ($query) {
+                            $query->where('queued_at', '<=', now()->subHours(1))
+                                  ->orWhere('queued_at', null);
+                        });
+                    })
+                    ->when($siteId, function ($query) use ($siteId) {
+                        $query->where('site_id', $siteId);
+                    });                                
+        } 
+        else
+        {
             // AVAILABLE
             $products->where('status', Product::STATUS_AVAILABLE)
                      ->when(!$force, function ($query) use ($hours) {
@@ -80,7 +95,7 @@ class ProductsSyncCommand extends Command
         }
 
         $jobs = [];
-
+        
         foreach ($products->get() as $product) {
             $product->update(['queued_at' => now()]);
 
