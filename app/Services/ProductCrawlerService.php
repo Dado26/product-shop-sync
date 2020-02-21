@@ -263,10 +263,19 @@ class ProductCrawlerService
             }
 
             if (!Str::contains($imageUrl, 'http')) {
-                if (Str::startsWith($imageUrl, '/')) {
-                    $imageUrl = $this->site->url . $imageUrl;
+                if ($this->site) {
+                    $siteUrl = $this->site->url;
                 } else {
-                    $imageUrl = $this->site->url . '/' . $imageUrl;
+                    $requestUrl = request('url');
+                    $parsedUrl = parse_url($requestUrl);
+
+                    $siteUrl = 'https://' . $parsedUrl['host'];
+                }
+
+                if (Str::startsWith($imageUrl, '/')) {
+                    $imageUrl = $siteUrl . $imageUrl;
+                } else {
+                    $imageUrl = $siteUrl . '/' . $imageUrl;
                 }
             }
 
