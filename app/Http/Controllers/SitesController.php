@@ -18,7 +18,7 @@ class SitesController extends Controller
      */
     public function index(Request $request)
     {
-        $sites = Site::withCount('productsActive', 'productsUnavailable', 'productsDeleted')->latest()->paginate(10);
+        $sites = Site::withCount('productsActive', 'productsUnavailable', 'productsDeleted', 'productsTrashed')->latest()->paginate(10);
 
         return view('sites.index', compact('sites'));
     }

@@ -24,6 +24,7 @@
                 <th class="text-center">Imported - Active</th>
                 <th class="text-center">Imported - Not found</th>
                 <th class="text-center">Imported - Deleted</th>
+                <th class="text-center">Imported - Trashed</th>
                 <th class="text-center">Created at</th>
                 <th class="text-center">Updated at</th>
                 <th class="text-center">Actions</th>
@@ -57,6 +58,10 @@
                 </td>
 
                 <td class="text-center">
+                    {{ $site->products_trashed_count }}
+                </td>
+
+                <td class="text-center">
                     {{ $site->created_at }}
                 </td>
 
@@ -64,7 +69,7 @@
                     {{ $site->updated_at }}
                 </td>
 
-                <td class="text-center">
+                <td class="text-center" style="min-width:250px">
                     <div class="users-list-actions">
                         <div class="delete-user">
                             {!! Form::open(['route'=>['sites.destroy', $site->id],'method'=>'DELETE','class'=>'pull-right delete', 'id'=>'form-delete-user-'.$site->id]) !!}
