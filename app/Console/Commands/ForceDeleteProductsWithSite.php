@@ -44,7 +44,7 @@ class ForceDeleteProductsWithSite extends Command
     {
         $site = Site::findOrFail($this->option('site-id'));
 
-        $products = Product::where('site_id', $site->id)->get();
+        $products = Product::where('site_id', $site->id)->withTrashed()->get();
 
         $productsCount = count($products);
 
