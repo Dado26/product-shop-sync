@@ -16,7 +16,7 @@ class Product extends Model
 
     protected $fillable = [
         'title', 'description', 'status', 'url', 'site_id', 'specifications', 'synced_at', 'queued_at',
-        'shop_product_id', 'sku',
+        'shop_product_id', 'sku', 'deleted_at'
     ];
 
     protected $dates = ['synced_at'];

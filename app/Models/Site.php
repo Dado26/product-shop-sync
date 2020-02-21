@@ -57,10 +57,12 @@ class Site extends Model
 
     public function productsDeleted()
     {
-        return $this->hasMany(Product::class)->where(function(Builder $query){
-            $query->where('status', '=', Product::STATUS_DELETED)
-                  ->orWhereNotNull('deleted_at');
-        });
+        return $this->hasMany(Product::class)->where('status', '=', Product::STATUS_DELETED);
+    }
+
+    public function productsTrashed()
+    {
+        return $this->hasMany(Product::class)->onlyTrashed();
     }
 
     public function session()
