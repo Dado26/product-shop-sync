@@ -253,14 +253,24 @@ class ProductCrawlerService
 
         $images = $this->crawler->filter($rule)->each(function ($node) use ($attribute) {
             if ($attribute) {
-                return $node->attr($attribute);
+                $imageUrl = $node->attr($attribute);
             }
-            if ($value = $node->attr('href')) {
-                return $value;
+            else if ($value = $node->attr('href')) {
+                $imageUrl = $value;
             }
-            if ($value = $node->attr('src')) {
-                return $value;
+            else if ($value = $node->attr('src')) {
+                $imageUrl = $value;
             }
+
+            if (!Str::contains($imageUrl, 'http')) {
+                if (Str::startsWith($imageUrl, '/')) {
+                    $imageUrl = $this->site->url . $imageUrl;
+                } else {
+                    $imageUrl = $this->site->url . '/' . $imageUrl;
+                }
+            }
+
+            return $imageUrl;
         });
 
         return $images;
