@@ -17,7 +17,10 @@ class PriceExtractor
 
         // map and get min number
         $price = collect($prices)->map(function ($price) {
-            return (int) preg_replace("/[^0-9]/", '', $price);
+            // remove percentage (like 15%) so it won't be used as a minimum price
+            $string = preg_replace('/\d+%/', '', $price);
+
+            return (int) preg_replace("/[^0-9]/", '', $string);
         })->filter()->min();
 
         // get number for division
