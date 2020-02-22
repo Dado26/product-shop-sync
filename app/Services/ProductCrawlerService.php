@@ -150,6 +150,8 @@ class ProductCrawlerService
 
         $specifications = $this->crawler->filter($rule)->html();
 
+        $specifications = strip_tags($specifications, ['p', 'tr', 'td', 'tbody', 'b', 'strong', 'i', 'th']);
+
         return '<table>' . trim($specifications) . '</table>';
     }
 
