@@ -150,6 +150,9 @@ class ProductCrawlerService
 
         $specifications = $this->crawler->filter($rule)->html();
 
+        $specifications = preg_replace('#<a.*?>.*?</a>#i', '', $specifications);
+        $specifications = strip_tags($specifications, '<p><tr><td><tbody><b><strong><i><th>');
+
         return '<table>' . trim($specifications) . '</table>';
     }
 
@@ -253,14 +256,33 @@ class ProductCrawlerService
 
         $images = $this->crawler->filter($rule)->each(function ($node) use ($attribute) {
             if ($attribute) {
-                return $node->attr($attribute);
+                $imageUrl = $node->attr($attribute);
             }
-            if ($value = $node->attr('href')) {
-                return $value;
+            else if ($value = $node->attr('href')) {
+                $imageUrl = $value;
             }
-            if ($value = $node->attr('src')) {
-                return $value;
+            else if ($value = $node->attr('src')) {
+                $imageUrl = $value;
             }
+
+            if (!Str::contains($imageUrl, 'http')) {
+                if ($this->site) {
+                    $siteUrl = $this->site->url;
+                } else {
+                    $requestUrl = request('url');
+                    $parsedUrl = parse_url($requestUrl);
+
+                    $siteUrl = 'https://' . $parsedUrl['host'];
+                }
+
+                if (Str::startsWith($imageUrl, '/')) {
+                    $imageUrl = $siteUrl . $imageUrl;
+                } else {
+                    $imageUrl = $siteUrl . '/' . $imageUrl;
+                }
+            }
+
+            return $imageUrl;
         });
 
         return $images;
