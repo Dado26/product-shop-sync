@@ -102,7 +102,7 @@ class ElementaFetchCommand extends Command
                            ),
                        ]);
                    
-                  TransferUpdateProductJob::dispatchNow($product);/* ->onQueue(TransferUpdateProductJob::QUEUE_NAME); */
+                  TransferUpdateProductJob::dispatch($product)->onQueue(TransferUpdateProductJob::QUEUE_NAME);
 
                    $this->checkAndDeleteUnexisting();
                   
