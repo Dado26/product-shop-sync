@@ -30,6 +30,8 @@ class ElementaFetchCommand extends Command
      */
     protected $description = 'Fetch all products from elementa';
 
+    protected $num;
+
     /**
      * Create a new command instance.
      *
@@ -37,6 +39,7 @@ class ElementaFetchCommand extends Command
      */
     public function __construct()
     {
+        $this->num = 0;
         parent::__construct();
     }
 
@@ -51,9 +54,10 @@ class ElementaFetchCommand extends Command
 
             $crawler = $client->request('GET', 'https://www.elementa.rs/index/product-list-xml-mpswpifmxls');
 
-    
+           
             $crawler->filter('product')->each(function ($node) {
 
+                
                 $title = $node->filter('naziv')->text();
                 $description = $node->filter('opis')->text();
                 $price = $node->filter('cena')->text();
@@ -82,7 +86,10 @@ class ElementaFetchCommand extends Command
                 //dd($product);
                 $site = SiteUrlParser::getSite($url);
 
+                
+
                 if($product){
+                    echo '[.';
 
                    $product->update([
                     'title'          => $title,
@@ -102,10 +109,14 @@ class ElementaFetchCommand extends Command
                            ),
                        ]);
                    
-                  TransferUpdateProductJob::dispatch($product)->onQueue(TransferUpdateProductJob::QUEUE_NAME);
+                  TransferUpdateProductJob::dispatchNow($product);//->onQueue(TransferUpdateProductJob::QUEUE_NAME);
 
-                   $this->checkAndDeleteUnexisting();
-                  
+                  echo '],';
+
+
+                  $this->num = $this->num + 1;
+
+
                 }/* else{
                   $product = Product::create([
                     'site_id'        => $site->id,
@@ -123,14 +134,20 @@ class ElementaFetchCommand extends Command
                         $this->createAndUploadImages($product, $imageUrl);
                     }
                 } */
+            
             });
+
+            $this->checkAndDeleteUnexisting();
+
+            echo ' Synced-products: '. $this->num.' ';
 
     }
     private function checkAndDeleteUnexisting(){
+
            $timeYesterday = now()->subDay();
+
            $products = Product::where('synced_at', '<', $timeYesterday)->get();
 
-          // dd($products->count());
             
            $bar = $this->output->createProgressBar($products->count());
 
@@ -144,6 +161,9 @@ class ElementaFetchCommand extends Command
 
            });
            $bar->finish();
+
+           echo ' <-deleted,';
+          
         }
 
     private function getSpecificationTable($node) 
