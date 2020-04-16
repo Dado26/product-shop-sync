@@ -58,6 +58,7 @@ class ProductsSyncCommand extends Command
                                    ->orWhere('queued_at', null);
                          });
                      })
+                     ->where('site_id', '!=', 1) // elementa
                      ->when($siteId, function ($query) use ($siteId) {
                          $query->where('site_id', $siteId);
                      });
@@ -66,16 +67,17 @@ class ProductsSyncCommand extends Command
                     $products->where('status', Product::STATUS_DELETED)
                     ->when(!$force, function ($query) {
                         $query->where('synced_at', '>=', now()->subMonths(3));
-                     
+
                         $query->where(function ($query) {
                             $query->where('queued_at', '<=', now()->subHours(1))
                                   ->orWhere('queued_at', null);
                         });
                     })
+                    ->where('site_id', '!=', 1) // elementa
                     ->when($siteId, function ($query) use ($siteId) {
                         $query->where('site_id', $siteId);
-                    });                                
-        } 
+                    });
+        }
         else
         {
             // AVAILABLE
@@ -88,6 +90,7 @@ class ProductsSyncCommand extends Command
                                    ->orWhere('queued_at', null);
                          });
                      })
+                     ->where('site_id', '!=', 1) // elementa
                      ->when($siteId, function ($query) use ($siteId) {
                          $query->where('site_id', $siteId);
                      })
@@ -95,7 +98,7 @@ class ProductsSyncCommand extends Command
         }
 
         $jobs = [];
-        
+
         foreach ($products->get() as $product) {
             $product->update(['queued_at' => now()]);
 
