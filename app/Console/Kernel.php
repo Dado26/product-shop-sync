@@ -40,7 +40,7 @@ class Kernel extends ConsoleKernel
             $schedule->command('backup:run')->daily()->at('03:30');
             $schedule->command('backup:run --only-db --disable-notifications')->hourly();
 
-            $schedule->command('elementa:sync-all-products-from-all-categories')->weeklyOn(1, '3:00');
+            //$schedule->command('elementa:sync-all-products-from-all-categories')->weeklyOn(1, '3:00');
         }
     }
 
