@@ -162,9 +162,10 @@ class ElementaFetchCommand extends Command
                 $bar->advance();
 
            });
+
            $bar->finish();
 
-           echo ' <-deleted,';
+           echo ' <-unavailable,';
           
         }
 
