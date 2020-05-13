@@ -80,8 +80,8 @@ class ElementaFetchCommand extends Command
 
             $product = Product::where('url', 'LIKE', "%/proizvod/{$numId}/{$slug}%")->first();
 
-            //dd($product);
-            $site = SiteUrlParser::getSite($url);
+            dump($product->toArray());
+            //$site = SiteUrlParser::getSite($url);
 
             if ($product) {
                 $updated = $product->update([
@@ -92,7 +92,7 @@ class ElementaFetchCommand extends Command
                     'synced_at'      => now(),
                     'status'         => Product::STATUS_AVAILABLE,
                 ]);
-
+                dd($product->toArray());
                 // update existing variants
                 $product->variants()->first()->update([
                     'price' => PriceCalculator::modifyByPercent(
