@@ -60,12 +60,12 @@ class TransferUpdateProductJob implements ShouldQueue
                 return;
             }
 
-            if ($shopProduct->status == 0 || $shopProduct == null) {
-                $this->product->update([
-                    'status' => ($shopProduct->status == 0) ? Product::STATUS_ARCHIVED : Product::STATUS_DELETED,
-                ]);
-                return;
-            }
+            // if ($shopProduct->status == 0 || $shopProduct == null) {
+            //     $this->product->update([
+            //         'status' => ($shopProduct->status == 0) ? Product::STATUS_ARCHIVED : Product::STATUS_DELETED,
+            //     ]);
+            //     return;
+            // }
 
             try {
                 $shopProduct->update([

@@ -32,6 +32,8 @@ class ElementaFetchCommand extends Command
 
     protected $num;
 
+    protected $commandStartedAt;
+
     /**
      * Create a new command instance.
      *
@@ -39,7 +41,8 @@ class ElementaFetchCommand extends Command
      */
     public function __construct()
     {
-        $this->num = 0;
+        $this->num              = 0;
+        $this->commandStartedAt = now();
         parent::__construct();
     }
 
@@ -116,11 +119,9 @@ class ElementaFetchCommand extends Command
 
     private function checkAndDeleteUnexisting()
     {
-        $timeYesterday = now()->subDay();
-
         $site = Site::where('id', 1)->first();
 
-        $products = $site->products()->where('synced_at', '<', $timeYesterday)->get();
+        $products = $site->products()->where('synced_at', '<', $this->commandStartedAt)->get();
 
         $bar = $this->output->createProgressBar($products->count());
 
