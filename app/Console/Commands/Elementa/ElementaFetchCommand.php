@@ -80,7 +80,7 @@ class ElementaFetchCommand extends Command
 
             $product = Product::where('url', 'LIKE', "%/proizvod/{$numId}/{$slug}%")->first();
 
-            dump($product->toArray());
+            dump('1 ' . $product->synced_at);
             //$site = SiteUrlParser::getSite($url);
 
             if ($product) {
@@ -92,7 +92,7 @@ class ElementaFetchCommand extends Command
                     'synced_at'      => now(),
                     'status'         => Product::STATUS_AVAILABLE,
                 ]);
-                dump($product->toArray());
+
                 // update existing variants
                 $product->variants()->first()->update([
                     'price' => PriceCalculator::modifyByPercent(
@@ -103,7 +103,7 @@ class ElementaFetchCommand extends Command
                 ]);
 
                 TransferUpdateProductJob::dispatchNow($product);//->onQueue(TransferUpdateProductJob::QUEUE_NAME);
-                dd($product->fresh()->toArray());
+                dump('2 ' . $product->fresh()->synced_at);
                 echo ' - ' . ($updated ? 'Updated' : 'FAILED TO UPDATE!') . PHP_EOL;
 
                 $this->num = $this->num + 1;
