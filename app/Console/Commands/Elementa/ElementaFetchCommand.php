@@ -92,7 +92,7 @@ class ElementaFetchCommand extends Command
                     'synced_at'      => now(),
                     'status'         => Product::STATUS_AVAILABLE,
                 ]);
-                dd($product->toArray());
+                dump($product->toArray());
                 // update existing variants
                 $product->variants()->first()->update([
                     'price' => PriceCalculator::modifyByPercent(
@@ -103,7 +103,7 @@ class ElementaFetchCommand extends Command
                 ]);
 
                 TransferUpdateProductJob::dispatchNow($product);//->onQueue(TransferUpdateProductJob::QUEUE_NAME);
-
+                dd($product->fresh()->toArray());
                 echo ' - ' . ($updated ? 'Updated' : 'FAILED TO UPDATE!') . PHP_EOL;
 
                 $this->num = $this->num + 1;
