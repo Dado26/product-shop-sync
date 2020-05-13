@@ -76,7 +76,7 @@ class ElementaFetchCommand extends Command
 
             $url = "https://www.elementa.rs/proizvod/$numId/$slug";
 
-            echo 'Searching for url: https://www.elementa.rs' . $url . PHP_EOL;
+            echo 'Searching for url: https://www.elementa.rs' . $url;
 
             $product = Product::where('url', 'LIKE', "%/proizvod/{$numId}/{$slug}%")->first();
 
@@ -104,11 +104,11 @@ class ElementaFetchCommand extends Command
 
                 TransferUpdateProductJob::dispatchNow($product);//->onQueue(TransferUpdateProductJob::QUEUE_NAME);
 
-                echo '.';
+                echo ' - Updated' . PHP_EOL;
 
                 $this->num = $this->num + 1;
             } else {
-                echo 'Product was not found: ' . PHP_EOL;
+                echo ' - NOT FOUND ' . PHP_EOL;
             }
         });
 
