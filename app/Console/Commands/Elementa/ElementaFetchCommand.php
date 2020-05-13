@@ -76,7 +76,7 @@ class ElementaFetchCommand extends Command
 
             $url = "https://www.elementa.rs/proizvod/$numId/$slug";
 
-            echo 'Searching for url: https://www.elementa.rs' . $url;
+            echo 'Searching for url: ' . $url;
 
             $product = Product::where('url', 'LIKE', "%/proizvod/{$numId}/{$slug}%")->first();
 
