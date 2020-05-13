@@ -84,7 +84,7 @@ class ElementaFetchCommand extends Command
             $site = SiteUrlParser::getSite($url);
 
             if ($product) {
-                $product->update([
+                $updated = $product->update([
                     'title'          => $title,
                     'description'    => $description,
                     'specifications' => $specificationTableHtml,
@@ -104,7 +104,7 @@ class ElementaFetchCommand extends Command
 
                 TransferUpdateProductJob::dispatchNow($product);//->onQueue(TransferUpdateProductJob::QUEUE_NAME);
 
-                echo ' - Updated' . PHP_EOL;
+                echo ' - ' . ($updated ? 'Updated' : 'FAILED TO UPDATE!') . PHP_EOL;
 
                 $this->num = $this->num + 1;
             } else {
