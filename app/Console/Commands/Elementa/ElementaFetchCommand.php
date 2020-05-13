@@ -11,7 +11,6 @@ use App\Models\ProductImage;
 use App\Helpers\SiteUrlParser;
 use Illuminate\Console\Command;
 use App\Helpers\PriceCalculator;
-use App\Jobs\TransferProductJob;
 use JD\Cloudder\Facades\Cloudder;
 use App\Jobs\TransferUpdateProductJob;
 
@@ -51,137 +50,109 @@ class ElementaFetchCommand extends Command
      */
     public function handle()
     {
-            $client = new Client();
+        $client = new Client();
 
-            $crawler = $client->request('GET', 'https://www.elementa.rs/index/product-list-xml-mpswpifmxls');
+        $crawler = $client->request('GET', 'https://www.elementa.rs/index/product-list-xml-mpswpifmxls');
 
-           
-            $crawler->filter('product')->each(function ($node) {
+        $crawler->filter('product')->each(function ($node) {
+            $title = $node->filter('naziv')->text();
+            $description = $node->filter('opis')->text();
+            $price = $node->filter('cena')->text();
+            $sku = $node->filter('textId')->text();
 
-                
-                $title = $node->filter('naziv')->text();
-                $description = $node->filter('opis')->text();
-                $price = $node->filter('cena')->text();
-                $sku = $node->filter('textId')->text();
+            $images = $node->filter('slika')->each(function ($node2) {
+                return $node2->text();
+            });
 
-                $images = $node->filter('slika')->each(function ($node2) {
-                    
-                    return $node2->text();
-                });
+            $specificationTableHtml = $this->getSpecificationTable($node);
 
-                $specificationTableHtml = $this->getSpecificationTable($node);
+            //dd($specificationTableHtml);
 
-                //dd($specificationTableHtml);
+            // $specifications = implode(", ",$attributes);;
 
-               // $specifications = implode(", ",$attributes);;
-                
-                $numId = $node->filter('numId')->text();
+            $numId = $node->filter('numId')->text();
 
-                $slug = Str::slug($title, '-');
+            $slug = Str::slug($title, '-');
 
-                $url = "https://www.elementa.rs/proizvod/$numId/$slug";
+            $url = "/proizvod/$numId/$slug";
 
-               
-                $product = Product::where('url', $url)->first();
+            echo 'Searching for url: https://www.elementa.rs' . $url . PHP_EOL;
 
-                //dd($product);
-                $site = SiteUrlParser::getSite($url);
+            $product = Product::where('url', 'LIKE', "%{$url}%")->first();
 
-                
+            //dd($product);
+            $site = SiteUrlParser::getSite($url);
 
-                if($product){
-                    echo '[.';
-
-                   $product->update([
+            if ($product) {
+                $product->update([
                     'title'          => $title,
                     'description'    => $description,
                     'specifications' => $specificationTableHtml,
                     'sku'            => $sku,
                     'synced_at'      => now(),
                     'status'         => Product::STATUS_AVAILABLE,
-                   ]);
-                 
-                   // update existing variants
-                       $product->variants()->first()->update([
-                           'price' => PriceCalculator::modifyByPercent(
-                               $price,
-                               $product->site->price_modification,
-                               $product->site->tax_percent
-                           ),
-                       ]);
-                   
-                  TransferUpdateProductJob::dispatchNow($product);//->onQueue(TransferUpdateProductJob::QUEUE_NAME);
+                ]);
 
-                  echo '],';
+                // update existing variants
+                $product->variants()->first()->update([
+                    'price' => PriceCalculator::modifyByPercent(
+                        $price,
+                        $product->site->price_modification,
+                        $product->site->tax_percent
+                    ),
+                ]);
 
+                TransferUpdateProductJob::dispatchNow($product);//->onQueue(TransferUpdateProductJob::QUEUE_NAME);
 
-                  $this->num = $this->num + 1;
+                echo '.';
 
+                $this->num = $this->num + 1;
+            } else {
+                echo 'Product was not found: ' . PHP_EOL;
+            }
+        });
 
-                }/* else{
-                  $product = Product::create([
-                    'site_id'        => $site->id,
-                    'title'          => $title,
-                    'description'    => $description,
-                    'specifications' => $specifications,
-                    'sku'            => $sku,
-                    'status'         => Product::STATUS_AVAILABLE,
-                    ]);
+        $this->checkAndDeleteUnexisting();
 
-                    TransferProductJob::dispatch($product, $categoryId)->onQueue(TransferProductJob::QUEUE_NAME);
-
-
-                    foreach ($images as $imageUrl) {
-                        $this->createAndUploadImages($product, $imageUrl);
-                    }
-                } */
-            
-            });
-
-            $this->checkAndDeleteUnexisting();
-
-            echo ' Synced-products: '. $this->num.' ';
-
+        echo ' Synced-products: ' . $this->num . ' ';
     }
-    private function checkAndDeleteUnexisting(){
 
-           $timeYesterday = now()->subDay();
-
-           $site = Site::where('id', 1)->first();
-
-           $products = $site->products()->where('synced_at', '<', $timeYesterday)->get();
-            
-           $bar = $this->output->createProgressBar($products->count());
-
-           $products->each(function(Product $product) use ($bar){
-           
-                ShopProduct::where('product_id', $product->shop_product_id)->update(['status' => 0, 'date_modified' => now()]);
-    
-                $product->update(['status' => Product::STATUS_UNAVAILABLE ]);
-    
-                $bar->advance();
-
-           });
-
-           $bar->finish();
-
-           echo ' <-unavailable,';
-          
-        }
-
-    private function getSpecificationTable($node) 
+    private function checkAndDeleteUnexisting()
     {
-        $specificationAttributes = $node->filter('specifications > attribute')->each(function ($node2){
+        $timeYesterday = now()->subDay();
+
+        $site = Site::where('id', 1)->first();
+
+        $products = $site->products()->where('synced_at', '<', $timeYesterday)->get();
+
+        $bar = $this->output->createProgressBar($products->count());
+
+        $products->each(function (Product $product) use ($bar) {
+            ShopProduct::where('product_id', $product->shop_product_id)->update(['status' => 0, 'date_modified' => now()]);
+
+            $product->update(['status' => Product::STATUS_UNAVAILABLE]);
+
+            $bar->advance();
+        });
+
+        $bar->finish();
+
+        echo ' <-unavailable,';
+    }
+
+    private function getSpecificationTable($node)
+    {
+        $specificationAttributes = $node->filter('specifications > attribute')->each(function ($node2) {
             return $node2->attr('name');
         });
 
-        $specificationValues = $node->filter('specifications > value')->each(function ($node2){
+        $specificationValues = $node->filter('specifications > value')->each(function ($node2) {
             return $node2->html();
         });
 
         $specificationTableHtml = '<table>';
 
-        for ($i=0; $i < count($specificationAttributes); $i++) { 
+        for ($i=0; $i < count($specificationAttributes); $i++) {
             $specificationTableHtml .= "<tr>
                 <td>{$specificationAttributes[$i]}</td>
                 <td>{$specificationValues[$i]}</td>
@@ -195,29 +166,29 @@ class ElementaFetchCommand extends Command
 
     private function createAndUploadImages($product, $imageUrl): void
     {
-            $image = ProductImage::create([
-                'url'        => null,
-                'source'     => $imageUrl,
-                'product_id' => $product->id,
-            ]);
+        $image = ProductImage::create([
+            'url'        => null,
+            'source'     => $imageUrl,
+            'product_id' => $product->id,
+        ]);
 
-            try {
-                $cloudinaryImage = Cloudder::upload(
-                    $imageUrl,
-                    "intercool/products/{$product->id}/{$image->id}",
-                    ['crop' => 'fit', 'width' => 700, 'height' => 700, 'format' => 'jpg', 'quality' => 'auto:good']
+        try {
+            $cloudinaryImage = Cloudder::upload(
+                $imageUrl,
+                "intercool/products/{$product->id}/{$image->id}",
+                ['crop' => 'fit', 'width' => 700, 'height' => 700, 'format' => 'jpg', 'quality' => 'auto:good']
                 );
 
-                $result = $cloudinaryImage->getResult();
+            $result = $cloudinaryImage->getResult();
 
-                $image->update(['url' => $result['secure_url']]);
-            } catch (Exception $e) {
-                $image->delete();
+            $image->update(['url' => $result['secure_url']]);
+        } catch (Exception $e) {
+            $image->delete();
 
-                logger()->notice('Failed to upload image to cloudinary', [
-                    'error'      => $e->getMessage(),
-                    'productUrl' => $this->crawler->getUrl(),
-                ]);
-            }
+            logger()->notice('Failed to upload image to cloudinary', [
+                'error'      => $e->getMessage(),
+                'productUrl' => $this->crawler->getUrl(),
+            ]);
+        }
     }
 }
