@@ -74,11 +74,11 @@ class ElementaFetchCommand extends Command
 
             $slug = Str::slug($title, '-');
 
-            $url = "/proizvod/$numId/$slug";
+            $url = "https://www.elementa.rs/proizvod/$numId/$slug";
 
             echo 'Searching for url: https://www.elementa.rs' . $url . PHP_EOL;
 
-            $product = Product::where('url', 'LIKE', "%{$url}%")->first();
+            $product = Product::where('url', 'LIKE', "%/proizvod/{$numId}/{$slug}%")->first();
 
             //dd($product);
             $site = SiteUrlParser::getSite($url);
