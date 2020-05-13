@@ -101,7 +101,7 @@ class ElementaFetchCommand extends Command
 
                 TransferUpdateProductJob::dispatchNow($product);//->onQueue(TransferUpdateProductJob::QUEUE_NAME);
 
-                echo $updated ? 'O' : 'F';
+                echo $updated ? '.' : 'F';
 
                 $this->num = $this->num + 1;
             } else {
