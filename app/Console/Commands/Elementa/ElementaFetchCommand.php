@@ -3,6 +3,7 @@
 namespace App\Console\Commands\Elementa;
 
 use Goutte\Client;
+use App\Models\Site;
 use App\Models\Product;
 use App\Models\ShopProduct;
 use Illuminate\Support\Str;
@@ -146,8 +147,9 @@ class ElementaFetchCommand extends Command
 
            $timeYesterday = now()->subDay();
 
-           $products = Product::where('synced_at', '<', $timeYesterday)->get();
+           $site = Site::where('id', 1)->first();
 
+           $products = $site->products()->where('synced_at', '<', $timeYesterday)->get();
             
            $bar = $this->output->createProgressBar($products->count());
 
@@ -155,7 +157,7 @@ class ElementaFetchCommand extends Command
            
                 ShopProduct::where('product_id', $product->shop_product_id)->update(['status' => 0, 'date_modified' => now()]);
     
-                $product->update(['status' => Product::STATUS_DELETED ]);
+                $product->update(['status' => Product::STATUS_UNAVAILABLE ]);
     
                 $bar->advance();
 
