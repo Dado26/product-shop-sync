@@ -80,10 +80,10 @@ class ElementaFetchCommand extends Command
 
             $product = Product::where('url', 'LIKE', "%/proizvod/{$numId}/{$slug}%")->first();
 
-            dump('1 ' . $product->synced_at);
             //$site = SiteUrlParser::getSite($url);
 
             if ($product) {
+                dump('1 ' . $product->synced_at);
                 $updated = $product->update([
                     'title'          => $title,
                     'description'    => $description,
@@ -102,7 +102,7 @@ class ElementaFetchCommand extends Command
                     ),
                 ]);
 
-                TransferUpdateProductJob::dispatchNow($product);//->onQueue(TransferUpdateProductJob::QUEUE_NAME);
+                //TransferUpdateProductJob::dispatchNow($product);//->onQueue(TransferUpdateProductJob::QUEUE_NAME);
                 dump('2 ' . $product->fresh()->synced_at);
                 echo ' - ' . ($updated ? 'Updated' : 'FAILED TO UPDATE!') . PHP_EOL;
 
